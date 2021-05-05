@@ -1,7 +1,7 @@
 Package: galah
 Type: Package
 Title: Atlas of Living Australia (ALA) Data and Resources in R
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(person("Matilda", "Stevenson", email="matilda.stevenson@csiro.au",role=c("aut","cre")),
              person("Martin", "Westgate", email="martin.westgate@csiro.au", role="aut"),
              person("Peggy", "Newman", email="peggy.newman@csiro.au", role="aut"))
@@ -24,9 +24,9 @@ VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2021-04-03 06:10:14 UTC; ste748
+Packaged: 2021-05-05 05:01:13 UTC; ste748
 Author: Matilda Stevenson [aut, cre],
   Martin Westgate [aut],
   Peggy Newman [aut]
 Repository: CRAN
-Date/Publication: 2021-04-06 08:30:02 UTC
+Date/Publication: 2021-05-05 06:20:12 UTC

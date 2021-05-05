@@ -3,6 +3,9 @@ library(knitr)
 options(width=120)
 
 ## ----eval=FALSE-------------------------------------------------------------------------------------------------------
+#  install.packages("galah")
+
+## ----eval=FALSE-------------------------------------------------------------------------------------------------------
 #  install.packages("remotes")
 #  remotes::install_github("AtlasOfLivingAustralia/galah")
 
@@ -11,16 +14,16 @@ library(galah)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 # free text search
-taxa_filter <- select_taxa(term = "Eolophus")
+taxa_filter <- select_taxa("Eolophus")
 
 # specifying ranks
-select_taxa(term = list(genus = "Eolophus", kingdom = "Aves"))
+select_taxa(query = list(genus = "Eolophus", kingdom = "Aves"))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-select_taxa(term = "Eolophus", children = TRUE, counts = TRUE)
+select_taxa(query = "Eolophus", children = TRUE, counts = TRUE)
 
 ## ----eval = FALSE-----------------------------------------------------------------------------------------------------
-#  locations <- select_locations(sf = st_read('act_rect.shp'))
+#  locations <- select_locations(query = st_read('act_rect.shp'))
 
 ## ---------------------------------------------------------------------------------------------------------------------
 search_fields("basis")
@@ -83,8 +86,10 @@ ala_counts(group_by = "kingdom")
 
 ## ----warning=FALSE, message=FALSE, eval = FALSE-----------------------------------------------------------------------
 #  # Use the occurrences previously downloaded
-#  images <- ala_media(head(occ$recordID, n = 5), download_dir = 'data/',
-#                      identifier_type = "occurrence")
+#  media_data <- ala_media(
+#       taxa = select_taxa("Eolophus roseicapilla"),
+#       filters = select_filters(year = 2020),
+#       download_dir = "media")
 
 ## ----eval=FALSE-------------------------------------------------------------------------------------------------------
 #  ala_config(email="myemail@gmail.com")

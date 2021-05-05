@@ -224,7 +224,12 @@ functions are given by <code>find_</code> functions.</p>
 
 <h2>Installation</h2>
 
-<p><code>galah</code> is not yet available on CRAN. To install the package from GitHub:</p>
+<p>Install from CRAN:</p>
+
+<pre><code class="r">install.packages(&quot;galah&quot;)
+</code></pre>
+
+<p>Install the development version from GitHub:</p>
 
 <pre><code class="r">install.packages(&quot;remotes&quot;)
 remotes::install_github(&quot;AtlasOfLivingAustralia/galah&quot;)
@@ -259,10 +264,10 @@ The function allows both free-text searches and searches where the rank(s) are
 specified. Specifying the rank can be useful when names are ambiguous.</p>
 
 <pre><code class="r"># free text search
-taxa_filter &lt;- select_taxa(term = &quot;Eolophus&quot;)
+taxa_filter &lt;- select_taxa(&quot;Eolophus&quot;)
 
 # specifying ranks
-select_taxa(term = list(genus = &quot;Eolophus&quot;, kingdom = &quot;Aves&quot;))
+select_taxa(query = list(genus = &quot;Eolophus&quot;, kingdom = &quot;Aves&quot;))
 </code></pre>
 
 <pre><code>##     search_term scientific_name scientific_name_authorship
@@ -276,7 +281,7 @@ select_taxa(term = list(genus = &quot;Eolophus&quot;, kingdom = &quot;Aves&quot;
 <p><code>select_taxa()</code> can optionally provide information about child concepts, and
 counts of the number of records held by the ALA for the specified taxa.</p>
 
-<pre><code class="r">select_taxa(term = &quot;Eolophus&quot;, children = TRUE, counts = TRUE)
+<pre><code class="r">select_taxa(query = &quot;Eolophus&quot;, children = TRUE, counts = TRUE)
 </code></pre>
 
 <pre><code>##    search_term       scientific_name scientific_name_authorship
@@ -286,8 +291,8 @@ counts of the number of records held by the ALA for the specified taxa.</p>
 ## 1: urn:lsid:biodiversity.org.au:afd.taxon:b2de5e40-df8f-4339-827d-25e63454a4a2   genus   exactMatch Animalia Chordata
 ## 2: urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 species taxonIdMatch Animalia Chordata
 ##    class          order     family    genus  issues               species vernacular_name  count
-## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 774197
-## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 774195
+## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 774631
+## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 774629
 </code></pre>
 
 <p>This shows that there is only one species in the family <em>Eolophus</em>.</p>
@@ -297,7 +302,7 @@ counts of the number of records held by the ALA for the specified taxa.</p>
 <p>Users can provide an <code>sf</code> object or a Well-Known Text (WKT) string for
 location-based filtering.</p>
 
-<pre><code class="r">locations &lt;- select_locations(sf = st_read(&#39;act_rect.shp&#39;))
+<pre><code class="r">locations &lt;- select_locations(query = st_read(&#39;act_rect.shp&#39;))
 </code></pre>
 
 <h2>Field based filtering</h2>
@@ -530,37 +535,36 @@ field.</p>
 ala_counts()
 </code></pre>
 
-<pre><code>## [1] 94842257
+<pre><code>## [1] 95077610
 </code></pre>
 
 <pre><code class="r"># Total number of records, broken down by kindgom
 ala_counts(group_by = &quot;kingdom&quot;)
 </code></pre>
 
-<pre><code>##         name    count
-## 1   Animalia 69571812
-## 2    Plantae 21019577
-## 3      Fungi  1989511
-## 4  Chromista  1037396
-## 5   Protista    64619
-## 6   Bacteria    58973
-## 7   Protozoa    21269
-## 8    Archaea     1102
+<pre><code>##      kingdom    count
+## 1   Animalia 69723665
+## 2    Plantae 21086445
+## 3      Fungi  1998763
+## 4  Chromista  1037917
+## 5   Protista    64608
+## 6   Bacteria    58975
+## 7   Protozoa    21497
+## 8    Archaea     1101
 ## 9  Eukaryota      735
-## 10     Virus      322
+## 10     Virus      331
 </code></pre>
 
 <h2>Media downloads</h2>
 
-<p>In addition to text data describing individual occurrences and their attributes,
-ALA stores image and sounds associated with a given record. These can be
-downloaded to <code>R</code> by first using <code>ala_occurrences()</code> to find records that
-contain media, and then passing the resulting <code>recordID</code> field to <code>ala_media()</code>
-to download those media files.</p>
+<p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos associated with a given record. These can be downloaded to <code>R</code> using <code>ala_media()</code> and the same
+set of filters as the other data download functions.</p>
 
 <pre><code class="r"># Use the occurrences previously downloaded
-images &lt;- ala_media(head(occ$recordID, n = 5), download_dir = &#39;data/&#39;,
-                    identifier_type = &quot;occurrence&quot;)
+media_data &lt;- ala_media(
+     taxa = select_taxa(&quot;Eolophus roseicapilla&quot;),
+     filters = select_filters(year = 2020),
+     download_dir = &quot;media&quot;)
 </code></pre>
 
 <h1>Config</h1>
