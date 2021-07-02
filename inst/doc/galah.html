@@ -265,9 +265,16 @@ specified. Specifying the rank can be useful when names are ambiguous.</p>
 
 <pre><code class="r"># free text search
 taxa_filter &lt;- select_taxa(&quot;Eolophus&quot;)
+</code></pre>
 
-# specifying ranks
+<pre><code>## Assuming that query term(s) provided are scientific or common names
+</code></pre>
+
+<pre><code class="r"># specifying ranks
 select_taxa(query = list(genus = &quot;Eolophus&quot;, kingdom = &quot;Aves&quot;))
+</code></pre>
+
+<pre><code>## Assuming that query term(s) provided are scientific or common names
 </code></pre>
 
 <pre><code>##     search_term scientific_name scientific_name_authorship
@@ -284,6 +291,9 @@ counts of the number of records held by the ALA for the specified taxa.</p>
 <pre><code class="r">select_taxa(query = &quot;Eolophus&quot;, children = TRUE, counts = TRUE)
 </code></pre>
 
+<pre><code>## Assuming that query term(s) provided are scientific or common names
+</code></pre>
+
 <pre><code>##    search_term       scientific_name scientific_name_authorship
 ## 1:    Eolophus              Eolophus            Bonaparte, 1854
 ## 2:        &lt;NA&gt; Eolophus roseicapilla           (Vieillot, 1817)
@@ -291,8 +301,8 @@ counts of the number of records held by the ALA for the specified taxa.</p>
 ## 1: urn:lsid:biodiversity.org.au:afd.taxon:b2de5e40-df8f-4339-827d-25e63454a4a2   genus   exactMatch Animalia Chordata
 ## 2: urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 species taxonIdMatch Animalia Chordata
 ##    class          order     family    genus  issues               species vernacular_name  count
-## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 774631
-## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 774629
+## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 779838
+## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 779836
 </code></pre>
 
 <p>This shows that there is only one species in the family <em>Eolophus</em>.</p>
@@ -319,24 +329,21 @@ finding valid field values, use <code>find_field_values()</code>.</p>
 <pre><code class="r">search_fields(&quot;basis&quot;)
 </code></pre>
 
-<pre><code>##                          id
-## 1:       assertions_missing
-## 2:            basisOfRecord
-## 3:    verbatimBasisOfRecord
-## 4: badlyFormedBasisOfRecord
-## 5:     missingBasisOfRecord
+<pre><code>##                                                 id
+## 1:                                   basisOfRecord
+## 2:                               raw_basisOfRecord
+## 3:                         BASIS_OF_RECORD_INVALID
+## 4: OCCURRENCE_STATUS_INFERRED_FROM_BASIS_OF_RECORD
 ##                                                                                                     description
-## 1:                         Assertion indicating missing field values for a record. E.g. missing basis of record
-## 2: What this is a record of e.g. specimen, human observation, fossil http://rs.tdwg.org/dwc/terms/basisOfRecord
-## 3:     The basis of record as supplied by the data publisher http://rs.tdwg.org/dwc/terms/verbatimBasisOfRecord
-## 4:                                                                                 Basis of record badly formed
-## 5:                                                                                 Basis of record not supplied
+## 1: What this is a record of e.g. specimen, human observation, fossil http://rs.tdwg.org/dwc/terms/basisOfRecord
+## 2:     The basis of record as supplied by the data publisher http://rs.tdwg.org/dwc/terms/verbatimBasisOfRecord
+## 3:                                                                                 Basis of record badly formed
+## 4:                                                              Occurrence status inferred from basis of record
 ##          type link
 ## 1:     fields &lt;NA&gt;
 ## 2:     fields &lt;NA&gt;
-## 3:     fields &lt;NA&gt;
+## 3: assertions &lt;NA&gt;
 ## 4: assertions &lt;NA&gt;
-## 5: assertions &lt;NA&gt;
 </code></pre>
 
 <pre><code class="r">field_values &lt;- find_field_values(&quot;basisOfRecord&quot;)
@@ -380,47 +387,45 @@ remove undesirable records. A full list of data quality profiles is returned by
 ##  4:                                                                                                                              Exclude all records with an assertion that the name and classification supplied can&#39;t be used to choose between 2 homonyms
 ##  5:                                                                                                                                        Exclude all records with an assertion that kingdom provided doesn&#39;t match a known kingdom e.g. Animalia, Plantae
 ##  6:                                                    Exclude all records with an assertion that the scientific name provided in the record does not match the expected taxonomic scope of the resource e.g. Mammal records attributed to bird watch group
-##  7:                                                                                              Exclude all records with an assertion of A marine species detected in a terrestrial environment or a terrestrial species detected in a marine environment.
-##  8:                                                                                                                                                          Exclude all records with an assertion of the occurence is cultivated or escaped from captivity
-##  9:                                                                                                                                                                               Exclude all records with an assertion of  latitude value provided is zero
-## 10:                                                                                                                                                                               Exclude all records with an assertion of longitude value provided is zero
-## 11:                                                                                                                                                                   Exclude all records with an assertion of  latitude and longitude have been transposed
-## 12:                                                                                                                                                     Exclude all records with an assertion of coordinates are the exact centre of the state or territory
-## 13:                                                                                                                                                               Exclude all records with an assertion of  coordinates are the exact centre of the country
-## 14:                                                                                                                                                                                               Exclude all records where duplicate status is &quot;duplicate&quot;
-## 15:                                                                                                                                                                       Exclude all records where coordinate uncertainty (in metres) is greater than 10km
-## 16:                                                                                                                                                                                                    Exclude all records with unresolved user  assertions
-## 17:                                                                                                                                                                                                   Exclude all records with unconfirmed  user assertions
-## 18:                                                                                                                                                                                              Exclude all records where outlier layer count is 3 or more
-## 19:                                                                                                                                                                                              Exclude all records where Record type is &quot;Fossil specimen&quot;
-## 20:                                                                                                                                                                                             Exclude all records where Record type is &quot;EnvironmentalDNA&quot;
-## 21:                                                                                                                                                                                                  Exclude all records where Presence/Absence is &quot;absent&quot;
-## 22:                                                                                                                                                                                                         Exclude all records where year is prior to 1700
+##  7:                                                                                                                                                          Exclude all records with an assertion of the occurence is cultivated or escaped from captivity
+##  8:                                                                                                                                                                                Exclude all records with an assertion of latitude value provided is zero
+##  9:                                                                                                                                                                               Exclude all records with an assertion of longitude value provided is zero
+## 10:                                                                                                                                                                   Exclude all records with an assertion of  latitude and longitude have been transposed
+## 11:                                                                                                                                                     Exclude all records with an assertion of coordinates are the exact centre of the state or territory
+## 12:                                                                                                                                                               Exclude all records with an assertion of  coordinates are the exact centre of the country
+## 13:                                                                                                                                                                                               Exclude all records where duplicate status is &quot;duplicate&quot;
+## 14:                                                                                                                                                                       Exclude all records where coordinate uncertainty (in metres) is greater than 10km
+## 15:                                                                                                                                                                                                    Exclude all records with unresolved user  assertions
+## 16:                                                                                                                                                                                                   Exclude all records with unconfirmed  user assertions
+## 17:                                                                                                                                                                                              Exclude all records where outlier layer count is 3 or more
+## 18:                                                                                                                                                                                              Exclude all records where Record type is &quot;Fossil specimen&quot;
+## 19:                                                                                                                                                                                             Exclude all records where Record type is &quot;EnvironmentalDNA&quot;
+## 20:                                                                                                                                                                                                  Exclude all records where Presence/Absence is &quot;absent&quot;
+## 21:                                                                                                                                                                                                         Exclude all records where year is prior to 1700
 ##                                                                                                                                                                                                                                                 description
-##                                             filter
-##  1:                     -geospatial_kosher:&quot;false&quot;
-##  2:                  -assertions:nameNotRecognised
-##  3:              -assertions:invalidScientificName
-##  4:                       -assertions:homonymIssue
-##  5:                     -assertions:unknownKingdom
-##  6:     -assertions:resourceTaxonomicScopeMismatch
-##  7:                  -assertions:&quot;habitatMismatch&quot;
-##  8:             -assertions:&quot;occCultivatedEscapee&quot;
-##  9:                     -assertions:&quot;zeroLatitude&quot;
-## 10:                    -assertions:&quot;zeroLongitude&quot;
-## 11:              -assertions:&quot;invertedCoordinates&quot;
-## 12: -assertions:&quot;coordinatesCentreOfStateProvince&quot;
-## 13:       -assertions:&quot;coordinatesCentreOfCountry&quot;
-## 14:                          -duplicate_status:&quot;D&quot;
-## 15:           -coordinate_uncertainty:[10001 TO *]
-## 16:                         -user_assertions:50001
-## 17:                         -user_assertions:50005
-## 18:                  -outlier_layer_count:[3 TO *]
-## 19:              -basis_of_record:&quot;FossilSpecimen&quot;
-## 20:            -basis_of_record:&quot;EnvironmentalDNA&quot;
-## 21:                      -occurrence_status:absent
-## 22:                              -year:[* TO 1700]
-##                                             filter
+##                                                                     filter
+##  1:                                                -spatiallyValid:&quot;false&quot;
+##  2:                                           -assertions:TAXON_MATCH_NONE
+##  3:                                    -assertions:INVALID_SCIENTIFIC_NAME
+##  4:                                              -assertions:TAXON_HOMONYM
+##  5:                                            -assertions:UNKNOWN_KINGDOM
+##  6:                                       -assertions:TAXON_SCOPE_MISMATCH
+##  7:                                          -establishmentMeans:&quot;MANAGED&quot;
+##  8:                                                     -decimalLatitude:0
+##  9:                                                    -decimalLongitude:0
+## 10:                              -assertions:&quot;PRESUMED_SWAPPED_COORDINATE&quot;
+## 11:                      -assertions:&quot;COORDINATES_CENTRE_OF_STATEPROVINCE&quot;
+## 12:                            -assertions:&quot;COORDINATES_CENTRE_OF_COUNTRY&quot;
+## 13:                                          -duplicateStatus:&quot;ASSOCIATED&quot;
+## 14:                            -coordinateUncertaintyInMeters:[10001 TO *]
+## 15:                                                  -userAssertions:50001
+## 16:                                                  -userAssertions:50005
+## 17:                                            -outlierLayerCount:[3 TO *]
+## 18:                                       -basisOfRecord:&quot;FOSSIL_SPECIMEN&quot;
+## 19: -(basisOfRecord:&quot;MATERIAL_SAMPLE&quot; AND contentTypes:&quot;EnvironmentalDNA&quot;)
+## 20:                                               -occurrenceStatus:ABSENT
+## 21:                                                      -year:[* TO 1700]
+##                                                                     filter
 </code></pre>
 
 <p>Include a profile in the filters</p>
@@ -505,7 +510,12 @@ look up this information, using the common set of filter functions.</p>
 <pre><code class="r"># List rodent species in the NT
 species &lt;- ala_species(taxa = select_taxa(&quot;Rodentia&quot;),
             filters = select_filters(stateProvince = &quot;Northern Territory&quot;))
-head(species)
+</code></pre>
+
+<pre><code>## Assuming that query term(s) provided are scientific or common names
+</code></pre>
+
+<pre><code class="r">head(species)
 </code></pre>
 
 <pre><code>##                                                                       species                species_name
@@ -516,12 +526,12 @@ head(species)
 ## 5 urn:lsid:biodiversity.org.au:afd.taxon:89dfa41e-2c5a-44d1-80bf-8d4cd3c73089             Melomys burtoni
 ## 6 urn:lsid:biodiversity.org.au:afd.taxon:107696b5-063c-4c09-a015-6edfdb6f4d52                Mus musculus
 ##   scientific_name_authorship taxon_rank  kingdom   phylum    class    order  family        genus        vernacular_name
-## 1          (J.E. Gray, 1843)    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE Mesembriomys  Black-Footed Tree-Rat
-## 2             (Thomas, 1889)    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE      Zyzomys        Common Rock-Rat
-## 3              (Waite, 1896)    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE    Pseudomys     Sandy Inland Mouse
-## 4               Thomas, 1922    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE      Notomys Spinifex Hopping-Mouse
-## 5             (Ramsay, 1887)    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE      Melomys      Grassland Melomys
-## 6             Linnaeus, 1758    species ANIMALIA CHORDATA MAMMALIA RODENTIA MURIDAE          Mus            House Mouse
+## 1          (J.E. Gray, 1843)    species Animalia Chordata Mammalia Rodentia Muridae Mesembriomys  Black-footed Tree-rat
+## 2             (Thomas, 1889)    species Animalia Chordata Mammalia Rodentia Muridae      Zyzomys        Common Rock-rat
+## 3              (Waite, 1896)    species Animalia Chordata Mammalia Rodentia Muridae    Pseudomys     Sandy Inland Mouse
+## 4               Thomas, 1922    species Animalia Chordata Mammalia Rodentia Muridae      Notomys Spinifex Hopping-mouse
+## 5             (Ramsay, 1887)    species Animalia Chordata Mammalia Rodentia Muridae      Melomys      Grassland Melomys
+## 6             Linnaeus, 1758    species Animalia Chordata Mammalia Rodentia Muridae          Mus            House Mouse
 </code></pre>
 
 <h2>Record counts</h2>
@@ -535,7 +545,7 @@ field.</p>
 ala_counts()
 </code></pre>
 
-<pre><code>## [1] 95077610
+<pre><code>## [1] 95659866
 </code></pre>
 
 <pre><code class="r"># Total number of records, broken down by kindgom
@@ -543,16 +553,16 @@ ala_counts(group_by = &quot;kingdom&quot;)
 </code></pre>
 
 <pre><code>##      kingdom    count
-## 1   Animalia 69723665
-## 2    Plantae 21086445
-## 3      Fungi  1998763
-## 4  Chromista  1037917
-## 5   Protista    64608
-## 6   Bacteria    58975
-## 7   Protozoa    21497
-## 8    Archaea     1101
+## 1   Animalia 70502996
+## 2    Plantae 21440207
+## 3      Fungi  1865765
+## 4  Chromista   914030
+## 5   Protista    67314
+## 6   Bacteria    58066
+## 7   Protozoa    22465
+## 8    Archaea     1103
 ## 9  Eukaryota      735
-## 10     Virus      331
+## 10     Virus      414
 </code></pre>
 
 <h2>Media downloads</h2>

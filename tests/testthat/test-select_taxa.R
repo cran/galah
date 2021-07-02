@@ -1,11 +1,20 @@
 context('Taxa search')
 
-
 test_that("select_taxa checks inputs", {
   skip_on_cran()
   expect_error(select_taxa())
+  # unrecognised name
   expect_message(select_taxa('bad_term'))
+  # unrecognised id
+  expect_message(select_taxa("1234"))
   expect_error(select_taxa("Varanus varius", children = 'false'))
+})
+
+test_that("select_taxa check atlas", {
+  skip_on_cran()
+  ala_config(atlas = "Austria")
+  expect_error(select_taxa("Vulpes vulpes"))
+  ala_config(atlas = "Australia")
 })
 
 test_that("child_concepts behaves correctly", {
@@ -81,10 +90,20 @@ test_that("select_taxa handles name issues", {
 })
 
 test_that("select_taxa returns children for multiple names", {
+  skip_on_cran()
   expect_equal(
     nrow(select_taxa(c("Osphranter", "Dasyurus"), children = TRUE)),
     sum(nrow(select_taxa("Osphranter", children = TRUE)),
         nrow(select_taxa("Dasyurus", children = TRUE))))
 })
 
+test_that("select_taxa errors if number of cols in data doesn't match", {
+  skip_on_cran()
+  expect_equal(unique(select_taxa(c("Animalia", "Fungi"), children = TRUE)$kingdom),
+               c("Animalia", "Fungi"))
+})
 
+test_that("select_taxa returns extended taxonomy", {
+  skip_on_cran()
+  expect_true("subfamily" %in% names(select_taxa("Anas", all_ranks = TRUE)))
+})
