@@ -1,299 +1,193 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>About</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Matilda Stevenson" />
+
+<meta name="date" content="2021-08-05" />
+
+<title>galah</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-};
-</script>
-
-<!-- Styles for R syntax highlighter -->
-<style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
+  .sourceCode {
+    overflow: visible;
+  }
 </style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
 
 
 
 </head>
 
 <body>
+
+
+
+
+<h1 class="title toc-ignore">galah</h1>
+<h4 class="author">Matilda Stevenson</h4>
+<h4 class="date">2021-08-05</h4>
+
+
+
+<div id="about" class="section level1">
 <h1>About</h1>
-
-<p><code>galah</code> is an R interface to biodiversity data hosted by the <a href="https://ala.org.au">Atlas of Living Australia</a> (ALA). The ALA is a repository of biodiversity
-data, focussed primarily on observations of individual life forms. Like the
-Global Biodiversity Information Facility (<a href="https://www.gbif.org">GBIF</a>), the
-basic unit of data at ALA is an <strong>occurrence</strong> record, based on the <a href="https://dwc.tdwg.org">&#39;Darwin Core&#39;</a> data standard.</p>
-
-<p><code>galah</code> enables users to locate and download species observations, taxonomic
-information, or associated media such images or sounds, and to restrict their
-queries to particular taxa or locations. Users can specify which columns are
-returned by a query, or restrict their results to observations that meet
-particular quality-control criteria. All functions return a <code>data.frame</code> as
-their standard format.</p>
-
-<p>Functions in <code>galah</code> are designed according to a nested architecture. Users
-that require data should begin by locating the relevant <code>ala_</code> function (see
-<a href="#downloading-data">downloading data section</a>); the arguments within that
-function then call correspondingly-named <a href="#filtering-data"><code>select_</code> functions</a>;
-and finally the specific values that can be interpreted by those <code>select_</code>
-functions are given by <code>find_</code> functions.</p>
-
+<p><code>galah</code> is an R interface to biodiversity data hosted by the <a href="https://ala.org.au">Atlas of Living Australia</a> (ALA). The ALA is a repository of biodiversity data, focussed primarily on observations of individual life forms. Like the Global Biodiversity Information Facility (<a href="https://www.gbif.org">GBIF</a>), the basic unit of data at ALA is an <strong>occurrence</strong> record, based on the <a href="https://dwc.tdwg.org">‘Darwin Core’</a> data standard.</p>
+<p><code>galah</code> enables users to locate and download species observations, taxonomic information, or associated media such images or sounds, and to restrict their queries to particular taxa or locations. Users can specify which columns are returned by a query, or restrict their results to observations that meet particular quality-control criteria. All functions return a <code>data.frame</code> as their standard format.</p>
+<p>Functions in <code>galah</code> are designed according to a nested architecture. Users that require data should begin by locating the relevant <code>ala_</code> function (see <a href="#downloading-data">downloading data section</a>); the arguments within that function then call correspondingly-named <a href="#filtering-data"><code>select_</code> functions</a>; and finally the specific values that can be interpreted by those <code>select_</code> functions are given by <code>find_</code> functions.</p>
+<div id="installation" class="section level2">
 <h2>Installation</h2>
-
 <p>Install from CRAN:</p>
-
-<pre><code class="r">install.packages(&quot;galah&quot;)
-</code></pre>
-
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;galah&quot;</span>)</span></code></pre></div>
 <p>Install the development version from GitHub:</p>
-
-<pre><code class="r">install.packages(&quot;remotes&quot;)
-remotes::install_github(&quot;AtlasOfLivingAustralia/galah&quot;)
-</code></pre>
-
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;AtlasOfLivingAustralia/galah&quot;</span>)</span></code></pre></div>
 <p>See the <a href="https://github.com/AtlasOfLivingAustralia/galah/blob/master/README.md">README</a> for system requirements.</p>
-
 <p>Load the package</p>
-
-<pre><code class="r">library(galah)
-</code></pre>
-
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(galah)</span></code></pre></div>
+</div>
+</div>
+<div id="filtering-data" class="section level1">
 <h1>Filtering data</h1>
-
-<p>Each occurrence record contains taxonomic information, and also some
-information about the observation itself, such as its location and the date
-of the observation. Each piece of information associated with a
-given occurrence is stored in a <strong>field</strong>,  which corresponds to a <strong>column</strong>
-when imported to a <code>data.frame</code>.</p>
-
-<p>Data fields are important because they provide a means to <em>filter</em>
-occurrence records;  i.e. to return only the information that you need, and
-no more. Consequently, much of the architecture of <code>galah</code> has been
-designed to make filtering as simple as possible, by using functions with the
-<code>select_</code> prefix.</p>
-
+<p>Each occurrence record contains taxonomic information, and also some information about the observation itself, such as its location and the date of the observation. Each piece of information associated with a given occurrence is stored in a <strong>field</strong>, which corresponds to a <strong>column</strong> when imported to a <code>data.frame</code>.</p>
+<p>Data fields are important because they provide a means to <em>filter</em> occurrence records; i.e. to return only the information that you need, and no more. Consequently, much of the architecture of <code>galah</code> has been designed to make filtering as simple as possible, by using functions with the <code>select_</code> prefix.</p>
+<div id="taxonomic-filtering" class="section level2">
 <h2>Taxonomic filtering</h2>
-
-<p><code>select_taxa()</code> enables users search for taxonomic names and check the results
-are &#39;correct&#39; before using the result to download data.
-The function allows both free-text searches and searches where the rank(s) are
-specified. Specifying the rank can be useful when names are ambiguous.</p>
-
-<pre><code class="r"># free text search
-taxa_filter &lt;- select_taxa(&quot;Eolophus&quot;)
-</code></pre>
-
-<pre><code>## Assuming that query term(s) provided are scientific or common names
-</code></pre>
-
-<pre><code class="r"># specifying ranks
-select_taxa(query = list(genus = &quot;Eolophus&quot;, kingdom = &quot;Aves&quot;))
-</code></pre>
-
-<pre><code>## Assuming that query term(s) provided are scientific or common names
-</code></pre>
-
+<p><code>select_taxa()</code> enables users search for taxonomic names and check the results are ‘correct’ before using the result to download data. The function allows both free-text searches and searches where the rank(s) are specified. Specifying the rank can be useful when names are ambiguous.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># free text search</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>taxa_filter <span class="ot">&lt;-</span> <span class="fu">select_taxa</span>(<span class="st">&quot;Eolophus&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specifying ranks</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select_taxa</span>(<span class="at">query =</span> <span class="fu">list</span>(<span class="at">genus =</span> <span class="st">&quot;Eolophus&quot;</span>, <span class="at">kingdom =</span> <span class="st">&quot;Aves&quot;</span>))</span></code></pre></div>
 <pre><code>##     search_term scientific_name scientific_name_authorship
 ## 1 Eolophus_Aves        Eolophus            Bonaparte, 1854
 ##                                                              taxon_concept_id  rank match_type  kingdom   phylum class
 ## 1 urn:lsid:biodiversity.org.au:afd.taxon:b2de5e40-df8f-4339-827d-25e63454a4a2 genus exactMatch Animalia Chordata  Aves
 ##            order     family    genus  issues
-## 1 Psittaciformes Cacatuidae Eolophus noIssue
-</code></pre>
-
-<p><code>select_taxa()</code> can optionally provide information about child concepts, and
-counts of the number of records held by the ALA for the specified taxa.</p>
-
-<pre><code class="r">select_taxa(query = &quot;Eolophus&quot;, children = TRUE, counts = TRUE)
-</code></pre>
-
-<pre><code>## Assuming that query term(s) provided are scientific or common names
-</code></pre>
-
+## 1 Psittaciformes Cacatuidae Eolophus noIssue</code></pre>
+<p><code>select_taxa()</code> can optionally provide information about child concepts, and counts of the number of records held by the ALA for the specified taxa.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_taxa</span>(<span class="at">query =</span> <span class="st">&quot;Eolophus&quot;</span>, <span class="at">children =</span> <span class="cn">TRUE</span>, <span class="at">counts =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning in select_taxa(query = &quot;Eolophus&quot;, children = TRUE, counts = TRUE): The `children` argument is now deprecated. To get information about
+##   child taxonomic concepts, use `search_taxonomy` with the `downto` argument.
+##   For more information about taxonomic searches, see vignette(&#39;taxonomic_information&#39;)</code></pre>
+<pre><code>## Warning in select_taxa(query = &quot;Eolophus&quot;, children = TRUE, counts = TRUE): The `counts` argument is now deprecated. To get information about
+##   taxonomic counts, use `ala_counts` with the `groupby` argument.
+##   For more information about taxonomic searches, see vignette(&#39;taxonomic_information&#39;)</code></pre>
 <pre><code>##    search_term       scientific_name scientific_name_authorship
 ## 1:    Eolophus              Eolophus            Bonaparte, 1854
 ## 2:        &lt;NA&gt; Eolophus roseicapilla           (Vieillot, 1817)
@@ -301,34 +195,20 @@ counts of the number of records held by the ALA for the specified taxa.</p>
 ## 1: urn:lsid:biodiversity.org.au:afd.taxon:b2de5e40-df8f-4339-827d-25e63454a4a2   genus   exactMatch Animalia Chordata
 ## 2: urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 species taxonIdMatch Animalia Chordata
 ##    class          order     family    genus  issues               species vernacular_name  count
-## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 779838
-## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 779836
-</code></pre>
-
+## 1:  Aves Psittaciformes Cacatuidae Eolophus noIssue                  &lt;NA&gt;            &lt;NA&gt; 852087
+## 2:  Aves Psittaciformes Cacatuidae Eolophus noIssue Eolophus roseicapilla           Galah 852085</code></pre>
 <p>This shows that there is only one species in the family <em>Eolophus</em>.</p>
-
+</div>
+<div id="location-based-filtering" class="section level2">
 <h2>Location-based filtering</h2>
-
-<p>Users can provide an <code>sf</code> object or a Well-Known Text (WKT) string for
-location-based filtering.</p>
-
-<pre><code class="r">locations &lt;- select_locations(query = st_read(&#39;act_rect.shp&#39;))
-</code></pre>
-
+<p>Users can provide an <code>sf</code> object or a Well-Known Text (WKT) string for location-based filtering.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> <span class="fu">select_locations</span>(<span class="at">query =</span> <span class="fu">st_read</span>(<span class="st">&#39;act_rect.shp&#39;</span>))</span></code></pre></div>
+</div>
+<div id="field-based-filtering" class="section level2">
 <h2>Field based filtering</h2>
-
-<p>As mentioned above, all occurrence records in the ALA contain additional
-information about the record, stored in <strong>fields</strong>. Field-based filters are
-specified with <code>select_filters()</code>, which takes indvidual filters, in the form
-<code>field = value</code>, and/or a <a href="#data-quality-profiles">data quality profile</a>.</p>
-
-<p>To find available fields and corresponding valid values, field lookup 
-functions are provided. For finding field names, use <code>search_fields()</code>, for
-finding valid field values, use <code>find_field_values()</code>.</p>
-
-<pre><code class="r">search_fields(&quot;basis&quot;)
-</code></pre>
-
+<p>As mentioned above, all occurrence records in the ALA contain additional information about the record, stored in <strong>fields</strong>. Field-based filters are specified with <code>select_filters()</code>, which takes individual filters, in the form <code>field = value</code>, and/or a <a href="#data-quality-profiles">data quality profile</a>.</p>
+<p>To find available fields and corresponding valid values, field lookup functions are provided. For finding field names, use <code>search_fields()</code>, for finding valid field values, use <code>find_field_values()</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_fields</span>(<span class="st">&quot;basis&quot;</span>)</span></code></pre></div>
 <pre><code>##                                                 id
 ## 1:                                   basisOfRecord
 ## 2:                               raw_basisOfRecord
@@ -343,43 +223,20 @@ finding valid field values, use <code>find_field_values()</code>.</p>
 ## 1:     fields &lt;NA&gt;
 ## 2:     fields &lt;NA&gt;
 ## 3: assertions &lt;NA&gt;
-## 4: assertions &lt;NA&gt;
-</code></pre>
-
-<pre><code class="r">field_values &lt;- find_field_values(&quot;basisOfRecord&quot;)
-</code></pre>
-
+## 4: assertions &lt;NA&gt;</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>field_values <span class="ot">&lt;-</span> <span class="fu">find_field_values</span>(<span class="st">&quot;basisOfRecord&quot;</span>)</span></code></pre></div>
 <p>Build a field filter</p>
-
-<pre><code class="r">filters &lt;- select_filters(basisOfRecord = &quot;HumanObservation&quot;)
-</code></pre>
-
-<p>By default, a filter is included. To negate a filter, use <code>exclude()</code>.</p>
-
-<pre><code class="r">filters &lt;- select_filters(basisOfRecord = &quot;HumanObservation&quot;,
-                          occurrenceStatus = exclude(&quot;absent&quot;))
-</code></pre>
-
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>filters <span class="ot">&lt;-</span> <span class="fu">select_filters</span>(<span class="at">basisOfRecord =</span> <span class="st">&quot;HumanObservation&quot;</span>)</span></code></pre></div>
+<p>It is also possible to pass other kinds of logical statement to <code>select_filters()</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>filters <span class="ot">&lt;-</span> <span class="fu">select_filters</span>(<span class="at">basisOfRecord =</span> <span class="st">&quot;HumanObservation&quot;</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                          year <span class="sc">&gt;=</span> <span class="dv">2010</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                          occurrenceStatus <span class="sc">!=</span> <span class="st">&quot;absent&quot;</span>)</span></code></pre></div>
+<div id="data-quality-profiles" class="section level3">
 <h3>Data quality profiles</h3>
-
-<p>A notable extention of the filtering approach is to remove records with low
-&#39;quality&#39;. ALA performs quality control checks on all records that it stores.
-These checks are used to generate new fields, that can then be used to filter
-out records that are unsuitable for particular applications. However, there
-are many possible data quality checks, and it is not always clear which are
-most appropriate in a given instance. Therefore, <code>galah</code> supports ALA
-data quality <strong>profiles</strong>, which can be passed to <code>select_filters()</code>to quickly
-remove undesirable records. A full list of data quality profiles is returned by
-<code>find_profiles()</code>.</p>
-
-<pre><code class="r">profiles &lt;- find_profiles()
-</code></pre>
-
+<p>A notable extention of the filtering approach is to remove records with low ‘quality’. ALA performs quality control checks on all records that it stores. These checks are used to generate new fields, that can then be used to filter out records that are unsuitable for particular applications. However, there are many possible data quality checks, and it is not always clear which are most appropriate in a given instance. Therefore, <code>galah</code> supports ALA data quality <strong>profiles</strong>, which can be passed to <code>select_filters()</code>to quickly remove undesirable records. A full list of data quality profiles is returned by <code>find_profiles()</code>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="ot">&lt;-</span> <span class="fu">find_profiles</span>()</span></code></pre></div>
 <p>View filters included in a profile</p>
-
-<pre><code class="r">find_profile_attributes(&quot;ALA&quot;)
-</code></pre>
-
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find_profile_attributes</span>(<span class="st">&quot;ALA&quot;</span>)</span></code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                 description
 ##  1:                                                                                                                                                                                                   Exclude all records where spatial validity is &quot;false&quot;
 ##  2: Exclude all records with an assertion that the scientific name provided does not match any of the names lists used by the ALA.  For a full explanation of the ALA name matching process see https://github.com/AtlasOfLivingAustralia/ala-name-matching
@@ -425,205 +282,146 @@ remove undesirable records. A full list of data quality profiles is returned by
 ## 19: -(basisOfRecord:&quot;MATERIAL_SAMPLE&quot; AND contentTypes:&quot;EnvironmentalDNA&quot;)
 ## 20:                                               -occurrenceStatus:ABSENT
 ## 21:                                                      -year:[* TO 1700]
-##                                                                     filter
-</code></pre>
-
+##                                                                     filter</code></pre>
 <p>Include a profile in the filters</p>
-
-<pre><code class="r">filters &lt;- select_filters(basisOfRecord = &quot;HumanObservation&quot;,
-                          profile = &quot;ALA&quot;)
-</code></pre>
-
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>filters <span class="ot">&lt;-</span> <span class="fu">select_filters</span>(<span class="at">basisOfRecord =</span> <span class="st">&quot;HumanObservation&quot;</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">profile =</span> <span class="st">&quot;ALA&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="downloading-data" class="section level1">
 <h1>Downloading data</h1>
-
-<p>Functions that return data from ALA are named with the prefix <code>ala_</code>,
-followed by a suffix describing the information that they provide.</p>
-
-<p>By combining different filter functions, it is possible to build complex
-queries to return only the most valuable information for a given problem.
-Once you have retrieved taxon information, you can use this to <a href="#occurrence-data">search for
-occurrence records</a> with <code>ala_occurrences()</code>. However, it is
-also possible to <a href="#species-data">download data on species</a> via <code>ala_species()</code>,
-or <a href="#media_downloads">media content</a> (largely images) via <code>ala_media()</code>.
-Alternatively, users can <a href="#record-counts">retrieve record counts</a> using <code>ala_counts()</code>.</p>
-
+<p>Functions that return data from ALA are named with the prefix <code>ala_</code>, followed by a suffix describing the information that they provide.</p>
+<p>By combining different filter functions, it is possible to build complex queries to return only the most valuable information for a given problem. Once you have retrieved taxon information, you can use this to <a href="#occurrence-data">search for occurrence records</a> with <code>ala_occurrences()</code>. However, it is also possible to <a href="#species-data">download data on species</a> via <code>ala_species()</code>, or <a href="#media_downloads">media content</a> (largely images) via <code>ala_media()</code>. Alternatively, users can <a href="#record-counts">retrieve record counts</a> using <code>ala_counts()</code>.</p>
+<div id="occurrence-data" class="section level2">
 <h2>Occurrence data</h2>
-
-<p>In addition to the <a href="#filtering-data">filter functions</a> above, when downloading
-occurrence data users can specify which columns are returned using
-<code>select_columns()</code>. Individual column names and/or column groups can be
-specified.
-To view the fields for each group, see the documentation for <code>select_columns()</code>.
-To view the list of available fields, run <code>search_fields()</code>.</p>
-
-<pre><code class="r">cols &lt;- select_columns(&quot;institutionID&quot;, group = &quot;basic&quot;)
-</code></pre>
-
-<p>To download occurrence data you will need to specify your email in
-<code>ala_config()</code>. This email must be associated with an active ALA account. See
-more information in the <a href="#config">config section</a></p>
-
-<pre><code class="r">ala_config(email = your_email_here, profile_path = path_to_profile)
-</code></pre>
-
+<p>In addition to the <a href="#filtering-data">filter functions</a> above, when downloading occurrence data users can specify which columns are returned using <code>select_columns()</code>. Individual column names and/or column groups can be specified. To view the fields for each group, see the documentation for <code>select_columns()</code>. To view the list of available fields, run <code>search_fields()</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">select_columns</span>(<span class="st">&quot;institutionID&quot;</span>, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>)</span></code></pre></div>
+<p>To download occurrence data you will need to specify your email in <code>galah_config()</code>. This email must be associated with an active ALA account. See more information in the <a href="#config">config section</a></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> your_email_here, <span class="at">atlas =</span> <span class="st">&quot;Australia&quot;</span>)</span></code></pre></div>
 <p>Download occurrence records for <em>Eolophus roseicapilla</em></p>
-
-<pre><code class="r">occ &lt;- ala_occurrences(taxa = select_taxa(&quot;Eolophus roseicapilla&quot;),
-                       filters = select_filters(stateProvince = &quot;Australian Capital Territory&quot;,
-                                                year = seq(2010, 2020),
-                                                profile = &quot;ALA&quot;),
-                       columns = select_columns(&quot;institutionID&quot;, group = &quot;basic&quot;))
-</code></pre>
-
-<pre><code class="r">head(occ)
-</code></pre>
-
-<pre><code>##   X decimalLatitude decimalLongitude  eventDate        scientificName
-## 1 1        -35.3450          149.062 2012-12-04 Eolophus roseicapilla
-## 2 2        -35.2501          149.131 2014-12-05 Eolophus roseicapilla
-## 3 3        -35.3405          149.109 2018-12-27 Eolophus roseicapilla
-## 4 4        -35.2033          149.013 2013-12-01 Eolophus roseicapilla
-## 5 5        -35.3206          148.956 2017-12-04 Eolophus roseicapilla
-## 6 6        -35.2660          148.932 2011-12-11 Eolophus roseicapilla
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>occ <span class="ot">&lt;-</span> <span class="fu">ala_occurrences</span>(<span class="at">taxa =</span> <span class="fu">select_taxa</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>),</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">filters =</span> <span class="fu">select_filters</span>(<span class="at">stateProvince =</span> <span class="st">&quot;Australian Capital Territory&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                                year <span class="sc">&gt;=</span> <span class="dv">2010</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">profile =</span> <span class="st">&quot;ALA&quot;</span>),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">columns =</span> <span class="fu">select_columns</span>(<span class="st">&quot;institutionID&quot;</span>, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(occ)</span></code></pre></div>
+<pre><code>##   decimalLatitude decimalLongitude            eventDate        scientificName
+## 1       -35.88717         148.9713                      Eolophus roseicapilla
+## 2       -35.86784         149.0101                      Eolophus roseicapilla
+## 3       -35.86556         149.0106 2012-01-18T13:00:00Z Eolophus roseicapilla
+## 4       -35.86429         149.0052                      Eolophus roseicapilla
+## 5       -35.77517         148.9591                      Eolophus roseicapilla
+## 6       -35.76652         148.9654                      Eolophus roseicapilla
 ##                                                                taxonConceptID                             recordID
-## 1 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ffef254e-0328-417f-9c8a-64bfacd32c00
-## 2 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ffee66fa-968d-4a0f-b245-03d0bc56d303
-## 3 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ffcb2236-2f65-4d0d-a347-6d5d30f80b97
-## 4 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ffafbfd6-3b11-4ef6-881b-7d417a11db34
-## 5 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ffa24dee-d1e9-4e97-8574-76433c299429
-## 6 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ff87372e-bde7-4e87-929e-80e59ed94e8f
-##         data_resource
-## 1 Garden Bird Surveys
-## 2     eBird Australia
-## 3     eBird Australia
-## 4     eBird Australia
-## 5     eBird Australia
-## 6     eBird Australia
-</code></pre>
-
+## 1 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 17f46d49-7db0-4929-89f4-b29323f3fcc5
+## 2 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 ef2b9066-c078-4660-b9a4-c31192aa8bf7
+## 3 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 4f7cd714-2997-45d6-adaf-f7dfc80adfe1
+## 4 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 3236c470-a144-4300-ae9b-782d0e5e4dd1
+## 5 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 e340c423-3a19-4293-aa72-e4045bb7f702
+## 6 urn:lsid:biodiversity.org.au:afd.taxon:577ff059-a2a7-48b0-976c-fdd6a345f878 f25793f3-2704-43ff-80ee-c2a1787490e7
+##              dataResourceName institutionID
+## 1             eBird Australia              
+## 2             eBird Australia              
+## 3 BirdLife Australia, Birdata              
+## 4             eBird Australia              
+## 5             eBird Australia              
+## 6             eBird Australia</code></pre>
+</div>
+<div id="species-data" class="section level2">
 <h2>Species data</h2>
-
-<p>A common use case of the ALA is to identify which species occur in a specified
-region, time period, or taxonomic group. <code>ala_species()</code> enables the user to 
-look up this information, using the common set of filter functions.</p>
-
-<pre><code class="r"># List rodent species in the NT
-species &lt;- ala_species(taxa = select_taxa(&quot;Rodentia&quot;),
-            filters = select_filters(stateProvince = &quot;Northern Territory&quot;))
-</code></pre>
-
-<pre><code>## Assuming that query term(s) provided are scientific or common names
-</code></pre>
-
-<pre><code class="r">head(species)
-</code></pre>
-
-<pre><code>##                                                                       species                species_name
-## 1 urn:lsid:biodiversity.org.au:afd.taxon:f38bcd7e-ae6a-4734-bd64-06995bc230eb        Mesembriomys gouldii
-## 2 urn:lsid:biodiversity.org.au:afd.taxon:46611113-a1e3-45b1-b58c-7aef088a9da7             Zyzomys argurus
-## 3 urn:lsid:biodiversity.org.au:afd.taxon:5d73fc2f-3caa-4b44-aa40-3711e8304f80 Pseudomys hermannsburgensis
-## 4 urn:lsid:biodiversity.org.au:afd.taxon:49001532-929e-4b78-97d3-c885e97d671b              Notomys alexis
-## 5 urn:lsid:biodiversity.org.au:afd.taxon:89dfa41e-2c5a-44d1-80bf-8d4cd3c73089             Melomys burtoni
-## 6 urn:lsid:biodiversity.org.au:afd.taxon:107696b5-063c-4c09-a015-6edfdb6f4d52                Mus musculus
-##   scientific_name_authorship taxon_rank  kingdom   phylum    class    order  family        genus        vernacular_name
-## 1          (J.E. Gray, 1843)    species Animalia Chordata Mammalia Rodentia Muridae Mesembriomys  Black-footed Tree-rat
-## 2             (Thomas, 1889)    species Animalia Chordata Mammalia Rodentia Muridae      Zyzomys        Common Rock-rat
-## 3              (Waite, 1896)    species Animalia Chordata Mammalia Rodentia Muridae    Pseudomys     Sandy Inland Mouse
-## 4               Thomas, 1922    species Animalia Chordata Mammalia Rodentia Muridae      Notomys Spinifex Hopping-mouse
-## 5             (Ramsay, 1887)    species Animalia Chordata Mammalia Rodentia Muridae      Melomys      Grassland Melomys
-## 6             Linnaeus, 1758    species Animalia Chordata Mammalia Rodentia Muridae          Mus            House Mouse
-</code></pre>
-
+<p>A common use case of the ALA is to identify which species occur in a specified region, time period, or taxonomic group. <code>ala_species()</code> enables the user to look up this information, using the common set of filter functions.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List rodent species in the NT</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>species <span class="ot">&lt;-</span> <span class="fu">ala_species</span>(<span class="at">taxa =</span> <span class="fu">select_taxa</span>(<span class="st">&quot;Rodentia&quot;</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">filters =</span> <span class="fu">select_filters</span>(<span class="at">stateProvince =</span> <span class="st">&quot;Northern Territory&quot;</span>))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(species)</span></code></pre></div>
+<pre><code>##    kingdom   phylum    class    order  family        genus                     species            author
+## 1 Animalia Chordata Mammalia Rodentia Muridae Mesembriomys        Mesembriomys gouldii (J.E. Gray, 1843)
+## 2 Animalia Chordata Mammalia Rodentia Muridae      Zyzomys             Zyzomys argurus    (Thomas, 1889)
+## 3 Animalia Chordata Mammalia Rodentia Muridae    Pseudomys Pseudomys hermannsburgensis     (Waite, 1896)
+## 4 Animalia Chordata Mammalia Rodentia Muridae      Notomys              Notomys alexis      Thomas, 1922
+## 5 Animalia Chordata Mammalia Rodentia Muridae      Melomys             Melomys burtoni    (Ramsay, 1887)
+## 6 Animalia Chordata Mammalia Rodentia Muridae          Mus                Mus musculus    Linnaeus, 1758
+##                                                                  species_guid        vernacular_name
+## 1 urn:lsid:biodiversity.org.au:afd.taxon:f38bcd7e-ae6a-4734-bd64-06995bc230eb  Black-footed Tree-rat
+## 2 urn:lsid:biodiversity.org.au:afd.taxon:46611113-a1e3-45b1-b58c-7aef088a9da7        Common Rock-rat
+## 3 urn:lsid:biodiversity.org.au:afd.taxon:5d73fc2f-3caa-4b44-aa40-3711e8304f80     Sandy Inland Mouse
+## 4 urn:lsid:biodiversity.org.au:afd.taxon:49001532-929e-4b78-97d3-c885e97d671b Spinifex Hopping-mouse
+## 5 urn:lsid:biodiversity.org.au:afd.taxon:89dfa41e-2c5a-44d1-80bf-8d4cd3c73089      Grassland Melomys
+## 6 urn:lsid:biodiversity.org.au:afd.taxon:107696b5-063c-4c09-a015-6edfdb6f4d52            House Mouse</code></pre>
+</div>
+<div id="record-counts" class="section level2">
 <h2>Record counts</h2>
-
-<p><code>ala_counts()</code> provides summary counts on records in the ALA, without needing
-to download all the records. In addition to the filter arguments, it has an
-optional <code>group_by</code> argument, which provides counts binned by the requested
-field.</p>
-
-<pre><code class="r"># Total number of records in the ALA
-ala_counts()
-</code></pre>
-
-<pre><code>## [1] 95659866
-</code></pre>
-
-<pre><code class="r"># Total number of records, broken down by kindgom
-ala_counts(group_by = &quot;kingdom&quot;)
-</code></pre>
-
+<p><code>ala_counts()</code> provides summary counts on records in the ALA, without needing to download all the records. In addition to the filter arguments, it has an optional <code>group_by</code> argument, which provides counts binned by the requested field.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total number of records in the ALA</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ala_counts</span>()</span></code></pre></div>
+<pre><code>## [1] 100871912</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total number of records, broken down by kindgom</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ala_counts</span>(<span class="at">group_by =</span> <span class="st">&quot;kingdom&quot;</span>)</span></code></pre></div>
 <pre><code>##      kingdom    count
-## 1   Animalia 70502996
-## 2    Plantae 21440207
-## 3      Fungi  1865765
-## 4  Chromista   914030
-## 5   Protista    67314
-## 6   Bacteria    58066
-## 7   Protozoa    22465
+## 1   Animalia 75649166
+## 2    Plantae 21472247
+## 3      Fungi  1877219
+## 4  Chromista   914334
+## 5   Protista    67279
+## 6   Bacteria    58081
+## 7   Protozoa    22681
 ## 8    Archaea     1103
 ## 9  Eukaryota      735
-## 10     Virus      414
-</code></pre>
-
+## 10     Virus      421</code></pre>
+</div>
+<div id="media-downloads" class="section level2">
 <h2>Media downloads</h2>
-
-<p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos associated with a given record. These can be downloaded to <code>R</code> using <code>ala_media()</code> and the same
-set of filters as the other data download functions.</p>
-
-<pre><code class="r"># Use the occurrences previously downloaded
-media_data &lt;- ala_media(
-     taxa = select_taxa(&quot;Eolophus roseicapilla&quot;),
-     filters = select_filters(year = 2020),
-     download_dir = &quot;media&quot;)
-</code></pre>
-
+<p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos associated with a given record. These can be downloaded to <code>R</code> using <code>ala_media()</code> and the same set of filters as the other data download functions.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the occurrences previously downloaded</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>media_data <span class="ot">&lt;-</span> <span class="fu">ala_media</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">taxa =</span> <span class="fu">select_taxa</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">filters =</span> <span class="fu">select_filters</span>(<span class="at">year =</span> <span class="dv">2020</span>),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">download_dir =</span> <span class="st">&quot;media&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="config" class="section level1">
 <h1>Config</h1>
-
-<p>Various aspects of the galah package can be customized. To preserve
-configuration for future sessions, set <code>profile_path</code> to a location of a
-<code>.Rprofile</code> file.</p>
-
+<p>Various aspects of the galah package can be customized. To preserve configuration for future sessions, set <code>profile_path</code> to a location of a <code>.Rprofile</code> file.</p>
+<div id="email" class="section level2">
 <h2>Email</h2>
-
-<p>To download occurrence records, you will need to provide an email address
-registered with the ALA. You can create an account <a href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>.
-Once an email is registered with the ALA, it should be stored in the config:</p>
-
-<pre><code class="r">ala_config(email=&quot;myemail@gmail.com&quot;)
-</code></pre>
-
+<p>To download occurrence records, you will need to provide an email address registered with the ALA. You can create an account <a href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>. Once an email is registered with the ALA, it should be stored in the config:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email=</span><span class="st">&quot;myemail@gmail.com&quot;</span>)</span></code></pre></div>
+</div>
+<div id="caching" class="section level2">
 <h2>Caching</h2>
-
-<p><code>galah</code> can cache most results to local files. This means that if the same code
-is run multiple times, the second and subsequent iterations will be faster.</p>
-
-<p>By default, this caching is session-based, meaning that the local files are
-stored in a temporary directory that is automatically deleted when the R
-session is ended. This behaviour can be altered so that caching is permanent,
-by setting the caching directory to a non-temporary location.</p>
-
-<pre><code class="r">ala_config(cache_directory=&quot;example/dir&quot;)
-</code></pre>
-
+<p><code>galah</code> can cache most results to local files. This means that if the same code is run multiple times, the second and subsequent iterations will be faster.</p>
+<p>By default, this caching is session-based, meaning that the local files are stored in a temporary directory that is automatically deleted when the R session is ended. This behaviour can be altered so that caching is permanent, by setting the caching directory to a non-temporary location.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">cache_directory=</span><span class="st">&quot;example/dir&quot;</span>)</span></code></pre></div>
 <p>By default, caching is turned off. To turn caching on, run</p>
-
-<pre><code class="r">ala_config(caching=FALSE)
-</code></pre>
-
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">caching=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+</div>
+<div id="debugging" class="section level2">
 <h2>Debugging</h2>
-
-<p>If things aren&#39;t working as expected, more detail (particularly about web requests and caching behaviour) can be obtained by setting the <code>verbose</code> configuration option:</p>
-
-<pre><code class="r">ala_config(verbose=TRUE)
-</code></pre>
-
+<p>If things aren’t working as expected, more detail (particularly about web requests and caching behaviour) can be obtained by setting the <code>verbose</code> configuration option:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">verbose=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="setting-the-download-reason" class="section level2">
 <h2>Setting the download reason</h2>
+<p>ALA requires that you provide a reason when downloading occurrence data (via the galah <code>ala_occurrences()</code> function). The reason is set as “scientific research” by default, but you can change this using <code>galah_config()</code>. See <code>find_reasons()</code> for valid download reasons.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">download_reason_id=</span>your_reason_id)</span></code></pre></div>
+</div>
+</div>
 
-<p>ALA requires that you provide a reason when downloading occurrence data (via the galah <code>ala_occurrences()</code> function). The reason is set as &ldquo;scientific research&rdquo; by default, but you can change this using <code>ala_config()</code>. See <code>find_reasons()</code> for valid download reasons.</p>
 
-<pre><code class="r">ala_config(download_reason_id=your_reason_id)
-</code></pre>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>
