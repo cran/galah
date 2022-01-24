@@ -1,0 +1,380 @@
+---
+title: "Narrow your results"
+author: "Martin Westgate & Dax Kellie"
+date: "20/12/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+vignette: >
+  %\VignetteIndexEntry{Narrow your results}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+  
+Each occurrence record contains taxonomic information and 
+information about the observation itself, like its location and the date
+of observation. These pieces of information are recorded and categorised into 
+respective **fields**. When you import data using `galah`, columns of the 
+resulting `tibble` correspond to these fields.
+
+Data fields are important because they provide a means to manipulate queries
+to return only the information that you need, and no more. Consequently, much of 
+the architecture of `galah` has been designed to make narrowing as simple as possible. 
+These functions include:
+
+-   `galah_identify`
+-   `galah_filter`
+-   `galah_select`
+-   `galah_group_by`
+-   `galah_geolocate`
+-   `galah_down_to`
+
+These names have been chosen to echo comparable functions from `dplyr`; namely
+`filter`, `select` and `group_by`. With the exception of `galah_geolocate`, they
+also use `dplyr` tidy evaluation and syntax. This means that how you use 
+`dplyr` functions is also how you use `galah_` functions.
+
+# galah_identify & search_taxa
+Perhaps unsurprisingly, `search_taxa` searches for taxonomic information. 
+It uses fuzzy matching to work a lot like the search bar on the 
+[Atlas of Living Australia website](https://bie-ws.ala.org.au/), 
+and you can use it to search for taxa by their scientific name. Finding your 
+desired taxon with `search_taxa` is an important step to using this taxonomic 
+information to download  data with `galah`.  
+  
+For example, to search for reptiles, we first need to identify whether we have 
+the correct query:
+
+
+```r
+search_taxa("Reptilia")
+```
+
+```
+## # A tibble: 1 × 9
+##   search_term scientific_name taxon_concept_id                                    rank  match_type kingdom  phylum   class  issues
+##   <chr>       <chr>           <chr>                                               <chr> <chr>      <chr>    <chr>    <chr>  <chr> 
+## 1 Reptilia    REPTILIA        urn:lsid:biodiversity.org.au:afd.taxon:682e1228-5b… class exactMatch Animalia Chordata Repti… noIss…
+```
+
+If we want to be more specific by providing additional taxonomic information
+to `search_taxa`, you can provide a `data.frame` containing more levels of the
+taxonomic hierarchy:
+
+```r
+search_taxa(data.frame(genus = "Eolophus", kingdom = "Aves"))
+```
+
+```
+## # A tibble: 1 × 13
+##   search_term   scientific_name scientific_name_… taxon_concept_id rank  match_type kingdom phylum class order family genus issues
+##   <chr>         <chr>           <chr>             <chr>            <chr> <chr>      <chr>   <chr>  <chr> <chr> <chr>  <chr> <chr> 
+## 1 Eolophus_Aves Eolophus        Bonaparte, 1854   urn:lsid:biodiv… genus exactMatch Animal… Chord… Aves  Psit… Cacat… Eolo… noIss…
+```
+
+Once we know that our search matches the correct taxon or taxa, we 
+can use `galah_identify` to narrow the results of our queries:
+
+```r
+galah_call() |>
+  galah_identify("Reptilia") |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 1 × 1
+##     count
+##     <int>
+## 1 1317131
+```
+
+
+```r
+taxa <- search_taxa(data.frame(genus = "Eolophus", kingdom = "Aves"))
+
+galah_call() |>
+ galah_identify(taxa) |>
+ atlas_counts()
+```
+
+```
+## # A tibble: 1 × 1
+##    count
+##    <int>
+## 1 856571
+```
+
+If you're using an international atlas, `search_taxa` won't work; instead you
+need to use the `taxize` package to look up the relevant identifiers. Most
+atlases use the GBIF taxonomic backbone, meaning that you can use the 
+`get_gbifid` function to download the relevant identifiers. These identifiers
+can then be passed directly to `galah_identify`.
+
+
+```r
+galah_config(atlas = "Spain")
+
+library(taxize)
+id <- get_gbifid("Lepus", messages = FALSE, rows = 1)
+
+galah_call() |> 
+  galah_identify(id) |> 
+  galah_group_by(species) |> 
+  atlas_counts()
+```
+
+```
+## # A tibble: 4 × 2
+##   species            count
+##   <chr>              <int>
+## 1 Lepus granatensis   8360
+## 2 Lepus europaeus     2913
+## 3 Lepus castroviejoi   149
+## 4 Lepus capensis        41
+```
+
+The exception is the UK [National Biodiversity Network](https://nbn.org.uk) (NBN), 
+which has its' own taxonomic backbone (note this information is also given by
+`show_all_atlases()`). You can search the NBN taxonomy with `get_nbnid`.
+
+
+```r
+galah_config(atlas = "UK")
+id <- get_nbnid(c("Vulpes vulpes", "Meles meles"), messages = FALSE, rows = 1)
+galah_call() |> 
+  galah_identify(id) |> 
+  galah_group_by(species) |> 
+  atlas_counts()
+```
+
+```
+## # A tibble: 2 × 2
+##   species        count
+##   <chr>          <int>
+## 1 Vulpes vulpes 151307
+## 2 Meles meles    87712
+```
+
+
+
+# galah_filter
+Perhaps the most important function in `galah` is `galah_filter`, which is used
+to filter the rows of queries:
+
+
+```r
+# Get total record count since 2000
+galah_call() |>
+  galah_filter(year > 2000) |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 1 × 1
+##      count
+##      <int>
+## 1 63003181
+```
+
+```r
+# Get total record count for iNaturalist in 2021
+galah_call() |>
+  galah_filter(
+    year > 2000,
+    dataResourceName == "iNaturalist Australia"
+  ) |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 1 × 1
+##     count
+##     <int>
+## 1 2673224
+```
+
+To find available fields and corresponding valid values, use the field lookup 
+functions `show_all_fields`, `search_fields` and `find_field_values`.  
+
+A further notable feature of `galah_filter` is the ability to specify a `profile` to 
+remove records that are suspect in some way. 
+
+
+```r
+galah_call() |>
+  galah_filter(year > 2000, profile = "ALA") |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 1 × 1
+##      count
+##      <int>
+## 1 55681954
+```
+
+To see a full list of data quality profiles, use `show_all_profiles()`.
+
+Finally, a special case of `galah_filter` is to make more complex taxonomic
+queries than are possible using `search_taxa`. By using the `taxonConceptID` 
+field, it is possible to build queries that exclude certain taxa, for example.
+This can be useful for paraphyletic concepts such as invertebrates:
+
+
+```r
+galah_call() |>
+  galah_filter(
+     taxonConceptID == search_taxa("Animalia")$taxon_concept_id,
+     taxonConceptID != search_taxa("Chordata")$taxon_concept_id
+  ) |>
+  galah_group_by(class) |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 83 × 2
+##    class          count
+##    <chr>          <int>
+##  1 Insecta      3317770
+##  2 Gastropoda    837702
+##  3 Arachnida     527555
+##  4 Malacostraca  515971
+##  5 Maxillopoda   462762
+##  6 Polychaeta    256938
+##  7 Bivalvia      206242
+##  8 Anthozoa      163386
+##  9 Demospongiae  107520
+## 10 Ostracoda      56295
+## # … with 73 more rows
+```
+
+# galah_group_by
+Use `galah_group_by` to group record counts and summarise counts by specified fields:
+
+
+```r
+# Get record counts since 2010, grouped by year and basis of record
+galah_call() |>
+  galah_filter(year > 2015 & year <= 2020) |>
+  galah_group_by(year, basisOfRecord) |>
+  atlas_counts()
+```
+
+```
+## # A tibble: 35 × 3
+##    year  basisOfRecord         count
+##    <chr> <chr>                 <int>
+##  1 2020  HUMAN_OBSERVATION   5825030
+##  2 2020  PRESERVED_SPECIMEN    13637
+##  3 2020  OBSERVATION            3894
+##  4 2020  UNKNOWN                 365
+##  5 2020  MATERIAL_SAMPLE         250
+##  6 2020  LIVING_SPECIMEN         127
+##  7 2020  MACHINE_OBSERVATION      37
+##  8 2019  HUMAN_OBSERVATION   5401216
+##  9 2019  UNKNOWN               51747
+## 10 2019  PRESERVED_SPECIMEN    38117
+## # … with 25 more rows
+```
+
+# galah_select
+Use `galah_select` to choose which columns are returned when downloading records:
+
+
+
+
+```r
+# Get *Reptilia* records from 1930, but only 'eventDate' and 'kingdom' columns
+occurrences <- galah_call() |>
+  galah_identify("reptilia") |>
+  galah_filter(year == 1930) |>
+  galah_select(eventDate, kingdom) |>
+  atlas_occurrences()
+
+occurrences
+```
+
+```
+## # A tibble: 29 × 8
+##    eventDate            kingdom  decimalLatitude decimalLongitude scientificName          taxonConceptID recordID dataResourceName
+##    <chr>                <chr>              <dbl>            <dbl> <chr>                   <chr>          <chr>    <chr>           
+##  1 1929-12-31T14:00:00Z Animalia           -36.4             150. Acanthophis antarcticus urn:lsid:biod… 38dab01… NSW BioNet Atlas
+##  2 1929-12-31T14:00:00Z Animalia           -26.8             151. Demansia psammophis     urn:lsid:biod… c770504… WildNet - Queen…
+##  3 1929-12-31T14:00:00Z Animalia           -24.4             152. Oxyuranus scutellatus   urn:lsid:biod… cfb4279… WildNet - Queen…
+##  4 1929-12-31T14:00:00Z Animalia           -20.8             145. Lerista wilkinsi        urn:lsid:biod… 1b64a15… WildNet - Queen…
+##  5 1929-12-31T14:00:00Z Animalia           -23.9             150. Furina barnardi         urn:lsid:biod… 03e06c9… WildNet - Queen…
+##  6 1929-12-31T14:00:00Z Animalia           -37.7             145. Tiliqua scincoides      urn:lsid:biod… e1e459c… Victorian Biodi…
+##  7 1929-12-31T14:00:00Z Animalia           -15.5             145. Antaresia maculosa      urn:lsid:biod… 084bc0a… WildNet - Queen…
+##  8 1929-12-31T14:00:00Z Animalia           -37.7             145. Tiliqua scincoides      urn:lsid:biod… 675f976… Victorian Biodi…
+##  9 1929-12-31T14:00:00Z Animalia           -17.3             146. Simalia kinghorni       urn:lsid:biod… 0bd4268… WildNet - Queen…
+## 10 1930-04-22T14:00:00Z Animalia            NA                NA  COLUBRIDAE              urn:lsid:biod… 815d01e… South Australia…
+## # … with 19 more rows
+```
+
+You can also use other `dplyr` functions that work with `dplyr::select()` with 
+`galah_select()`
+
+
+```r
+occurrences <- galah_call() |>
+  galah_identify("reptilia") |>
+  galah_filter(year == 1930) |>
+  galah_select(starts_with("elev") & ends_with("n")) |>
+  atlas_occurrences()
+
+occurrences
+```
+
+# galah_geolocate
+Use `galah_geolocate` to specify a geographic area or region to limit your search:
+
+
+```r
+# Get list of perameles species only in area specified:
+# (Note: This can also be specified by a shapefile)
+wkt <- "POLYGON((131.36328125 -22.506468769126,135.23046875 -23.396716654542,134.17578125 -27.287832521411,127.40820312499 -26.661206402316,128.111328125 -21.037340349154,131.36328125 -22.506468769126))"
+
+galah_call() |>
+  galah_identify("perameles") |>
+  galah_geolocate(wkt) |>
+  atlas_species()
+```
+
+```
+## # A tibble: 2 × 10
+##   kingdom  phylum   class    order           family      genus     species                author  species_guid     vernacular_name
+##   <chr>    <chr>    <chr>    <chr>           <chr>       <chr>     <chr>                  <chr>   <chr>            <chr>          
+## 1 Animalia Chordata Mammalia Peramelemorphia Peramelidae Perameles Perameles eremiana     Spence… urn:lsid:biodiv… Desert Bandico…
+## 2 Animalia Chordata Mammalia Peramelemorphia Peramelidae Perameles Perameles bougainville Quoy &… urn:lsid:biodiv… Western Barred…
+```
+
+# galah_down_to
+Use `galah_down_to` to specify the lowest taxonomic level to contruct a taxonomic 
+tree:
+
+
+```r
+galah_call() |>
+  galah_identify("fungi") |>
+  galah_down_to(phylum) |>
+  atlas_taxonomy()
+```
+
+```
+##                    levelName
+## 1  Fungi                    
+## 2   ¦--Dikarya              
+## 3   ¦   °--Entorrhizomycota 
+## 4   ¦--Ascomycota           
+## 5   ¦--Basidiomycota        
+## 6   ¦--Blastocladiomycota   
+## 7   ¦--Chytridiomycota      
+## 8   ¦--Cryptomycota         
+## 9   ¦--Glomeromycota        
+## 10  ¦--Microspora           
+## 11  ¦--Microsporidia        
+## 12  ¦--Mucoromycota         
+## 13  ¦--Neocallimastigomycota
+## 14  ¦--Zoopagomycota        
+## 15  °--Zygomycota
+```

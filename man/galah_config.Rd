@@ -10,34 +10,34 @@ galah_config(..., profile_path = NULL)
 \item{\dots}{Options can be defined using the form \code{name = value}.
 Valid arguments are:
 \itemize{
-  \item \code{atlas} string: Living Atlas to point to, Australia by default
-  \item \code{caching} logical: if TRUE, results will be cached, and any cached
-    results will be re-used). If FALSE, data will be downloaded.
-  \item \code{cache_directory} string: the directory to use for the cache.
-    By default this is a temporary directory, which means that results will
-    only be cached
-    within an R session and cleared automatically when the user exits R.
-    The user may wish to set this to a non-temporary directory for
-    caching across sessions. The directory must exist on the file system.
-  \item \code{download_reason_id} numeric or string: the "download reason" required.
-  by some ALA services, either as a numeric ID (currently 0--11)
-  or a string (see \code{\link{find_reasons}()} for a list of valid ID codes and
-  names). By default this is NA. Some ALA services require a valid
-  download_reason_id code, either specified here or directly to the
-  associated R function.
-  \item \code{email} string: An email address that has been registered with
-    ALA at \href{https://auth.ala.org.au/userdetails/registration/createAccount}{this address}.
-    A registered email is required for some functions in \code{galah}.
-  \item \code{send_email} logical: should you receive an email for each query to
-    \code{\link{ala_occurrences}()}? Defaults to \code{FALSE}; but can be
-    useful in some instances, for example for tracking DOIs assigned to
-    specific downloads for later citation.
-  \item \code{verbose} logical: should \code{galah} give verbose output to assist
-  debugging? Defaults to FALSE.
-  \item \code{run_checks} logical: should \code{galah} run checks for filters
-  and columns. If making lots of requests sequentially, checks can slow down
-  the process and lead to HTTP 500 errors, so should be turned off. Defaults
-  to TRUE. 
+\item \code{atlas} string: Living Atlas to point to, Australia by default
+\item \code{caching} logical: if TRUE, results will be cached, and any cached
+results will be re-used). If FALSE, data will be downloaded.
+\item \code{cache_directory} string: the directory to use for the cache.
+By default this is a temporary directory, which means that results will
+only be cached
+within an R session and cleared automatically when the user exits R.
+The user may wish to set this to a non-temporary directory for
+caching across sessions. The directory must exist on the file system.
+\item \code{download_reason_id} numeric or string: the "download reason" required.
+by some ALA services, either as a numeric ID (currently 0--13)
+or a string (see \code{\link[=show_all_reasons]{show_all_reasons()}} for a list of valid ID codes and
+names). By default this is NA. Some ALA services require a valid
+download_reason_id code, either specified here or directly to the
+associated R function.
+\item \code{email} string: An email address that has been registered with
+ALA at \href{https://auth.ala.org.au/userdetails/registration/createAccount}{this address}.
+A registered email is required for some functions in \code{galah}.
+\item \code{send_email} logical: should you receive an email for each query to
+\code{\link[=atlas_occurrences]{atlas_occurrences()}}? Defaults to \code{FALSE}; but can be
+useful in some instances, for example for tracking DOIs assigned to
+specific downloads for later citation.
+\item \code{verbose} logical: should \code{galah} give verbose output to assist
+debugging? Defaults to FALSE.
+\item \code{run_checks} logical: should \code{galah} run checks for filters
+and columns. If making lots of requests sequentially, checks can slow down
+the process and lead to HTTP 500 errors, so should be turned off. Defaults
+to TRUE.
 }}
 
 \item{profile_path}{string: (optional), path to a directory to store
@@ -56,11 +56,44 @@ provide a registered email address and reason for downloading data. The
 \code{galah_config} function provides a way to manage these issues as simply
 as possible.
 }
-\examples{
-\dontrun{
- galah_config()
- galah_config(caching = FALSE)
- find_reasons()
- galah_config(download_reason_id = 0,verbose = TRUE)
+\section{Examples}{
+
+
+To configure your session to allow you to download occurrence records, enter
+your email in \code{galah_config()}. This email should be registered with the
+ALA, which you can do
+\href{https://auth.ala.org.au/userdetails/registration/createAccount}{here}\if{html}{\out{<div class="sourceCode r">}}\preformatted{galah_config(email = "your-email@email.com")
+}\if{html}{\out{</div>}}
+
+Turn on caching in your session\if{html}{\out{<div class="sourceCode r">}}\preformatted{galah_config(caching = FALSE)
+}\if{html}{\out{</div>}}
+
+It is required by some ALA services that you add a reason for downloading
+data. To look up all valid reasons to enter, use \code{\link[=show_all_reasons]{show_all_reasons()}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{show_all_reasons()
+#> # A tibble: 13 x 2
+#>       id name                            
+#>    <int> <chr>                           
+#>  1     0 conservation management/planning
+#>  2     1 biosecurity management/planning 
+#>  3     2 environmental assessment        
+#>  4     3 education                       
+#>  5     4 scientific research             
+#>  6     5 collection management           
+#>  7     6 other                           
+#>  8     7 ecological research             
+#>  9     8 systematic research/taxonomy    
+#> 10    10 testing                         
+#> 11    11 citizen science                 
+#> 12    12 restoration/remediation         
+#> 13    13 species modelling
+}\if{html}{\out{</div>}}
+
+Add your selected reason using the option \code{download_reason_id}\if{html}{\out{<div class="sourceCode r">}}\preformatted{galah_config(download_reason_id = 0)
+}\if{html}{\out{</div>}}
+
+You can also make debugging in your session easier by setting
+\code{verbose = TRUE}\if{html}{\out{<div class="sourceCode r">}}\preformatted{galah_config(download_reason_id = 0,
+             verbose = TRUE)
+}\if{html}{\out{</div>}}
 }
-}
+
