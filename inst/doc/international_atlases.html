@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Martin Westgate, Dax Kellie" />
+
+<meta name="date" content="2022-10-20" />
+
+<title>International Atlases</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">International Atlases</h1>
+<h4 class="author">Martin Westgate, Dax Kellie</h4>
+<h4 class="date">2022-10-20</h4>
+
+
+
+<p>The architecture developed by the ALA to store biodiversity data is
+used by over 20 International Living Atlases. Although there are slight
+differences in the core components of each Atlas’s architecture,
+<code>galah</code> is flexible enough to handle most of these
+differences. As a result, it is possible to change which Living Atlas
+you get data from in <code>galah</code></p>
+<div id="supported-atlases" class="section level2">
+<h2>Supported Atlases</h2>
+<p>To see which international Living Atlases <code>galah</code>
+currently supports, use<br />
+<code>show_all_atlases()</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(galah)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(atlases)</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 4
+##    atlas          institution                                                             acronym url                         
+##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                       
+##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au      
+##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityatlas.at
+##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br        
+##  4 Estonia        eElurikkus                                                              &lt;NA&gt;    https://elurikkus.ee        
+##  5 France         Inventaire National du Patrimoine Naturel                               INPN    https://inpn.mnhn.fr        
+##  6 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob.gt   
+##  7 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt         
+##  8 Spain          GBIF Spain                                                              GBIF.es https://www.gbif.es         
+##  9 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversitydata.se 
+## 10 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
+<p>Some atlases support more types of data queries than others
+(e.g. counts, occurrences, species lists). To see what kinds of
+information and data can be returned from each atlase, you can see the
+list of supported Application Programming Interfaces (APIs).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(apis)</span></code></pre></div>
+<pre><code>## # A tibble: 167 × 5
+##    atlas     system       api_name                api_url                                                                     calle…¹
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;                   &lt;chr&gt;                                                                       &lt;chr&gt;  
+##  1 Australia collections  collections_collections https://collections.ala.org.au/ws/collection                                show_a…
+##  2 Australia collections  collections_datasets    https://collections.ala.org.au/ws/dataResource                              show_a…
+##  3 Australia collections  collections_providers   https://collections.ala.org.au/ws/dataProvider                              show_a…
+##  4 Australia data-quality profiles_all            https://data-quality-service.ala.org.au/api/v1/data-profiles                show_a…
+##  5 Australia data-quality profiles_lookup         https://data-quality-service.ala.org.au/api/v1/quality/activeProfile?profi… show_p…
+##  6 Australia doi          doi_download            https://apis.ala.org.au/doi/api/doi/{doi_string}/download                   doi_do…
+##  7 Australia images       image_licences          https://images.ala.org.au/ws/licence                                        show_a…
+##  8 Australia images       image_metadata          https://images.ala.org.au/ws/image/{id}                                     media_…
+##  9 Australia lists        lists_all               https://lists.ala.org.au/ws/speciesList                                     show_a…
+## 10 Australia lists        lists_lookup            https://lists.ala.org.au/ws/speciesListItems/{list_id}                      show_l…
+## # … with 157 more rows, and abbreviated variable name ¹​called_by</code></pre>
+</div>
+<div id="set-atlas" class="section level2">
+<h2>Set Atlas</h2>
+<p>Set which atlas you want to use by changing the <code>atlas</code>
+argument in <code>galah_config()</code>. This will automatically update
+<code>galah</code>’s server configuration to your selected Atlas. The
+default <code>atlas</code> is Australia.</p>
+<p>If you intend to download records, you may need to register a user
+profile with the relevant Atlas first.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Spain&quot;</span>, <span class="at">email =</span> <span class="st">&quot;your_email_here&quot;</span>)</span></code></pre></div>
+</div>
+<div id="look-up-information" class="section level2">
+<h2>Look up Information</h2>
+<p>You can use the same look-up functions to find useful information
+about the Atlas you have set. Available information may vary for each
+Living Atlas.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(datasets)</span></code></pre></div>
+<pre><code>## # A tibble: 522 × 3
+##    name                                                                                                                   uri   uid  
+##    &lt;chr&gt;                                                                                                                  &lt;chr&gt; &lt;chr&gt;
+##  1 A Distribution and Taxonomic Reference Dataset of Geranium (Geraniaceae) in the New World                              http… dr321
+##  2 A global database for the distributions of crop wild relatives                                                         http… dr12 
+##  3 A matrix-based revision of the genus Hypogena Dejean, 1834 (Coleoptera Tenebrionidae)                                  http… dr467
+##  4 A new Mexican species of Chrysina Kirby (Coleoptera: Scarabaeidae: Rutelinae), with nomenclatural changes, new record… http… dr554
+##  5 A new species of Setostylus Matile and new records of Setostylus bellulus (Williston) (Diptera: Keroplatidae)          http… dr538
+##  6 A revision of the genus Bromeloecia Spuler (Diptera: Sphaeroceridae: Limosininae)                                      http… dr481
+##  7 A synopsis of American Caraphia Gahan, 1906 (Coleoptera: Cerambycidae: Lepturinae) with description of two new species http… dr539
+##  8 A synopsis of the Neotropical genus Protoneura (Odonata: Coenagrionidae)                                               http… dr448
+##  9 A systematic revision of the genus Archocentrus (Perciformes: Cichlidae), with the description of two new genera and … http… dr362
+## 10 A taxonomic monograph of the genus Tylodinus Champion (Coleoptera: Curculionidae: Cryptorhynchinae: Tylodina) of Chia… http… dr564
+## # … with 512 more rows</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
+<pre><code>## # A tibble: 129 × 4
+##    id                   description                                                                                       type  link 
+##    &lt;chr&gt;                &lt;chr&gt;                                                                                             &lt;chr&gt; &lt;chr&gt;
+##  1 all_image_url        Image URLs for this record                                                                        fiel… &lt;NA&gt; 
+##  2 assertion_user_id    User ID of the person who has made an assertion about this record                                 fiel… &lt;NA&gt; 
+##  3 assertions           A list of all assertions (user and system supplied) for a record resulting from data quality tes… fiel… &lt;NA&gt; 
+##  4 assertions_missing   Assertion indicating missing field values for a record. E.g. missing basis of record              fiel… &lt;NA&gt; 
+##  5 assertions_passed    Assertion indicating a data quality test has been passed by this record                           fiel… &lt;NA&gt; 
+##  6 assertions_unchecked Assertion indicating a data quality test was not performed for this record typically due to the … fiel… &lt;NA&gt; 
+##  7 basis_of_record      The basis of record e.g. Specimen, Observation http://rs.tdwg.org/dwc/terms/basisOfRecord         fiel… &lt;NA&gt; 
+##  8 catalogue_number     http://rs.tdwg.org/dwc/terms/catalogNumber                                                        fiel… &lt;NA&gt; 
+##  9 class                The class the Atlas has matched this record to in the NSL http://rs.tdwg.org/dwc/terms/class      fiel… &lt;NA&gt; 
+## 10 collection_code      The collection code for this record. This will be populated if the data has come from a museum o… fiel… &lt;NA&gt; 
+## # … with 119 more rows</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 4
+##   id              description                                                                                             type  link 
+##   &lt;chr&gt;           &lt;chr&gt;                                                                                                   &lt;chr&gt; &lt;chr&gt;
+## 1 year            http://rs.tdwg.org/dwc/terms/year                                                                       fiel… &lt;NA&gt; 
+## 2 occurrence_year Year ranges for a search. Calculated based on the unique values for a query.                            fiel… &lt;NA&gt; 
+## 3 date_precision  The precision of the date information for the record. Values include &#39;Day&#39;, &#39;Month&#39;, &#39;Year&#39;, &#39;Year ran… fiel… &lt;NA&gt;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;lagomorpha&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 12
+##   search_term taxon_concept_id scientific_name scientific_name_authorship rank  kingdom  phylum   class    order family genus species
+##   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  
+## 1 lagomorpha  785              Lagomorpha      &lt;NA&gt;                       order Animalia Chordata Mammalia Lago… &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;</code></pre>
+</div>
+<div id="download-data" class="section level2">
+<h2>Download data</h2>
+<p>You can build queries as you normally would in <code>galah</code>.
+For taxonomic queries, use <code>search_taxa()</code> to make sure your
+searches are returning the correct taxonomic data.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;United Kingdom&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vlps&quot;</span>)   <span class="co"># Returns no data due to misspelling</span></span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   search_term
+##   &lt;chr&gt;      
+## 1 vlps</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="co"># Returns data</span></span></code></pre></div>
+<pre><code>## # A tibble: 1 × 13
+##   search_term taxon_concept_id scientific_name scientific_name_author…¹ rank  kingdom super…² order class genus phylum family species
+##   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;                    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  
+## 1 vulpes      NBNSYS0000138878 Vulpes          Frisch, 1775             genus Animal… Tetrap… Carn… Mamm… Vulp… Chord… Canid… &lt;NA&gt;   
+## # … with abbreviated variable names ¹​scientific_name_authorship, ²​superclass</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   count
+##   &lt;int&gt;
+## 1 97224</code></pre>
+<p>Download species occurrence records from other atlases with
+<code>atlas_occurrences()</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Lagomorpha&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&lt;=</span> <span class="dv">1980</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(taxon_name, year) <span class="sc">|&gt;</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 39 × 2
+##    scientificName                                         year
+##    &lt;chr&gt;                                                 &lt;int&gt;
+##  1 Sylvilagus floridanus (J. A. Allen, 1890)              1968
+##  2 Sylvilagus floridanus (J. A. Allen, 1890)              1906
+##  3 Sylvilagus brasiliensis subsp. truei (J. Allen, 1890)  1947
+##  4 Sylvilagus floridanus (J. A. Allen, 1890)              1968
+##  5 Sylvilagus floridanus (J. A. Allen, 1890)              1968
+##  6 Sylvilagus floridanus (J. A. Allen, 1890)              1906
+##  7 Sylvilagus floridanus (J. A. Allen, 1890)              1960
+##  8 Sylvilagus brasiliensis subsp. truei (J. Allen, 1890)  1960
+##  9 Sylvilagus floridanus (J. A. Allen, 1890)              1952
+## 10 Sylvilagus floridanus (J. A. Allen, 1890)              1955
+## # … with 29 more rows</code></pre>
+</div>
+<div id="complex-queries-with-multiple-atlases" class="section level1">
+<h1>Complex queries with multiple Atlases</h1>
+<p>It is also possible to create more complex queries that return data
+from multiple Living Atlases. As an example, setting atlases within a
+loop with <code>galah_config()</code> and <code>purrr::map()</code>
+allows us to return the total number of species records in each Living
+Atlas in one table.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>atlases <span class="ot">&lt;-</span> <span class="fu">show_all</span>(atlases)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">map</span>(atlases<span class="sc">$</span>atlas, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x){</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">galah_config</span>(<span class="at">atlas =</span> x)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">atlas_counts</span>()</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">atlas =</span> atlases<span class="sc">$</span>atlas, </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">unlist</span>(counts)) <span class="sc">|&gt;</span> </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
+<div id="bccaeosfzw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bccaeosfzw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bccaeosfzw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bccaeosfzw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bccaeosfzw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bccaeosfzw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bccaeosfzw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bccaeosfzw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bccaeosfzw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bccaeosfzw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bccaeosfzw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bccaeosfzw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bccaeosfzw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bccaeosfzw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bccaeosfzw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#bccaeosfzw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#bccaeosfzw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bccaeosfzw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#bccaeosfzw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bccaeosfzw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bccaeosfzw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bccaeosfzw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bccaeosfzw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bccaeosfzw .gt_left {
+  text-align: left;
+}
+
+#bccaeosfzw .gt_center {
+  text-align: center;
+}
+
+#bccaeosfzw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bccaeosfzw .gt_font_normal {
+  font-weight: normal;
+}
+
+#bccaeosfzw .gt_font_bold {
+  font-weight: bold;
+}
+
+#bccaeosfzw .gt_font_italic {
+  font-style: italic;
+}
+
+#bccaeosfzw .gt_super {
+  font-size: 65%;
+}
+
+#bccaeosfzw .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#bccaeosfzw .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#bccaeosfzw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#bccaeosfzw .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#bccaeosfzw .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#bccaeosfzw .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">atlas</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">United Kingdom</td>
+<td class="gt_row gt_right">205571136</td></tr>
+    <tr><td class="gt_row gt_left">Australia</td>
+<td class="gt_row gt_right">114080945</td></tr>
+    <tr><td class="gt_row gt_left">Sweden</td>
+<td class="gt_row gt_right">103417222</td></tr>
+    <tr><td class="gt_row gt_left">France</td>
+<td class="gt_row gt_right">87443384</td></tr>
+    <tr><td class="gt_row gt_left">Spain</td>
+<td class="gt_row gt_right">38269601</td></tr>
+    <tr><td class="gt_row gt_left">Brazil</td>
+<td class="gt_row gt_right">23316770</td></tr>
+    <tr><td class="gt_row gt_left">Portugal</td>
+<td class="gt_row gt_right">16043865</td></tr>
+    <tr><td class="gt_row gt_left">Austria</td>
+<td class="gt_row gt_right">7813712</td></tr>
+    <tr><td class="gt_row gt_left">Estonia</td>
+<td class="gt_row gt_right">6972683</td></tr>
+    <tr><td class="gt_row gt_left">Guatemala</td>
+<td class="gt_row gt_right">3509690</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
