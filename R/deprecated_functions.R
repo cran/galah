@@ -69,7 +69,11 @@ ala_occurrences <- function(taxa = NULL, filters = NULL, locations = NULL,
                             mint_doi = FALSE, doi = NULL, refresh_cache = FALSE) {
   lifecycle::deprecate_warn("1.4.0", "ala_occurrences()", "atlas_occurrences()")
   
-  atlas_occurrences_internal(
+  if(is_gbif()){
+    abort("Use of `ala_occurrences for GBIF queries is not supported; use `atlas_occurrences` instead")
+  }
+  
+  occurrences_LA(
     identify = taxa, 
     filter = filters, 
     geolocate = locations,
@@ -262,7 +266,7 @@ search_field_values <- function(field){
   lifecycle::deprecate_warn(when = "1.5.0", 
                             what = "search_field_values()", 
                             details = "Please use `search_fields('query') |> show_values()` instead.")
-  search_all(fields, paste({field})) |> show_values()
+  search_all("fields", as.character(field)) |> show_values()
 }
 
 

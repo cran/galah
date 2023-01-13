@@ -7,6 +7,12 @@
 #' `atlas_` functions. `search_taxa()` allows users to disambiguate homonyms 
 #' (i.e. where the same name refers to taxa in different clades) prior to  
 #' downloading data. 
+#' 
+#' Users can also specify taxonomic levels in a search using a data frame 
+#' (tibble). Taxa may be specified using either the `specificEpithet` argument 
+#' to designate the second element of a Latin binomial, 
+#' or the `scientificName` argument to specify the 
+#' scientific name (which may include the subspecific epithet if required). 
 #'
 #' @param ... : A string of one or more scientific names, separated by commas, 
 #' or a data frame specifying taxonomic levels. Note that searches are not 
@@ -21,73 +27,68 @@
 #' [atlas_occurrences()] and related functions. [atlas_taxonomy()] to look 
 #' up taxonomic trees.
 #' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' Search using a single string. Note that `search_taxa()` is not case sensitive
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' @examples 
+#' # Search using a single string. 
+#' # Note that `search_taxa()` isn't case sensitive
 #' search_taxa("Reptilia")
-#' ```
 #'
-#' Search using multiple strings. `search_taxa()` will return one row per taxon
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' # Search using multiple strings. 
+#' # `search_taxa()` will return one row per taxon
 #' search_taxa("reptilia", "mammalia")
-#' ```
 #' 
-#' Specify taxonomic levels in a search using a data frame (tibble). Taxa may 
-#' be specified using either the specificEpithet argument to designate the second 
-#' element of a Latin binomial, or the scientificName argument to specify the 
-#' scientific name, which may include the subspecific epithet if required. 
-#' 
-#'  ```{r, comment = "#>", collapse = TRUE}
-#' search_taxa(tibble(
+#' # Specify taxonomic levels in a tibble using "specificEpiphet"
+#' search_taxa(tibble::tibble(
 #'   class = "aves", 
 #'   family = "pardalotidae", 
 #'   genus = "pardalotus", 
 #'   specificEpithet = "punctatus"))
-#'                       
-#' search_taxa(tibble(
+#'
+#' # Specify taxonomic levels in a tibble using "scientificName"                    
+#' search_taxa(tibble::tibble(
 #'   family = c("pardalotidae", "maluridae"), 
 #'   scientificName = c("Pardalotus striatus striatus", "malurus cyaneus")))
-#'  ```
 #' 
-#' `galah_identify()` uses `search_taxa()` to narrow data queries
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' # `galah_identify()` uses `search_taxa()` to narrow data queries
+#' taxa <- search_taxa("reptilia", "mammalia")
 #' galah_call() |>
-#'   galah_identify("reptilia") |>
+#'   galah_identify(taxa) |>
 #'   atlas_counts()
-#' ```
 #'
 #' @importFrom utils adist 
 #' @export
 search_taxa <- function(...) {
   
   query <- list(...)
+
   if(length(query) < 1){
     warn("No query passed to `search_taxa`")
     return(tibble())
+  # check function isn't piped directly in a galah_call() query
+  } else if(
+    any("data_request" %in% unlist(lapply(query, attributes)))) {
+    bullets <- c(
+      "Can't pipe `search_taxa()` in a `galah_call()`.",
+      i = "Did you mean to use `galah_identify()`?"
+    )
+    abort(bullets, call = caller_env())
   } else if(length(query) == 1L){
     query <- query[[1]]
     if (is.list(query) & !is.data.frame(query)) {
       query <- as.data.frame(query)
     }
-  } else {
-    if(
+  } else if(
       all(lengths(query) == 1L) | 
       all(unlist(lapply(query, is.character)))
     ){
-      query <- unlist(query)
-    }
+    query <- unlist(query)
   }
   
   matches <- remove_parentheses(query) |> name_query()
     
-  if(is.null(matches) & galah_config()$verbose){
-    system_down_message("search_taxa")
+  if(is.null(matches)){
+    if(galah_config()$package$verbose){
+      system_down_message("search_taxa")
+    }
     df <- tibble()
     attr(df, "call") <- "ala_id"
     return(df)
@@ -116,7 +117,7 @@ name_query <- function(query) {
   if(all(unlist(lapply(matches, is.null)))){
     NULL
   }else{
-    as_tibble(rbindlist(matches, fill = TRUE))
+    bind_rows(matches) |> tibble()
   }
 }
 
@@ -124,12 +125,12 @@ name_query <- function(query) {
 name_lookup <- function(name) {
   if (is.null(names(name)) || isTRUE(names(name) == "")) {
     # search by scientific name
-    url <- atlas_url("names_search_single", name = name[[1]])
-    result <- atlas_GET(url)
+    url <- url_lookup("names_search_single", name = name[[1]])
+    result <- url_GET(url)
   } else {
     # search by classification - NOTE - NOT implemented for other atlases yet
-    url <- atlas_url("names_search_multiple") 
-    result <- atlas_GET(url, as.list(name))      
+    url <- url_lookup("names_search_multiple") 
+    result <- url_GET(url, as.list(name))      
   }
 
   if(is.null(result)){
@@ -140,6 +141,8 @@ name_lookup <- function(name) {
   if(is.list(result)){
     if(!is.null(result$searchResults$results)){
       result <- result$searchResults$results
+    }else if(getOption("galah_config")$atlas$region == "France"){
+      result <- result$`_embedded`$taxa
     }else{
       result <- lapply(result, function(a){a[1]}) 
     }
@@ -184,14 +187,13 @@ name_lookup <- function(name) {
         x = glue("Homonym issue with \"{name}\".")
       )
       warn(bullets)
-      # return(as.data.frame(list(search_term = name), stringsAsFactors = FALSE))
     }
   }
   
-  if (isFALSE(result$success) && galah_config()$verbose) {
+  if (isFALSE(result$success) && galah_config()$package$verbose) {
     list_invalid_taxa <- glue::glue_collapse(name, 
                                              sep = ", ")
-    inform(glue("No taxon matches were found for \"{list_invalid_taxa}\" in the selected atlas ({getOption('galah_config')$atlas})."))
+    inform(glue("No taxon matches were found for \"{list_invalid_taxa}\" in the selected atlas ({getOption('galah_config')$atlas$region})."))
     return(as.data.frame(list(search_term = name), stringsAsFactors = FALSE))
   }
 
@@ -206,22 +208,10 @@ name_lookup <- function(name) {
   cbind(
     search_term = name,
     as.data.frame(
-      result[names(result) %in% wanted_columns("taxa")[1:10]],
+      result[names(result) %in% wanted_columns("taxa")[1:11]],
       stringsAsFactors = FALSE),
     as.data.frame(
-      result[names(result) %in% wanted_columns("taxa")[11:33]],
+      result[names(result) %in% wanted_columns("taxa")[12:34]],
       stringsAsFactors = FALSE)
   )
 }
-
-
-# make sure rank provided is in accepted list
-# validate_rank <- function(df) {
-#   ranks <- names(df)
-#   ranks_check <- ranks %in% show_all_ranks()$name
-#   if(any(ranks_check)){
-#     return(df[ranks_check])
-#   }else{
-#     return(NULL)
-#   }
-# }

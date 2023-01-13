@@ -58,50 +58,27 @@
 #' show available options of information. These functions are used to pass valid 
 #' arguments to [galah_select()], [galah_filter()], and related functions.
 #' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' Search for all fields that use include the word "date"
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' @examples
+#' # Search for fields that include the word "date"
 #' search_all(fields, "date")
-#' ```
 #' 
-#' Search for all fields that have information for "marine"
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # Search for fields that include the word "marine"
 #' search_all(fields, "marine")
-#' ```
 #' 
-#' Search using a single term (See [search_taxa()] for more info)
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' search_taxa("Reptilia")
-#' ```
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # Search using a single taxonomic term
+#' # (see `?search_taxa()` for more information)
 #' search_all(taxa, "Reptilia") # equivalent
-#' ```
 #' 
-#' Look up a unique taxon identifier (See [search_identifiers()] for more info)
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # Look up a unique taxon identifier
+#' # (see `?search_identifiers()` for more information)
 #' search_all(identifiers, 
-#'            "https://id.biodiversity.org.au/node/apni/2914510") # equivalent
-#' ```
+#'            "https://id.biodiversity.org.au/node/apni/2914510")
 #' 
-#' Search for species lists that match "endangered"
-#'
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # Search for species lists that match "endangered"
 #' search_all(lists, "endangered") # equivalent
-#' ```
 #' 
-#' Search for a valid taxonomic rank, "subphylum"
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # Search for a valid taxonomic rank, "subphylum"
 #' search_all(ranks, "subphylum")
-#' ```
 #' 
 NULL
 
@@ -120,7 +97,7 @@ search_all <- function(type, query){
     "licences",
     "profiles", "lists",
     "atlases", "apis", "reasons", 
-    "taxa",
+    "taxa", "identifiers",
     "providers", "collections", "datasets")
   # show_all_cached_files?
   
@@ -137,8 +114,15 @@ search_all <- function(type, query){
   # check for query
   check_if_missing(query)
   
+  # set function name
+  function_name <- paste0("search_", type)
+  if(is_gbif() &&
+     type %in% c("providers", "collections", "datasets")){
+    function_name <- paste0(function_name, "_GBIF")
+  }
+  
   # run query
-  df <- do.call(paste0("search_", type), args = list(query = query))
+  df <- do.call(function_name, args = list(query = query))
   
   # attach correct 'search_' class attribute
   attr(df, "call") <- paste0("search_", type)
@@ -171,6 +155,7 @@ search_assertions <- function(query){
                     paste(tolower(df$description), tolower(df$id)))), ]
 }
 
+
 #' @rdname search_all
 #' @export search_atlases
 search_atlases <- function(query){
@@ -179,8 +164,8 @@ search_atlases <- function(query){
   attr(df, "call") <- "search_atlases"
   df[grepl(
     tolower(query), 
-    tolower(apply(
-      df[, c("acronym", "atlas")], 1, 
+    tolower(apply(df,
+      1, 
       function(a){paste(a, collapse = "-")})
     )
   ), ]
@@ -197,6 +182,20 @@ search_collections <- function(query){
                     paste(tolower(df$name), tolower(df$uid)))), ]
 }
 
+search_collections_GBIF <- function(query){
+  check_if_missing(query)
+  url <- url_lookup("collections_collections_search")
+  if(getOption("galah_config")$package$verbose){
+    inform("Note: GBIF collection searches are limited to 20 results")
+  }
+  df <- url_GET(url, params = list(q = query, hl = "false"))
+  if(is.null(df)){
+    tibble()
+  }else{
+    tibble(df)
+  }
+}
+
 
 #' @rdname search_all
 #' @export search_datasets
@@ -208,6 +207,20 @@ search_datasets <- function(query){
                     paste(tolower(df$name), tolower(df$uid)))), ]
 }
 
+search_datasets_GBIF <- function(query){
+  check_if_missing(query)
+  url <- url_lookup("collections_datasets_search")
+  if(getOption("galah_config")$package$verbose){
+    inform("Note: GBIF dataset searches are limited to 20 results")
+  }
+  df <- url_GET(url, params = list(q = query, hl = "false"))$results
+  if(is.null(df)){
+    tibble()
+  }else{
+    tibble(df)
+  }
+}
+
 
 #' @rdname search_all
 #' @export search_providers
@@ -217,6 +230,20 @@ search_providers <- function(query){
   attr(df, "call") <- "search_providers"
   df[with(df, grepl(tolower(query), 
                     paste(tolower(df$name), tolower(df$uid)))), ]
+}
+
+search_providers_GBIF <- function(query){
+  check_if_missing(query)
+  url <- url_lookup("collections_providers")
+  if(getOption("galah_config")$package$verbose){
+    inform("Note: GBIF provider searches are limited to 20 results")
+  }
+  df <- url_GET(url, params = list(q = query))$result
+  if(is.null(df)){
+    tibble()
+  }else{
+    tibble(df)
+  }
 }
 
 
@@ -253,7 +280,6 @@ search_fields <- function(query){
     
     # calculate similarity of results to query, reorder results
     similarity <- adist(df$id, query)[, 1]
-    # browser()
     # similarity <- mapply(stringdist::afind, df$description, query)
     df <- df[order(similarity), ]
     

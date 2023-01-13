@@ -16,28 +16,20 @@
 #'
 #' @return Available image & media files downloaded to a user local directory.
 #'
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' Use `atlas_media()` to return a `tibble` of records that contain media
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' @examples \dontrun{
+#' # Use `atlas_media()` to return a `tibble` of records that contain media
 #' galah_call() |> 
 #'   galah_identify("perameles") |>
 #'   galah_filter(year == 2015) |>
 #'   atlas_media()
-#' ```
 #' 
-#' Then add `collect_media()` to the end of a query to download media files
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
+#' # To download media files, add `collect_media()` to the end of a query 
 #' galah_call() |> 
 #'   galah_identify("perameles") |>
 #'   galah_filter(year == 2015) |>
 #'   atlas_media() |>
 #'   collect_media(path = here::here("folder", "subfolder"))
-#' ```
+#' }
 #'
 #' @export collect_media
 
@@ -47,8 +39,8 @@ download_dir, refresh_cache
 
   # check inputs
   type <- match.arg(type)
-  caching <- getOption("galah_config")$caching
-  verbose <- getOption("galah_config")$verbose
+  caching <- getOption("galah_config")$package$caching
+  verbose <- getOption("galah_config")$package$verbose
   assert_that(!missing(path) | !missing(download_dir),
     msg = "A path to an existing directory to download images to is required")
   if(missing(path)){
@@ -141,7 +133,7 @@ download_media <- function(df, verbose) {
 # Construct url paths to where media will be downloaded from
 # Returns a vector of urls; one per id
 media_urls <- function(ids, is_image, thumbnail = TRUE) {
-  url <- atlas_url("image_metadata") |>
+  url <- url_lookup("image_metadata") |>
          parse_url()
   # if(thumbnail){
   #   end_text <- "thumbnail"

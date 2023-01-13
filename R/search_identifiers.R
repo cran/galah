@@ -5,10 +5,10 @@
 #' are known, this function allows you to use them to look up further information
 #' on the taxon in question. Effectively this is the inverse function to 
 #' [search_taxa()], which takes names and provides identifiers. The resulting
-#' `data.frame` of taxonomic information can also be passed directly to
-#' `atlas_` functions to filter records to the specified taxon or taxa.
+#' `tibble` of taxonomic information can also be passed to [galah_identify()] to
+#' filter queries to the specified taxon or taxa.
 #'
-#' @param identifier `string`: A vector containing one or more taxonomic
+#' @param query `string`: A vector containing one or more taxonomic
 #' identifiers, given as strings. 
 #' @return An object of class `tbl_df`, `data.frame` (aka a tibble) and `ala_id`
 #' containing taxonomic information.
@@ -17,48 +17,33 @@
 #' [galah_geolocate()] for other ways to restrict the information returned
 #' by [atlas_occurrences()] and related functions.
 #' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' Look up a unique taxon identifier
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' search_identifiers(identifier = "https://id.biodiversity.org.au/node/apni/2914510")
-#' ```
+#' @examples 
+#' # Look up a unique taxon identifier
+#' search_identifiers(query = "https://id.biodiversity.org.au/node/apni/2914510")
 #' 
 #' @export
-search_identifiers <- function(identifier) {
+search_identifiers <- function(query) {
 
-  verbose <- getOption("galah_config")$verbose
+  verbose <- getOption("galah_config")$package$verbose
 
-  if (getOption("galah_config")$atlas != "Australia") {
-    international_atlas <- getOption("galah_config")$atlas
+  if (missing(query)) {
     bullets <- c(
-      "`search_identifiers` only provides information on Australian taxonomy.",
-      i = glue("To search for a species name, use `search_taxa()` instead.")
-    )
-    abort(bullets, call = caller_env())
-  }
-
-  if (missing(identifier)) {
-    bullets <- c(
-      "Argument `identifier` is missing, with no default.",
+      "Argument `query` is missing, with no default.",
       i = "Did you forget to specify one or more identifiers?"
     )
     abort(bullets, call = caller_env())
   }
   
-  matches <- lapply(identifier, identifier_lookup)
+  matches <- lapply(query, identifier_lookup)
   if(all(unlist(lapply(matches, is.null)))){
-    if(galah_config()$verbose){
+    if(galah_config()$package$verbose){
       system_down_message("search_identifiers")
     }
     df <- tibble()
     attr(df, "call") <- "ala_id"
     return(df)
   }else{
-    df <- as_tibble(rbindlist(matches, fill = TRUE)) 
+    df <- bind_rows(matches) |> tibble()
     attr(df, "call") <- "ala_id"
     return(df) 
   }
@@ -66,12 +51,16 @@ search_identifiers <- function(identifier) {
 
 
 identifier_lookup <- function(identifier) {
-  url <- atlas_url("names_lookup")
-  result <- atlas_GET(url, list(taxonID = identifier))
+  url <- url_lookup("names_lookup")
+  if(getOption("galah_config")$atlas$region == "France"){
+    result <- paste0(url, identifier) |> url_GET()
+  }else{
+    result <- url_GET(url, list(taxonID = identifier)) 
+  }
   if (is.null(result)){
     return(NULL)
   }
-  if (isFALSE(result$success) && result$issues == "noMatch" && galah_config()$verbose) {
+  if (isFALSE(result$success) && result$issues == "noMatch" && galah_config()$package$verbose) {
     list_invalid_taxa <- glue::glue_collapse(identifier, 
                                              sep = ", ")
     inform(glue("No taxon matches were found for \"{list_invalid_taxa}\"."))

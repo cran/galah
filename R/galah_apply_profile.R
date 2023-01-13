@@ -19,20 +19,13 @@
 #' [galah_filter()] can be used for more bespoke editing of individual data 
 #' profile filters.
 #' 
-#' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' Apply a data profile to a query
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' @examples
+#' # Apply a data quality profile to a query
 #' galah_call() |> 
 #'   galah_identify("reptilia") |>
 #'   galah_filter(year == 2021) |>
 #'   galah_apply_profile(ALA) |>
 #'   atlas_counts()
-#' ```
 #' 
 #' @export
 
@@ -59,7 +52,7 @@ galah_apply_profile <- function(...){
     input_profile <- parse_basic_quosures(dots) # convert dots to query
     
     # check which inputs are valid
-    # note that in galah_filter, this is dependent on getOption("galah_config")$run_checks
+    # note that in galah_filter, this is dependent on getOption("galah_config")$package$run_checks
     # not required here as show_all_profiles is pretty fast
     valid_profile <- check_profile(input_profile)
     
@@ -85,8 +78,8 @@ check_profile <- function(query, error_call = caller_env()){
   valid_check <- query %in% show_all_profiles()$shortName
   if(!any(valid_check)){    
     bullets <- c(
-      "The value passed to `galah_profile` isn't a valid profile name",
-      i = "Use `show_all_profiles` to lookup profile information."
+      "Invalid profile name.",
+      i = "Use `show_all(profiles)` to lookup valid profiles."
     )
     abort(bullets, call = error_call)
   }else{

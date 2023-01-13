@@ -15,6 +15,21 @@
 #' @return An object of class `tbl_df` and `data.frame` (aka a tibble) of 
 #' occurrences 
 #' 
+#' @examples \dontrun{
+#' # Download previously retrieved records using an existing DOI or URL
+#' collect_occurrences(doi = "your-doi")
+#' 
+#' # DOIs can be minted by adding `mint_doi = TRUE` to `atlas_occurrences()`
+#' records <- 
+#'   galah_call() |>
+#'   galah_identify("perameles") |>
+#'   galah_filter(year == 2001) |>
+#'   atlas_occurrences(mint_doi = TRUE)
+#' 
+#' attributes(records)$doi # return minted doi
+#' }
+#' 
+#' @importFrom readr read_csv
 #' @export collect_occurrences
 
 collect_occurrences <- function(url, doi){
@@ -66,27 +81,22 @@ doi_download <- function(doi, error_call = caller_env()) {
     abort(bullets, call = error_call)
   }
   
-  verbose <- getOption("galah_config")$verbose
+  verbose <- getOption("galah_config")$package$verbose
   if(verbose) {
     cat("Downloading\n")
   }
 
-  path <- atlas_url("doi_download", doi_string = doi_str) |>
-          atlas_download(ext = ".zip", cache_file = tempfile(pattern = "data"))
-
-  if(is.null(path)){
+  url_complete <- url_lookup("doi_download", doi_string = doi_str)
+  result <- url_download(url_complete, 
+                         ext = "zip", 
+                         cache_file = tempfile(pattern = "data"),
+                         data_prefix = "records")
+  if(is.null(result)){
     inform("Download failed")
     return(tibble())
   }else{
-    record_file <- grep("^records", unzip(path, list=TRUE)$Name, 
-                        ignore.case=TRUE, value=TRUE)
-    result <- read.csv(unz(path, record_file), stringsAsFactors = FALSE)
-    
-    # return tibble with correct info
-    result <- as_tibble(result)
     attr(result, "doi") <- doi
     attr(result, "call") <- "atlas_occurrences"
-    
     return(result)
   }
 }
@@ -94,12 +104,12 @@ doi_download <- function(doi, error_call = caller_env()) {
 # TODO: fix multiple file import
 url_download <- function(url){
   
-  verbose <- getOption("galah_config")$verbose
+  verbose <- getOption("galah_config")$package$verbose
   if(verbose) {
     cat("Downloading\n")
   }
   
-  local_file <- atlas_download(url, 
+  local_file <- url_download(url, 
     cache_file = tempfile(pattern = "data"), 
     ext = ".zip")
   
@@ -117,9 +127,8 @@ url_download <- function(url){
     inform("There was a problem reading the occurrence data and it looks like no data were returned.")
   }else{
     result <- do.call(rbind, 
-                      lapply(data_files, 
-                             function(a){read.csv(unz(local_file, a))})) |> 
-              as_tibble()
+                      lapply(data_files, function(a){
+                        read_csv(unz(local_file, a), col_types = cols())}))
   }
   
   # rename cols so they match requested cols

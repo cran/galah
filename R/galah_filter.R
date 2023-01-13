@@ -1,14 +1,17 @@
 #' Narrow a query by specifying filters
 #'
-#' 'filters' are arguments of the form `field logical value` that are used
+#' "Filters" are arguments of the form `field` `logical` `value` that are used
 #' to narrow down the number of records returned by a specific query.
 #' For example, it is common for users to request records from a particular year
 #' (`year == 2020`), or to return all records except for fossils
 #'  (`basisOfRecord != "FossilSpecimen"`).
-#' The result of `galah_filter` can be passed to the `filters`
-#' argument in [atlas_occurrences()], [atlas_species()] or
-#' [atlas_counts()]. `galah_filter` uses non-standard evaluation (NSE),
-#' and is designed to be as compatible as possible with `dplyr::filter`
+#'  
+#' The result of `galah_filter()` can be passed to the `filter`
+#' argument in [atlas_occurrences()], [atlas_species()], 
+#' [atlas_counts()] or [atlas_media()]. 
+#' 
+#' `galah_filter` uses non-standard evaluation (NSE),
+#' and is designed to be as compatible as possible with `dplyr::filter()`
 #' syntax.
 #'
 #' @param ... filters, in the form `field logical value`
@@ -22,7 +25,7 @@
 #' @seealso [search_taxa()] and [galah_geolocate()] for other ways to restrict 
 #' the information returned by [atlas_occurrences()] and related functions. Use
 #' `search_all(fields)` to find fields that
-#' you can filter by, and [search_field_values()] to find what values
+#' you can filter by, and [show_values()] to find what values
 #' of those filters are available.
 #' @details
 #' All statements passed to `galah_filter()` (except the `profile`
@@ -38,96 +41,29 @@
 #' (`=`), particularly where statements are separated by `&` or 
 #' `|`. This problem can be avoided by using a double-equals (`==`) instead.
 #' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
+#' *Notes on behaviour*
 #' 
-#' Filter query results to return records of interest
+#' Separating statements with a comma is equivalent to an `AND` statement; 
+#' Ergo `galah_filter(year >= 2010 & year < 2020)` is the same as
+#' `galah_filter(year >= 2010, year < 2020)`.
+#'     
+#' All statements must include the field name; so
+#' `galah_filter(year == 2010 | year == 2021)` works, as does 
+#' `galah_filter(year == c(2010, 2021))`, but `galah_filter(year == 2010 | 2021)` 
+#' fails. 
+#'     
+#' It is possible to use an object to specify required values, e.g.
+#' `year_value <- 2010; galah_filter(year > year_value)`
+#'     
+#' `solr` supports range queries on text as well as numbers; so this is valid: 
+#' `galah_filter(cl22 >= "Tasmania")`
 #' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |>
-#'   galah_filter(year >= 2019) |>
-#'   atlas_counts()
-#' ```
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' @examples
+#' # Filter query results to return records of interest
 #' galah_call() |>
 #'   galah_filter(year >= 2019,
 #'                basisOfRecord == "HumanObservation") |>
 #'   atlas_counts()
-#' ```
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |>
-#'   galah_filter(year >= 2019,
-#'                basisOfRecord == "HumanObservation",
-#'                stateProvince == "New South Wales") |>
-#'   atlas_counts()
-#' ```
-#'  
-#' Use filters to exclude particular values
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |> 
-#'   galah_filter(year >= 2010 & year != 2021) |>
-#'   atlas_counts()
-#' ```
-#' 
-#' Separating statements with a comma is equivalent to an `AND` statement
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
-#' galah_filter(year >= 2010 & year < 2020) # is the same as:
-#' galah_filter(year >= 2010, year < 2020)
-#' ```
-#' 
-#' All statements must include the field name
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, eval = FALSE}
-#' galah_filter(year == 2010 | year == 2021) # this works (note double equals)
-#' galah_filter(year == c(2010, 2021)) # same as above 
-#' galah_filter(year == 2010 | 2021) # this fails
-#' ```
-#'
-#' It is possible to use an object to specify required values
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' # Numeric example
-#' 
-#' year_value <- 2010
-#' 
-#' galah_call() |>
-#'   galah_filter(year > year_value) |>
-#'   atlas_counts()
-#' ```
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' # Categorical example
-#' 
-#' basis_of_record <- c("HumanObservation", "MaterialSample")
-#' 
-#' galah_call() |>
-#'   galah_filter(basisOfRecord == basis_of_record) |>
-#'   atlas_counts()
-#' ```
-#'
-#' `solr` supports range queries on text as well as numbers. The following 
-#' queries all Australian States and Territories alphabetically after "Tasmania"
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |>
-#'   galah_filter(cl22 >= "Tasmania") |>
-#'   atlas_counts()
-#' ```
-#' 
-#' Filter out specific records that could be unreliable using "assertions"
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' search_assertions("coordinate invalid")
-#' 
-#' galah_call() |>
-#'   galah_filter(COORDINATE_INVALID == FALSE) |>
-#'   atlas_counts()
-#' ```
 #' 
 #' @importFrom rlang as_label  
 #' @importFrom rlang caller_env         
@@ -138,10 +74,10 @@
 #' @importFrom rlang new_quosure
 #' @importFrom rlang parse_expr
 #' @importFrom rlang quo_get_expr
+# @importFrom lifecycle deprecate_soft
 #' @export galah_filter
-  
+
 galah_filter <- function(..., profile = NULL){
-  
   dots <- enquos(..., .ignore_empty = "all")
   check_filter(dots)
   
@@ -154,7 +90,28 @@ galah_filter <- function(..., profile = NULL){
   }else{
     is_data_request <- FALSE
   }
- 
+  
+  # parse
+  named_filters <- parse_filter(dots)
+  
+  # Check and apply profiles to query
+  if(!is.null(profile)){
+    # deprecate_soft("1.5.2", what = "galah_filter(profile)", with = "galah_apply_profile()")
+    named_filters <- apply_profiles(profile, named_filters)
+  }
+  
+  # if a data request was supplied, return one
+  if(is_data_request){
+    update_galah_call(data_request, filter = named_filters)
+  }else{
+    named_filters
+  }
+  
+}
+
+
+parse_filter <- function(dots){
+  
   # Clean user arguments
   if(length(dots) > 0){
     
@@ -164,33 +121,24 @@ galah_filter <- function(..., profile = NULL){
     named_filters$query <- parse_query(named_filters)
     
     # Validate that variables exist in ALA
-    if (getOption("galah_config")$run_checks){     
+    if (getOption("galah_config")$package$run_checks){     
       validate_fields(named_filters$variable)
     }
     
   }else{ 
     # If no fields are entered, return an empty data frame of arguments
     named_filters <- data.frame(variable = character(),
-                     logical = character(),
-                     value = character(),
-                     query = character())
+                                logical = character(),
+                                value = character(),
+                                query = character())
   }
   
-  # Set class and 'call' attribute
-  named_filters <- as_tibble(named_filters)
-  attr(named_filters, "call") <- "galah_filter"
-
-  # Check and apply profiles to query
-  named_filters <- apply_profiles(profile, named_filters)
+  result <- tibble(named_filters)
+  attr(result, "call") <- "galah_filter"
+  return(result)
   
-  # if a data request was supplied, return one
-  if(is_data_request){
-    update_galah_call(data_request, filter = named_filters)
-  }else{
-    named_filters
-  }
-
 }
+
 
 # stop function to enforce new syntax, based on `dplyr` syntax
 check_filter <- function(dots, error_call = caller_env()) {

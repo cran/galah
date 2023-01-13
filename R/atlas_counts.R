@@ -35,63 +35,18 @@
 #' `galah_config(caching = TRUE)` then files cached from a previous query will 
 #' be replaced by the current query
 #' @importFrom glue glue_collapse
+#' @importFrom dplyr bind_rows
 #' @return
 #' 
 #' An object of class `tbl_df` and `data.frame` (aka a tibble) returning: 
 #'  * A single number, if `group_by` is not specified or,
 #'  * A summary of counts grouped by field(s), if `group_by` is specified
 #'
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' With no arguments, return the total number of records in the ALA
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' atlas_counts()
-#' ```
-#'
-#' You can group counts by state and territory with `galah_group_by`
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' @examples
 #' galah_call() |>
-#'   galah_group_by(stateProvince) |>
+#'   galah_filter(year == 2015) |>
 #'   atlas_counts()
-#' ```
-#'
-#' You can add a filter to narrow your search
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |>
-#'   galah_filter(basisOfRecord == "FossilSpecimen") |>
-#'   atlas_counts() 
-#' ```
-#' 
-#' Specify `type = species` to count the number of species, and group record
-#' counts by kingdom
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide"}
-#' records <- galah_call() |>
-#'   galah_group_by(kingdom) |>
-#'   atlas_counts(type = "species")
-#' ```
-#' ```{r, comment = "#>", collapse = TRUE}
-#' records
-#' ```
-#' 
-#' Using `galah_group_by` allows you to cross-tabulate using two different 
-#' variables, similar to using `dplyr::group_by() %>% dplyr::count()`
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide"}
-#' records <- galah_call() |>
-#'   galah_filter(year > 2015) |>
-#'   galah_group_by(year, basisOfRecord) |>
-#'   atlas_counts()
-#' ```
-#' ```{r, comment = "#>", collapse = TRUE}
-#' records
-#' ```
-#' 
+#'   
 #' @export
 atlas_counts <- function(request = NULL, 
                          identify = NULL, 
@@ -99,7 +54,7 @@ atlas_counts <- function(request = NULL,
                          geolocate = NULL,
                          data_profile = NULL,
                          group_by = NULL, 
-                         limit = 100,
+                         limit = NULL,
                          type = c("record", "species"),
                          refresh_cache = FALSE
                          ) {
@@ -137,7 +92,7 @@ atlas_counts <- function(request = NULL,
   class(custom_call) <- "data_request"
 
   # check for caching
-  caching <- getOption("galah_config")$caching
+  caching <- getOption("galah_config")$package$caching
   cache_file <- cache_filename("counts", unlist(custom_call))
   if (caching && file.exists(cache_file) && !refresh_cache) {
     return(read_cache_file(cache_file))
@@ -145,6 +100,9 @@ atlas_counts <- function(request = NULL,
         
   # call using do.call
   result <- do.call(atlas_counts_internal, custom_call)
+  if(is.null(result)){
+    result <- tibble()
+  }
   attr(result, "data_type") <- "counts"
   attr(result, "data_request") <- custom_call
 
@@ -169,17 +127,26 @@ atlas_counts_internal <- function(identify = NULL,
                                   refresh_cache = FALSE
                                   ) {
 
-  verbose <- getOption("galah_config")$verbose
+  verbose <- getOption("galah_config")$package$verbose
+  
+  # check type
+  if(is_gbif() && type == "species"){
+    abort("Use of `type = 'species'` is not supported for atlas = GBIF")
+  }
 
   # ensure profile works from galah_filter as well as galah_profile
-  if(is.null(data_profile)){
-    if(is.null(filter)){
-      profile <- NULL
-    }else{
-      profile <- extract_profile(filter)
-    }
+  if(is_gbif()){
+    profile <- NULL
   }else{
-    profile <- data_profile$data_profile
+    if(is.null(data_profile)){
+      if(is.null(filter)){
+        profile <- NULL
+      }else{
+        profile <- extract_profile(filter)
+      }
+    }else{
+      profile <- data_profile$data_profile
+    }
   }
   
   # set options if group_by = NULL
@@ -195,13 +162,19 @@ atlas_counts_internal <- function(identify = NULL,
       system_down_message("atlas_counts")
     }
     return(tibble(count = result))
-  }                  
+  }else{
+    if(is_gbif()){
+      lookup_fun <- "grouped_counts_GBIF"
+    }else{
+      lookup_fun <- "grouped_counts_LA"
+    }
+  }
   
   # if all combinations of levels of `group_by` are needed (expand = TRUE)
   if(attr(group_by, "expand") & nrow(group_by) > 1){ 
     
     # get counts given the filter provided by the user
-    field_values_df <- atlas_counts_lookup(
+    lookup_args <- list(
       identify = identify,
       filter = filter, 
       geolocate = geolocate,
@@ -209,6 +182,7 @@ atlas_counts_internal <- function(identify = NULL,
       type = type,
       facets = group_by$name, 
       limit = NULL)
+    field_values_df <- do.call(lookup_fun, lookup_args)
     n_fields_df <- data.frame(
       facets = group_by$name,
       n_fields = unlist(lapply(
@@ -251,7 +225,7 @@ atlas_counts_internal <- function(identify = NULL,
         }
         filter_this_loop <- galah_filter(filter_list[[a]])    
         filter_final <- rbind(filter, filter_this_loop)
-        counts_query <- atlas_counts_lookup(
+        lookup_args <- list(
           identify = identify,
           filter = filter_final,
           geolocate = geolocate,
@@ -259,25 +233,31 @@ atlas_counts_internal <- function(identify = NULL,
           facets = n_fields_df$facets[which.max(n_fields_df$n_fields)],
           limit = limit,
           type = type)
+        counts_query <- do.call(lookup_fun, lookup_args)
         if(nrow(counts_query) > 0){   
           as.data.frame(list(levels_list[[a]], counts_query), row.names = NULL)
         }
       }) 
-    if(verbose){close(pb)} # close progress bar
+    if(verbose){
+      close(pb)
+    } # close progress bar
     if (all(unlist(lapply(result_list, is.null)))) {
       system_down_message("atlas_counts")
       return(tibble())
     } else {
-      return(as_tibble(rbindlist(result_list, fill = TRUE)))
+      result_list |>
+        bind_rows() |>
+        tibble()
     } 
      
   # if `groups` is of nrow == 1 (expand = FALSE)
   }else{
-    result <- atlas_counts_lookup(
+    lookup_args <- list(
       identify, filter, geolocate, profile,
       facets = group_by$name, 
       limit, type, refresh_cache,
       verbose = verbose)
+    result <- do.call(lookup_fun, lookup_args)
     if(is.null(result)){
       system_down_message("atlas_counts")
       return(tibble())
@@ -287,136 +267,18 @@ atlas_counts_internal <- function(identify = NULL,
   } 
 }
 
-# workhorse function to do most of the actual processing
-## NOTE: need to turn off caching for multiple runs
-atlas_counts_lookup <- function(identify = NULL, 
-                                  filter = NULL, 
-                                  geolocate = NULL,
-                                  profile = NULL,
-                                  facets, # NOTE: not `groups` as no multiply section here
-                                  limit = NULL, 
-                                  type = "record",
-                                  refresh_cache = FALSE,
-                                  verbose = FALSE # NOTE: internally `verbose` is manual, not from galah_config
-                                  ) {
-  page_size <- 100
-  query <- list()
-  query <- build_query(identify, filter, geolocate, profile = profile)
-  
-  # add facets in a way that supports single or multiple queries 
-  facets_temp <- as.list(facets)
-  names(facets_temp) <- rep("facets", length(facets_temp))
-  query <- c(query, facets_temp)
-
-  ## build url etc
-  total_cats <- total_categories(query)[1]
-  if(is.null(total_cats)) {
-    return(NULL)
-  }
-  if(sum(total_cats) < 1){
-    return(tibble(count = 0))
-  }
-
-  if (is.null(limit)) {
-    limit <- sum(total_cats)
-  }
-
-  if (limit > page_size) {
-    url <- atlas_url("records_facets")
-    resp <- atlas_GET(url, params = query, paginate = TRUE, limit = limit,
-                      page_size = page_size, offset_param = "foffset")
-    if(is.null(resp)){
-      return(NULL)
-    }
-    counts <- rbindlist(lapply(resp, function(a) {
-      count_results <- jsonlite::fromJSON(a)$fieldResult
-      rbindlist(count_results)
-      }))
-  } else {
-      query$flimit <- max(limit)
-      url <- atlas_url("records_facets")
-      resp <- atlas_GET(url, params = query)
-      if(is.null(resp)){return(NULL)}
-      counts <- rbindlist(resp$fieldResult)
-  }
-
-  if (sum(total_cats) > limit & galah_config()$verbose) {
-    bullets <- c(
-      glue("This field has {total_cats} values. {limit} will be returned."),
-      i = "Increase `limit` to return more values, or decrease `limit` to return fewer."
-    )
-    inform(bullets) 
-  }
-  
-  # parse out value
-  value <- parse_fq(counts$fq)
-  
-  if (type == "species") {
-    # this can take a while so add progress bar
-    if (verbose) { pb <- txtProgressBar(max = 1, style = 3) }
-    counts_final <- rbindlist(lapply(seq_along(value), function(x) {
-      if (verbose) {
-        val <- (x / length(value))
-        setTxtProgressBar(pb, val)
-      }
-      species_query <- list()
-      species_query$fq <- c(query$fq,
-         # query_term(name = facets, value = value[[x]], include = TRUE))
-         counts$fq[[x]])
-      if(!is.null(geolocate)){
-        species_query$wkt <- query$wkt
-      }
-      count <- species_count(species_query)
-      if(is.null(count)){count <- NA}
-      data.frame(name = value[[x]], count = count) |> as_tibble()
-    }))
-  } else {
-    counts_final <- data.frame(
-      name = value,
-      count = counts$count)
-  }
-  
-  if(length(facets) > 1){
-    counts_final$field_name <- parse_field(counts$fq)
-    counts_list <- split(counts_final, counts_final$field_name)
-    counts_final <- as.data.frame(rbindlist(lapply(
-      seq_along(facets), function(a){
-        names(counts_list[[a]])[1] <- names(counts_list)[a]
-        counts_list[[a]]
-      }), 
-      fill = TRUE))
-     counts_final <- counts_final[, c(names(counts_list), "count")]
-  }else{ # i.e. only one facet
-    names(counts_final) <- c(facets, "count")
-  }  
-  
-  as_tibble(counts_final)
-}
-
-# Supporting GBIF uses one of two APIs
-# To use group by, but no filters:
-# group by -> `path <- /occurrence/counts` 
-# this facets by basisOfRecord or year, but no filtering
-
-# To use filters but not group by:
-# path <- /occurrence/search then set limit = 0 to only get counts
-  # https://api.gbif.org/v1/occurrence/search?taxonKey=1&limit=0
-# This option requires some hard-coding of what values are allowable by gbif
-  # i.e. show_all_values() would not call an API for atlas == "Global"
-
 # get just the record count for a query
 # handle too long queries in here?
 record_count <- function(query) {
-  # if(getOption("galah_config")$atlas == "Global"){
-  #   query$limit <- 0
-  #   col_name <- "count"
-  #   path <- "occurrence/search"
-  # }else{
+  if(is_gbif()){
+    query$limit <- 0
+    col_name <- "count"
+  }else{
     query$pageSize <- 0
     col_name <- "totalRecords"
-  # }
-  url <- atlas_url("records_counts")
-  resp <- atlas_GET(url, query)
+  }
+  url <- url_lookup("records_counts")
+  resp <- url_GET(url, query)
   resp[[col_name]]
 }
 # above doesn't work because ALA requires queries get put in an &fq= statement
@@ -431,8 +293,8 @@ species_count <- function(query) {
 # Get number of categories of a filter
 total_categories <- function(query) {
   query$flimit <- 1
-  url <- atlas_url("records_facets") 
-  resp <- atlas_GET(url, params = query)
+  url <- url_lookup("records_facets") 
+  resp <- url_GET(url, params = query)
   if(is.null(resp)){
     NULL
   }else if(length(resp) < 1){

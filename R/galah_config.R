@@ -7,14 +7,16 @@
 #' as possible.
 #'
 #' @param profile_path 
-#'    `r lifecycle::badge("soft-deprecated")` 
+#'    `r lifecycle::badge("deprecated")` 
 #'    
 #'    Keeping for compatibility with older package versions. It is preferable to 
 #'    not save `galah_config` options to a .Rprofile file.
 #' @param \dots Options can be defined using the form `name = "value"`.
 #' Valid arguments are:
 #' 
-#'   *  `atlas` string: Living Atlas to point to, Australia by default
+#'   *  `atlas` string: Living Atlas to point to, Australia by default. Can be 
+#'   an organisation name, acronym, or region (see [show_all_atlases()] for 
+#'   admissible values)
 #'   *  `caching` logical: if TRUE, results will be cached, and any cached
 #'     results will be re-used). If FALSE, data will be downloaded.
 #'   *  `cache_directory` string: the directory to use for the cache.
@@ -29,118 +31,107 @@
 #'   names). By default this is NA. Some ALA services require a valid
 #'   download_reason_id code, either specified here or directly to the
 #'   associated R function.
-#'   *  `email` string: An email address that has been registered with
-#'     ALA at [this address](https://auth.ala.org.au/userdetails/registration/createAccount).
-#'     A registered email is required for some functions in `galah`.
+#'   *  `email` string: An email address that has been registered with the chosen
+#'   atlas. For the ALA, you can register at
+#'   [this address](https://auth.ala.org.au/userdetails/registration/createAccount).
+#'   *  `password` string: A registerd password (GBIF only)
+#'   *  `run_checks` logical: should `galah` run checks for filters
+#'   and columns. If making lots of requests sequentially, checks can slow down
+#'   the process and lead to HTTP 500 errors, so should be turned off. Defaults
+#'   to TRUE.
 #'   *  `send_email` logical: should you receive an email for each query to
 #'     [atlas_occurrences()]? Defaults to `FALSE`; but can be
 #'     useful in some instances, for example for tracking DOIs assigned to
 #'     specific downloads for later citation.
-#'   *  `verbose` logical: should `galah` give verbose output to assist
-#'   debugging? Defaults to FALSE.
-#'   *  `run_checks` logical: should `galah` run checks for filters
-#'   and columns. If making lots of requests sequentially, checks can slow down
-#'   the process and lead to HTTP 500 errors, so should be turned off. Defaults
-#'   to TRUE. 
+#'   *  `username` string: A registerd username (GBIF only)
+#'   *  `verbose` logical: should `galah` give verbose such as progress bars?
+#'  Defaults to FALSE.
 #' 
-#'
 #' @return For `galah_config()`, a `list` of all options.
 #' When `galah_config(...)` is called with arguments, nothing is returned
 #' but the configuration is set.
 #' 
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
-#' 
-#' To configure your session to allow you to download occurrence records, enter 
-#' your email in `galah_config()`. This email should be registered with the 
-#' ALA, which you can do 
-#' [here](https://auth.ala.org.au/userdetails/registration/createAccount)
-#' 
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide", eval = FALSE}
+#' @examples \dontrun{
+#' # To download occurrence records, enter your email in `galah_config()`. 
+#' # This email should be registered with the ALA. 
+#' # You can register at:
+#' # https://auth.ala.org.au/userdetails/registration/createAccount
 #' galah_config(email = "your-email@email.com")
-#' ```
 #'  
-#' Turn on caching in your session
+#' # Turn on caching in your session
+#' galah_config(caching = TRUE)
 #'  
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide", eval = FALSE}
-#' galah_config(caching = FALSE)
-#' ```
-#'  
-#' It is required by some ALA services that you add a reason for downloading 
-#' data. To look up all valid reasons to enter, use [show_all()]
-#'  
-#' ```{r, comment = "#>", collapse = TRUE}
-#' show_all(reasons)
-#' ```
-#'  
-#' Add your selected reason using the option `download_reason_id`
-#'  
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide", eval = FALSE}
+#' # Some ALA services require that you add a reason for downloading data. 
+#' # Add your selected reason using the option `download_reason_id`
 #' galah_config(download_reason_id = 0)
-#' ```
 #' 
-#' You can also make debugging in your session easier by setting 
-#' `verbose = TRUE`
+#' # To look up all valid reasons to enter, use `show_all(reasons)`
+#' show_all(reasons)
 #' 
-#' ```{r, comment = "#>", collapse = TRUE, results = "hide", eval = FALSE}
-#' galah_config(download_reason_id = 0,
-#'              verbose = TRUE)
-#' ```
-#' 
+#' # Make debugging in your session easier by setting `verbose = TRUE`
+#' galah_config(verbose = TRUE)
+#' }
 #' @export galah_config
 
 galah_config <- function(..., profile_path = NULL) {
   ala_option_name <- "galah_config"
   current_options <- getOption(ala_option_name)
-  
   user_options <- list(...)
-  
-  default_options <- list(
-    caching = FALSE,
-    cache_directory = tempdir(),
-    atlas = "Australia",
-    download_reason_id = 4,
-    email = "",
-    send_email = FALSE,
-    verbose = TRUE,
-    run_checks = TRUE
-  )
-  
+
   if (length(user_options) == 0 && !is.null(current_options)) {
     return(current_options)
   }
   if (is.null(current_options)) {
     ## galah options have not been set yet, so set them to the defaults
-    current_options <- default_options
-    if (!dir.exists(current_options$cache_directory)) {
-      dir.create(current_options$cache_directory)
+    current_options <- default_config()
+    if (!dir.exists(current_options$package$cache_directory)) {
+      dir.create(current_options$package$cache_directory)
     }
     ## set the global option
     temp <- list(current_options)
     names(temp) <- ala_option_name
+    class(temp) <- "galah_config"
     options(temp)
     return(current_options)
   } else {
     # check all the options are valid, if so, set as options
-    
+
+    if (!is.null(user_options$atlas)) {
+      new_atlas <- configure_atlas(user_options$atlas)
+      check_atlas(current_options$atlas, new_atlas) # see whether atlases have changed, and if so, give a message
+      current_options$atlas <- new_atlas
+      user_options <- user_options[names(user_options) != "atlas"]
+    }
+
     if (!is.null(user_options$download_reason_id)) {
       user_options$download_reason_id <-
         convert_reason(user_options$download_reason_id)
     }
-    
+
     for (x in names(user_options)) {
       validate_option(x, user_options[[x]])
-      current_options[[x]] <- user_options[[x]]
+      switch(x,
+             # package
+             "verbose" = {current_options$package$verbose <- user_options[[x]]},
+             "run_checks" = {current_options$package$run_checks <- user_options[[x]]},
+             "send_email" = {current_options$package$send_email <- user_options[[x]]},
+             "caching" = {current_options$package$caching <- user_options[[x]]},
+             "cache_directory" = {current_options$package$cache_directory <- user_options[[x]]},
+             # user
+             "username" = {current_options$user$username <- user_options[[x]]}, # gbif only
+             "email" = {current_options$user$email <- user_options[[x]]},
+             "password" = {current_options$user$password <- user_options[[x]]}, # gbif only
+             "download_reason_id" = {current_options$user$download_reason_id <- user_options[[x]]})
     }
-    
+
     ## set the global option
     temp <- list(current_options)
     names(temp) <- ala_option_name
+    class(temp) <- "galah_config"
   }
   options(temp)
-  
-  
+
+  # set profile  
   if (!is.null(profile_path)) {
     lifecycle::deprecate_soft(
       when = "1.4.1",
@@ -160,11 +151,68 @@ galah_config <- function(..., profile_path = NULL) {
       inform(glue("The config will be stored in {profile_path}."))
     }
     save_config(profile_path, current_options)
-    
+
   }
 }
 
+default_config <- function(){
+  x <- list(
+    package = list( 
+      verbose = TRUE,
+      run_checks = TRUE,
+      send_email = FALSE,
+      caching = FALSE,
+      cache_directory = tempdir()),
+    user = list(
+      username = "",
+      email = "",
+      password = "",
+      download_reason_id = 4),
+    atlas = list(
+      organisation = "Atlas of Living Australia",
+      acronym  = "ALA",
+      region = "Australia"))
+    class(x) <- "galah_config"
+    x
+}
 
+
+configure_atlas <- function(query){
+  
+  comparison <- do.call(c, node_metadata)
+  comparison <- comparison[!is.na(comparison)] |> as.character()
+  lookup <- adist(query, comparison, ignore.case = TRUE)[1, ]
+  
+  if(all(lookup > 2)){
+    bullets <- c(
+      "Unsupported atlas provided.",
+      i = glue("Use `show_all(atlases)` to see supported atlases."),
+      x = glue("\"{query}\" is not a valid atlas.")
+    )
+    abort(bullets, call = caller_env())
+  }else{
+    selected_entry <- comparison[which(lookup == min(lookup))][[1]]
+    
+    # find appropriate row
+    selected_row <- apply(node_metadata, 1, 
+                          function(a){any(a == selected_entry, na.rm = TRUE)}) |>
+      which()
+    result <- list(
+      organisation = node_metadata$institution[selected_row],
+      acronym = node_metadata$acronym[selected_row],
+      region = node_metadata$region[selected_row])
+    
+    return(result)
+  }
+}
+
+check_atlas <- function(current, new){
+  if(new$region != current$region){
+    message(glue(
+      "Atlas selected: {new$organisation} ({new$acronym}) [{new$region}]"))
+  }
+}
+ 
 
 save_config <- function(profile_path, new_options) {
   if (!file.exists(profile_path)) {
@@ -258,11 +306,11 @@ validate_option <- function(name, value, error_call = caller_env()) {
       )
       abort(bullets, call = error_call)
     }
-  } else if (name == "email") {
+  } else if (name %in% c("email", "password", "username")) {
     if (!is.character(value)) {
       bullets <- c(
-        "Invalid email.",
-        i = "Email must be entered as a string."
+        glue("Invalid {name}"),
+        i = "This argument must be entered as a string."
       )
       abort(bullets, call = error_call)
     }
@@ -272,15 +320,6 @@ validate_option <- function(name, value, error_call = caller_env()) {
         "Invalid download reason ID or name.",
         i = "Use `show_all(atlases)` to see all valid reasons.",
         x = glue("{value} does not match an existing reason ID.")
-      )
-      abort(bullets, call = error_call)
-    }
-  } else if (name == "atlas") {
-    if (!value %in% show_all_atlases()$atlas) {
-      bullets <- c(
-        "Unsupported atlas provided.",
-        i = glue("Use `show_all(atlases)` to see supported atlases."),
-        x = glue("\"{value}\" is not a valid atlas.")
       )
       abort(bullets, call = error_call)
     }

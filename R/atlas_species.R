@@ -31,48 +31,30 @@
 #' then [search_taxa()] is more efficient. Similarly, if counts are
 #' required that include filter but without returning taxonomic detail, then
 #' [atlas_counts()] is more efficient (see examples).
-#' @section Examples:
-#' ```{r, child = "man/rmd/setup.Rmd"}
-#' ```
+#' @examples
+#' # First register a valid email address
+#' galah_config(email = "ala4r@ala.org.au")
 #' 
-#' First, look up a genus of interest in the ALA with [search_taxa()]
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' search_taxa("Heleioporus")
-#' ```
-#' 
-#' It's a good idea to find how many species there are for the taxon you are 
-#' interested in - in our case, genus *Heleioporus* - with [atlas_counts()]
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' galah_call() |>
-#'   galah_identify("Heleioporus") |>
-#'   atlas_counts(type = "species")
-#' ```
-#'
-#' Now get taxonomic information on all species within this genus with 
-#' `atlas_species()`
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' # Get a list of species within genus "Heleioporus"
 #' # (every row is a species with associated taxonomic data)
 #' galah_call() |>
 #'   galah_identify("Heleioporus") |>
 #'   atlas_species()
-#' ```
 #' 
-#' You can also get taxonomic information on species by piping with `%>%` or 
-#' `|>`. Just begin your query with [galah_call()]
+#' # Get a list of species within family "Peramelidae"
+#' galah_call() |>
+#'   galah_identify("peramelidae") |>
+#'   atlas_species()
 #' 
-#' ```{r, comment = "#>", collapse = TRUE}
+#' # It's good idea to find how many species there are before downloading
 #' galah_call() |>
 #'   galah_identify("Heleioporus") |>
-#'   atlas_species()
-#' ```
+#'   atlas_counts(type = "species")
 #' 
 #' @export
 atlas_species <- function(request = NULL,
-                          identify = NULL, 
-                          filter = NULL, 
+                          identify = NULL,
+                          filter = NULL,
                           geolocate = NULL,
                           data_profile = NULL,
                           refresh_cache = FALSE
@@ -98,39 +80,50 @@ atlas_species <- function(request = NULL,
       refresh_cache = refresh_cache
     )
   }
-     
+
+  # choose beahviour depending on whether we are calling LAs or GBIF
+  if(is_gbif()){
+    function_name <- "occurrences_GBIF"
+    current_call$format <- "SPECIES_LIST"
+    arg_names <- names(formals(occurrences_GBIF))
+  }else{
+    function_name <- "atlas_species_internal"
+    arg_names <- names(formals(atlas_species_internal))
+  }
+
   # subset to available arguments
-  custom_call <- current_call[
-     names(current_call) %in% names(formals(atlas_species_internal))]
+  custom_call <- current_call[names(current_call) %in% arg_names]
   class(custom_call) <- "data_request"
-  
+
   # check for caching
-  caching <- getOption("galah_config")$caching
+  caching <- getOption("galah_config")$package$caching
   cache_file <- cache_filename("species", unlist(custom_call))
   if (caching && file.exists(cache_file) && !refresh_cache) {
     return(read_cache_file(cache_file))
   }
-  
+
   # run function using do.call
-  result <- do.call(atlas_species_internal, custom_call)
+  result <- do.call(function_name, custom_call)
+  if(is.null(result)){
+    result <- tibble()
+  }
   attr(result, "data_type") <- "species"
   attr(result, "data_request") <- custom_call
-  
+
   # if caching requested, save
   if (caching) {
     write_cache_file(object = result, 
                      data_type = "species",
                      cache_file = cache_file)
   }
-   
-  result   
+
+  result
 }
-       
 
 
-atlas_species_internal <- function(request, 
-                                   identify, 
-                                   filter, 
+atlas_species_internal <- function(request,
+                                   identify,
+                                   filter,
                                    geolocate,
                                    data_profile,
                                    refresh_cache
@@ -152,24 +145,30 @@ atlas_species_internal <- function(request,
     profile <- data_profile$data_profile
   }
   
-  query <- build_query(identify, filter, geolocate, profile = profile)
-  query$facets <- species_facets()
-  query$lookup  <- "true"
-  
-  tmp <- tempfile()
-  data <- atlas_url("records_species") |>
-          atlas_download(params = query, cache_file = tmp)
+  query <- c(
+    build_query(identify, filter, geolocate, profile = profile),
+    emailNotify = email_notify(),
+    sourceTypeId = 2004,
+    reasonTypeId = getOption("galah_config")$user$download_reason_id,
+    email = user_email(), 
+    facets = species_facets(),
+    lookup = "true"
+  )
 
-  if(is.null(data)){
+  tmp <- tempfile()
+  url <- url_lookup("records_species")
+  result <- url_download(url, params = query, cache_file = tmp, ext = "csv")
+
+  if(is.null(result)){
     system_down_message("atlas_species")
     return(tibble())
   }else{
   
-    if(getOption("galah_config")$atlas == "Australia"){
+    if(getOption("galah_config")$atlas$region == "Australia"){
       # overwrite file with fixed names
-      names(data) <- rename_columns(names(data), type = "checklist")
-      data <- data[, wanted_columns("checklist")]
+      names(result) <- rename_columns(names(result), type = "checklist")
+      result <- result[, wanted_columns("checklist")]
     }
-    return(data |> as_tibble())
+    return(result |> tibble())
   }
 }

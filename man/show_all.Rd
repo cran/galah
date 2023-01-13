@@ -17,36 +17,38 @@
 \alias{show_all_lists}
 \title{Show valid record information}
 \usage{
-show_all(type)
+show_all(type, limit = NULL)
 
-show_all_assertions()
+show_all_assertions(limit = NULL)
 
-show_all_atlases()
+show_all_atlases(limit = NULL)
 
-show_all_cached_files()
+show_all_cached_files(limit = NULL)
 
-show_all_apis()
+show_all_apis(limit = NULL)
 
-show_all_collections()
+show_all_collections(limit = NULL)
 
-show_all_datasets()
+show_all_datasets(limit = NULL)
 
-show_all_providers()
+show_all_providers(limit = NULL)
 
-show_all_fields()
+show_all_fields(limit = NULL)
 
-show_all_licences()
+show_all_licences(limit = NULL)
 
-show_all_reasons()
+show_all_reasons(limit = NULL)
 
-show_all_ranks()
+show_all_ranks(limit = NULL)
 
-show_all_profiles()
+show_all_profiles(limit = NULL)
 
-show_all_lists()
+show_all_lists(limit = NULL)
 }
 \arguments{
 \item{type}{A string to specify what type of parameters should be shown.}
+
+\item{limit}{Optional number of values to return. Defaults to NULL, i.e. all records}
 }
 \value{
 An object of class \code{tbl_df} and \code{data.frame} (aka a tibble)
@@ -85,15 +87,14 @@ The available types of information for \code{show_all_} are:\tabular{llll}{
 }
 }
 \examples{
-
 # See all supported atlases
 show_all(atlases)
 
-# Show a listing of all accepted reasons for downloading occurrence data
-show_all(reasons)
-
 # Show a list of all available data quality profiles
 show_all(profiles)
+
+# Show a listing of all accepted reasons for downloading occurrence data
+show_all(reasons)
 
 # Show a listing of all taxonomic ranks
 show_all(ranks)
