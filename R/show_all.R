@@ -43,8 +43,6 @@
 #' containing all data of interest.
 #' @references 
 #' *  Darwin Core terms <https://dwc.tdwg.org/terms/>
-#' *  ALA fields <https://api.ala.org.au/#ws72>
-#' *  ALA assertions fields <https://api.ala.org.au/#ws81>
 #' 
 #' @seealso Use the [search_all()] function and `search_()` sub-functions to 
 #' search for information. These functions are used to pass valid arguments to
@@ -93,7 +91,7 @@ show_all <- function(type, limit = NULL){
     type <- "fields"
   }else{
     type <- enquos(type) |> parse_objects_or_functions()   
-    type <-  gsub("\"", "", as_label(type[[1]]))
+    type <-  gsub("\"", "", deparse(quo_squash(type[[1]])))
     assert_that(is.character(type))
     check_type_valid(type, valid_types)   
   }

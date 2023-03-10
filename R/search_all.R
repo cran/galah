@@ -49,8 +49,6 @@
 #' containing all data that match the search query.
 #' @references 
 #' *  Darwin Core terms <https://dwc.tdwg.org/terms/>
-#' *  ALA fields <https://api.ala.org.au/#ws72>
-#' *  ALA assertions fields <https://api.ala.org.au/#ws81>
 #' 
 #' @seealso See [search_taxa()] and [search_identifiers()] for more information 
 #' on taxonomic searches. 
@@ -105,8 +103,8 @@ search_all <- function(type, query){
   if(missing(type)){
     type <- "fields"
   }else{
-    type <- enquos(type) |> parse_objects_or_functions()   
-    type <-  gsub("\"", "", as_label(type[[1]]))
+    type <- enquos(type) |> parse_objects_or_functions() 
+    type <-  gsub("\"", "", deparse(quo_squash(type[[1]])))
     assert_that(is.character(type))
     check_type_valid(type, valid_types)   
   }

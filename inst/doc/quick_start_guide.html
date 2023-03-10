@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2023-01-13" />
+<meta name="date" content="2023-01-18" />
 
 <title>Quick start guide</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Quick start guide</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2023-01-13</h4>
+<h4 class="date">2023-01-18</h4>
 
 
 
@@ -404,7 +404,7 @@ atlas, use:</p>
 <pre><code>## # A tibble: 1 × 1
 ##       count
 ##       &lt;int&gt;
-## 1 112998157</code></pre>
+## 1 113038010</code></pre>
 <p>To pass more complex queries, start with the
 <code>galah_call()</code> function and pipe additional arguments to
 modify the query. modifying functions have a <code>galah_</code> prefix
@@ -415,7 +415,7 @@ and support non-standard evaluation (NSE).</p>
 <pre><code>## # A tibble: 1 × 1
 ##      count
 ##      &lt;int&gt;
-## 1 15111799</code></pre>
+## 1 15150011</code></pre>
 <p>Alternatively, you can use a subset of <code>dplyr</code> verbs to
 pipe your queries, assuming you start with
 <code>galah_call()</code>.</p>
@@ -426,10 +426,10 @@ pipe your queries, assuming you start with
 <pre><code>## # A tibble: 4 × 2
 ##   year    count
 ##   &lt;chr&gt;   &lt;int&gt;
-## 1 2021  7155246
-## 2 2020  6418993
-## 3 2022  1536146
-## 4 2023     1414</code></pre>
+## 1 2021  7155750
+## 2 2020  6419193
+## 3 2022  1547173
+## 4 2023    27895</code></pre>
 <p>To narrow the search to a particular taxonomic group, use
 <code>galah_identify()</code> or <code>identify</code>. Note that this
 function only accepts scientific names and is not case sensitive. It’s
@@ -437,9 +437,10 @@ good practice to first use <code>search_taxa()</code> to check that the
 taxa you provide returns the correct taxonomic results.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>) <span class="co"># Check whether taxonomic info is correct</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
-## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+##   search_term scientific_name taxon_concept_id                                                    rank  match…¹ kingdom phylum class issues
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                               &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550ef… class exactM… Animal… Chord… Rept… noIss…
+## # … with abbreviated variable name ¹​match_type</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;reptilia&quot;</span>) <span class="sc">|&gt;</span> </span>
@@ -447,7 +448,7 @@ taxa you provide returns the correct taxonomic results.</p>
 <pre><code>## # A tibble: 1 × 1
 ##    count
 ##    &lt;int&gt;
-## 1 100936</code></pre>
+## 1 101979</code></pre>
 </div>
 <div id="downloading-records" class="section level1">
 <h1>Downloading records</h1>
@@ -468,14 +469,14 @@ question:</p>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##   decimalLatitude decimalLongitude eventDate           scientificName    taxonConceptID                                                   recor…¹ dataR…² occur…³ basis…⁴
-##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;             &lt;chr&gt;                                                            &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-## 1           -43.4             147. 2020-09-04 14:00:00 Litoria ewingii   https://biodiversity.org.au/afd/taxa/d0e897bb-e6f5-4654-a511-1c… e8045b… FrogID  PRESENT HUMAN_…
-## 2           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/taxa/d0e897bb-e6f5-4654-a511-1c… 44187a… FrogID  PRESENT HUMAN_…
-## 3           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/taxa/d0e897bb-e6f5-4654-a511-1c… bc34a7… FrogID  PRESENT HUMAN_…
-## 4           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/taxa/d0e897bb-e6f5-4654-a511-1c… ca4707… FrogID  PRESENT HUMAN_…
-## 5           -43.4             146. 2020-01-01 13:00:00 Litoria burrowsae https://biodiversity.org.au/afd/taxa/e9f41129-f946-4e81-889b-2e… 9c71f5… FrogID  PRESENT HUMAN_…
-## 6           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/taxa/d0e897bb-e6f5-4654-a511-1c… 4bbaad… FrogID  PRESENT HUMAN_…
+##   decimalLatitude decimalLongitude eventDate           scientificName    taxonConceptID                     recor…¹ dataR…² occur…³ basis…⁴
+##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;             &lt;chr&gt;                              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+## 1           -43.4             147. 2020-09-04 14:00:00 Litoria ewingii   https://biodiversity.org.au/afd/t… e8045b… FrogID  PRESENT HUMAN_…
+## 2           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/t… 44187a… FrogID  PRESENT HUMAN_…
+## 3           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/t… bc34a7… FrogID  PRESENT HUMAN_…
+## 4           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/t… ca4707… FrogID  PRESENT HUMAN_…
+## 5           -43.4             146. 2020-01-01 13:00:00 Litoria burrowsae https://biodiversity.org.au/afd/t… 9c71f5… FrogID  PRESENT HUMAN_…
+## 6           -43.4             146. 2020-01-01 13:00:00 Litoria ewingii   https://biodiversity.org.au/afd/t… 4bbaad… FrogID  PRESENT HUMAN_…
 ## # … with abbreviated variable names ¹​recordID, ²​dataResourceName, ³​occurrenceStatus, ⁴​basisOfRecord</code></pre>
 <p>Check out our other vignettes for more detail on how to use these
 functions.</p>

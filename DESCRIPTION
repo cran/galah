@@ -1,7 +1,7 @@
 Package: galah
 Type: Package
 Title: Biodiversity Data from the Living Atlas Community
-Version: 1.5.1
+Version: 1.5.2
 Authors@R: 
     c(person(given = "Martin",
              family = "Westgate",
@@ -36,10 +36,10 @@ VignetteBuilder: knitr
 RoxygenNote: 7.2.1
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2023-01-13 08:45:30 UTC; wes186
+Packaged: 2023-03-10 10:45:17 UTC; wes186
 Author: Martin Westgate [aut, cre],
   Matilda Stevenson [aut],
   Dax Kellie [aut],
   Peggy Newman [aut]
 Repository: CRAN
-Date/Publication: 2023-01-13 09:20:07 UTC
+Date/Publication: 2023-03-10 23:20:06 UTC

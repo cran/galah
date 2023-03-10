@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2022-11-30" />
+<meta name="date" content="2023-01-18" />
 
 <title>Piping in galah</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Piping in galah</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2022-11-30</h4>
+<h4 class="date">2023-01-18</h4>
 
 
 
@@ -366,7 +366,7 @@ logical arguments to be added by using the <code>==</code> sign:</p>
 <pre><code>## # A tibble: 1 × 1
 ##     count
 ##     &lt;int&gt;
-## 1 7127224</code></pre>
+## 1 7155750</code></pre>
 <p>As another example, notice how <code>galah_group_by()</code> +
 <code>atlas_counts()</code> works very similarly to
 <code>dplyr::group_by()</code> + <code>dplyr::count()</code>:</p>
@@ -385,8 +385,8 @@ logical arguments to be added by using the <code>==</code> sign:</p>
 <pre><code>## # A tibble: 2 × 2
 ##   biome           count
 ##   &lt;chr&gt;           &lt;int&gt;
-## 1 TERRESTRIAL 104138651
-## 2 MARINE        3442081</code></pre>
+## 1 TERRESTRIAL 104619011
+## 2 MARINE        3443680</code></pre>
 <p>We made this move towards tidy evaluation to make it possible to use
 piping for building queries to the Atlas of Living Australia. In
 practice, this means that data queries can be filtered just like how you
@@ -410,20 +410,22 @@ your query.</p>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(species, year) <span class="sc">|&gt;</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 11 × 3
+<pre><code>## # A tibble: 13 × 3
 ##    year  species                count
 ##    &lt;chr&gt; &lt;chr&gt;                  &lt;int&gt;
-##  1 2021  Perameles nasuta        2465
+##  1 2021  Perameles nasuta        2466
 ##  2 2021  Perameles bougainville    70
 ##  3 2021  Perameles gunnii          59
 ##  4 2021  Perameles pallescens      23
-##  5 2020  Perameles nasuta        1386
+##  5 2020  Perameles nasuta        1388
 ##  6 2020  Perameles gunnii          39
 ##  7 2020  Perameles pallescens      11
 ##  8 2020  Perameles bougainville     1
-##  9 2022  Perameles nasuta         292
-## 10 2022  Perameles gunnii          53
-## 11 2022  Perameles pallescens      26</code></pre>
+##  9 2022  Perameles nasuta         377
+## 10 2022  Perameles gunnii          57
+## 11 2022  Perameles pallescens      28
+## 12 2023  Perameles gunnii           4
+## 13 2023  Perameles nasuta           3</code></pre>
 <p>And a second example, to download occurrence records of bandicoots in
 2021, and also to include information on which records had zero
 coordinates:</p>
@@ -434,14 +436,14 @@ coordinates:</p>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>() <span class="sc">|&gt;</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##   decimalLatitude decimalLongitude eventDate           scientificName   taxonConceptID              recor…¹ dataR…² occur…³ ZERO_…⁴
-##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;                       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;  
-## 1           -43.1             148. 2021-05-09 08:06:02 Perameles gunnii https://biodiversity.org.a… 6f258c… iNatur… PRESENT FALSE  
-## 2           -43.0             147. 2021-03-31 21:00:16 Perameles gunnii https://biodiversity.org.a… 40d963… iNatur… PRESENT FALSE  
-## 3           -43.0             148. 2021-06-24 12:55:00 Perameles gunnii https://biodiversity.org.a… 62724c… iNatur… PRESENT FALSE  
-## 4           -43.0             147. 2021-02-06 14:09:00 Perameles gunnii https://biodiversity.org.a… ef4fe0… iNatur… PRESENT FALSE  
-## 5           -43.0             147. 2021-09-14 04:39:45 Perameles gunnii https://biodiversity.org.a… 7900b1… iNatur… PRESENT FALSE  
-## 6           -42.9             147. 2021-07-21 19:42:41 Perameles gunnii https://biodiversity.org.a… c3cc63… iNatur… PRESENT FALSE  
+##   decimalLatitude decimalLongitude eventDate           scientificName   taxonConceptID                      recor…¹ dataR…² occur…³ ZERO_…⁴
+##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;                               &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;  
+## 1           -43.1             148. 2021-05-09 08:06:02 Perameles gunnii https://biodiversity.org.au/afd/ta… 6f258c… iNatur… PRESENT FALSE  
+## 2           -43.0             147. 2021-03-31 21:00:16 Perameles gunnii https://biodiversity.org.au/afd/ta… 40d963… iNatur… PRESENT FALSE  
+## 3           -43.0             148. 2021-06-24 12:55:00 Perameles gunnii https://biodiversity.org.au/afd/ta… 62724c… iNatur… PRESENT FALSE  
+## 4           -43.0             147. 2021-02-06 14:09:00 Perameles gunnii https://biodiversity.org.au/afd/ta… ef4fe0… iNatur… PRESENT FALSE  
+## 5           -43.0             147. 2021-09-14 04:39:45 Perameles gunnii https://biodiversity.org.au/afd/ta… 7900b1… iNatur… PRESENT FALSE  
+## 6           -42.9             147. 2021-07-21 19:42:41 Perameles gunnii https://biodiversity.org.au/afd/ta… c3cc63… iNatur… PRESENT FALSE  
 ## # … with abbreviated variable names ¹​recordID, ²​dataResourceName, ³​occurrenceStatus, ⁴​ZERO_COORDINATE</code></pre>
 <p>Note that the order in which <code>galah_</code> functions are added
 doesn’t matter, as long as <code>galah_call()</code> goes first, and an
@@ -457,23 +459,25 @@ processed, i.e.:</p>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(year) <span class="sc">|&gt;</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 2
+<pre><code>## # A tibble: 4 × 2
 ##   year    count
 ##   &lt;chr&gt;   &lt;int&gt;
-## 1 2021  7127224
-## 2 2020  6403158
-## 3 2022  1353727</code></pre>
+## 1 2021  7155750
+## 2 2020  6419193
+## 3 2022  1547173
+## 4 2023    27895</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dplyr syntax</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 2
+<pre><code>## # A tibble: 4 × 2
 ##   year    count
 ##   &lt;chr&gt;   &lt;int&gt;
-## 1 2021  7127224
-## 2 2020  6403158
-## 3 2022  1353727</code></pre>
+## 1 2021  7155750
+## 2 2020  6419193
+## 3 2022  1547173
+## 4 2023    27895</code></pre>
 <p>The full list of masked functions is:</p>
 <ul>
 <li><code>identify()</code> (<code>{graphics}</code>) as a synonym for
