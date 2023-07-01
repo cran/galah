@@ -362,9 +362,9 @@ functions are described below.</p>
 <h1>Record counts</h1>
 <p><code>atlas_counts()</code> provides summary counts on records in the
 specified atlas, without needing to download all the records.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Australia&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Total number of records in the ALA</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">atlas_counts</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Australia&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Total number of records in the ALA</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">atlas_counts</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##       count
 ##       &lt;int&gt;
@@ -372,9 +372,9 @@ specified atlas, without needing to download all the records.</p>
 <p>In addition to the filter arguments, it has an optional
 <code>group_by</code> argument, which provides counts binned by the
 requested field.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(kingdom) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(kingdom) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 2
 ##    kingdom      count
 ##    &lt;chr&gt;        &lt;int&gt;
@@ -398,12 +398,12 @@ that it returns taxonomic information and unique identifiers in a
 <code>tibble</code>. It differs in not being able to return information
 on taxonomic levels other than the species; but also in being more
 flexible by supporting filtering:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>species <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Rodentia&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(stateProvince <span class="sc">==</span> <span class="st">&quot;Northern Territory&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_species</span>()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>species <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>species <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Rodentia&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(stateProvince <span class="sc">==</span> <span class="st">&quot;Northern Territory&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">atlas_species</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>species <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 10
 ##   kingdom  phylum   class    order    family  genus        species                     author            species_guid               verna…¹
 ##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;                       &lt;chr&gt;             &lt;chr&gt;                      &lt;chr&gt;  
@@ -421,19 +421,19 @@ flexible by supporting filtering:</p>
 <code>galah_config()</code>. This email must be associated with an
 active ALA account. See more information in the <a href="#config">config
 section</a></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;your_email@email.com&quot;</span>, <span class="at">atlas =</span> <span class="st">&quot;Australia&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;your_email@email.com&quot;</span>, <span class="at">atlas =</span> <span class="st">&quot;Australia&quot;</span>)</span></code></pre></div>
 <p>Download occurrence records for <em>Eolophus roseicapilla</em></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>occ <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    stateProvince <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    year <span class="sc">&gt;=</span> <span class="dv">2010</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">profile =</span> <span class="st">&quot;ALA&quot;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(institutionID, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>occ <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>occ <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    stateProvince <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    year <span class="sc">&gt;=</span> <span class="dv">2010</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">profile =</span> <span class="st">&quot;ALA&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">galah_select</span>(institutionID, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  </span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>occ <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
 ##   decimalLatitude decimalLongitude eventDate           scientificName        taxonConceptID                 recor…¹ dataR…² occur…³ insti…⁴
 ##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;                 &lt;chr&gt;                          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;  
@@ -452,14 +452,14 @@ attributes, ALA stores images, sounds and videos associated with a given
 record. Metadata on these records can be downloaded to <code>R</code>
 using <code>atlas_media()</code> and the same set of filters as the
 other data download functions.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>media_data <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    year <span class="sc">==</span> <span class="dv">2020</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    cl22 <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_media</span>()</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>media_data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>media_data <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>    year <span class="sc">==</span> <span class="dv">2020</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    cl22 <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="fu">atlas_media</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>media_data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 20
 ##   decima…¹ decim…² eventDate           scien…³ taxon…⁴ recor…⁵ dataR…⁶ occur…⁷ multi…⁸ media…⁹ mime_…˟ size_…˟ date_…˟ date_…˟ height width
 ##      &lt;dbl&gt;   &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;int&gt;
@@ -481,10 +481,10 @@ other data download functions.</p>
 from one clade down to another using ALA’s internal taxonomy. Specify
 which taxonomic level your tree will go down to with
 <code>galah_down_to</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>classes <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;chordata&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_down_to</span>(class) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_taxonomy</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>classes <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;chordata&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">galah_down_to</span>(class) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">atlas_taxonomy</span>()</span></code></pre></div>
 <p>This function is unique within <code>galah</code> as it is the only
 function that returns a <code>data.tree</code>, rather than a
 <code>tibble</code>.</p>
@@ -513,7 +513,7 @@ function that returns a <code>data.tree</code>, rather than a
 ## 22          °--Reptilia</code></pre>
 <p>Although the tree format is useful, converting to a
 <code>data.frame</code> is straightforward.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data.tree<span class="sc">::</span><span class="fu">ToDataFrameTypeCol</span>(classes, <span class="at">type =</span> <span class="st">&quot;rank&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>data.tree<span class="sc">::</span><span class="fu">ToDataFrameTypeCol</span>(classes, <span class="at">type =</span> <span class="st">&quot;rank&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>##   rank_phylum  rank_subphylum rank_superclass rank_informal          rank_class
 ## 1    Chordata Cephalochordata            &lt;NA&gt;          &lt;NA&gt;            Amphioxi
 ## 2    Chordata        Craniata         Agnatha          &lt;NA&gt; Cephalasipidomorphi
@@ -533,7 +533,7 @@ location of a <code>.Rprofile</code> file.</p>
 address registered with the ALA. You can create an account <a href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>.
 Once an email is registered with the ALA, it should be stored in the
 config:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;myemail@gmail.com&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;myemail@gmail.com&quot;</span>)</span></code></pre></div>
 </div>
 <div id="caching" class="section level2">
 <h2>Caching</h2>
@@ -545,9 +545,9 @@ files are stored in a temporary directory that is automatically deleted
 when the R session is ended. This behaviour can be altered so that
 caching is permanent, by setting the caching directory to a
 non-temporary location.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">cache_directory =</span> <span class="st">&quot;example/dir&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">cache_directory =</span> <span class="st">&quot;example/dir&quot;</span>)</span></code></pre></div>
 <p>By default, caching is turned off. To turn caching on, run</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">caching =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">caching =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="setting-the-download-reason" class="section level2">
 <h2>Setting the download reason</h2>
@@ -556,14 +556,14 @@ data (via the galah <code>atlas_occurrences()</code> function). The
 reason is set as “scientific research” by default, but you can change
 this using <code>galah_config()</code>. See
 <code>show_all_reasons()</code> for valid download reasons.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">download_reason_id =</span> your_reason_id)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">download_reason_id =</span> your_reason_id)</span></code></pre></div>
 </div>
 <div id="debugging" class="section level2">
 <h2>Debugging</h2>
 <p>If things aren’t working as expected, more detail (particularly about
 web requests and caching behaviour) can be obtained by setting the
 <code>verbose</code> configuration option:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 

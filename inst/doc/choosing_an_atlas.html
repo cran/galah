@@ -362,16 +362,16 @@ server configuration to your selected atlas. The default
 <code>atlas</code> is Australia.</p>
 <p>If you intend to download records, you may need to register a user
 profile with the relevant atlas first.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;GBIF.es&quot;</span>, <span class="at">email =</span> <span class="st">&quot;your_email_here&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;GBIF.es&quot;</span>, <span class="at">email =</span> <span class="st">&quot;your_email_here&quot;</span>)</span></code></pre></div>
 </div>
 <div id="look-up-information" class="section level2">
 <h2>Look up Information</h2>
 <p>You can use the same look-up functions to find useful information
 about the Atlas you have set. Available information may vary for each
 Living Atlas.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span></code></pre></div>
 <pre><code>## Atlas selected: Sistema Nacional de Información sobre Diversidad Biológica de Guatemala (SNIBgt) [Guatemala]</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(datasets)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">show_all</span>(datasets)</span></code></pre></div>
 <pre><code>## # A tibble: 100 × 3
 ##    name                                                                                                                                     uri   uid  
 ##    &lt;chr&gt;                                                                                                                                    &lt;chr&gt; &lt;chr&gt;
@@ -386,7 +386,7 @@ Living Atlas.</p>
 ##  9 A systematic revision of the genus Archocentrus (Perciformes: Cichlidae), with the description of two new genera and six new species.    http… dr362
 ## 10 A taxonomic monograph of the genus Tylodinus Champion (Coleoptera: Curculionidae: Cryptorhynchinae: Tylodina) of Chiapas, Mexico         http… dr564
 ## # … with 90 more rows</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
 <pre><code>## # A tibble: 129 × 4
 ##    id                   description                                                                                                         type  link 
 ##    &lt;chr&gt;                &lt;chr&gt;                                                                                                               &lt;chr&gt; &lt;chr&gt;
@@ -401,14 +401,14 @@ Living Atlas.</p>
 ##  9 class                The class the Atlas has matched this record to in the NSL http://rs.tdwg.org/dwc/terms/class                        fiel… &lt;NA&gt; 
 ## 10 collection_code      The collection code for this record. This will be populated if the data has come from a museum or herbaria http://… fiel… &lt;NA&gt; 
 ## # … with 119 more rows</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 4
 ##   id              description                                                                                                              type   link 
 ##   &lt;chr&gt;           &lt;chr&gt;                                                                                                                    &lt;chr&gt;  &lt;chr&gt;
 ## 1 year            http://rs.tdwg.org/dwc/terms/year                                                                                        fields &lt;NA&gt; 
 ## 2 occurrence_year Year ranges for a search. Calculated based on the unique values for a query.                                             fields &lt;NA&gt; 
 ## 3 date_precision  The precision of the date information for the record. Values include &#39;Day&#39;, &#39;Month&#39;, &#39;Year&#39;, &#39;Year range&#39;, &#39;Month range&#39; fields &lt;NA&gt;</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;lagomorpha&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;lagomorpha&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 12
 ##   search_term taxon_concept_id scientific_name scientific_name_authorship rank  kingdom  phylum   class    order      family genus species
 ##   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  
@@ -419,35 +419,35 @@ Living Atlas.</p>
 <p>You can build queries as you normally would in <code>galah</code>.
 For taxonomic queries, use <code>search_taxa()</code> to make sure your
 searches are returning the correct taxonomic data.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;United Kingdom&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;United Kingdom&quot;</span>)</span></code></pre></div>
 <pre><code>## Atlas selected: National Biodiversity Network (NBN) [United Kingdom]</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vlps&quot;</span>)   <span class="co"># Returns no data due to misspelling</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vlps&quot;</span>)   <span class="co"># Returns no data due to misspelling</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   search_term
 ##   &lt;chr&gt;      
 ## 1 vlps</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="co"># Returns data</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="co"># Returns data</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 13
 ##   search_term taxon_concept_id scientific_name scientific_name_authorship rank  kingdom  superclass order     class    genus  phylum   family  species
 ##   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  
 ## 1 vulpes      NBNSYS0000138878 Vulpes          Frisch, 1775               genus Animalia Tetrapoda  Carnivora Mammalia Vulpes Chordata Canidae &lt;NA&gt;</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;vulpes&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&gt;</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   count
 ##   &lt;int&gt;
 ## 1 98760</code></pre>
 <p>Download species occurrence records from other atlases with
 <code>atlas_occurrences()</code></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">atlas =</span> <span class="st">&quot;Guatemala&quot;</span>)</span></code></pre></div>
 <pre><code>## Atlas selected: Sistema Nacional de Información sobre Diversidad Biológica de Guatemala (SNIBgt) [Guatemala]</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Lagomorpha&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&lt;=</span> <span class="dv">1980</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(taxon_name, year) <span class="sc">|&gt;</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Lagomorpha&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">&lt;=</span> <span class="dv">1980</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  <span class="fu">galah_select</span>(taxon_name, year) <span class="sc">|&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 39 × 2
 ##    scientificName                                         year
 ##    &lt;chr&gt;                                                 &lt;dbl&gt;
@@ -470,26 +470,26 @@ from multiple Living Atlases. As an example, setting atlases within a
 loop with <code>galah_config()</code> and <code>purrr::map()</code>
 allows us to return the total number of species records in each Living
 Atlas in one table.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>atlases <span class="ot">&lt;-</span> <span class="fu">show_all</span>(atlases)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">map</span>(atlases<span class="sc">$</span>region, </span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x){</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">galah_config</span>(<span class="at">atlas =</span> x)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">atlas_counts</span>()</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">atlas =</span> atlases<span class="sc">$</span>region, </span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">unlist</span>(counts)) <span class="sc">|&gt;</span> </span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">column =</span> n)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>atlases <span class="ot">&lt;-</span> <span class="fu">show_all</span>(atlases)</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">map</span>(atlases<span class="sc">$</span>region, </span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>  <span class="cf">function</span>(x){</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>    <span class="fu">galah_config</span>(<span class="at">atlas =</span> x)</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>    <span class="fu">atlas_counts</span>()</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>})</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>  <span class="at">atlas =</span> atlases<span class="sc">$</span>region, </span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">unlist</span>(counts)) <span class="sc">|&gt;</span> </span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">column =</span> n)</span></code></pre></div>
 <div id="ngacdzitmc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;

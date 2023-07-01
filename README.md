@@ -5,12 +5,6 @@
 galah
 </h2>
 
-[![codecov](https://codecov.io/gh/AtlasOfLivingAustralia/galah/branch/main/graph/badge.svg)](https://codecov.io/github/AtlasOfLivingAustralia/galah?branch=main)
-[![CRAN
-Status](https://www.r-pkg.org/badges/version/galah)](https://CRAN.R-project.org/package=galah)
-[![CRAN
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/galah)](https://cran.r-project.org/package=galah)
-
 ------------------------------------------------------------------------
 
 `galah` is an R interface to biodiversity data hosted by the ‘living
@@ -34,7 +28,7 @@ consisting of `Node` objects using the `data.tree` package.
 
 The package is named for the bird of the same name (*Eolophus
 roseicapilla*), a widely-distributed endemic Australian species. The
-logo was designed by [Ian Brennan](http://www.iangbrennan.org/).
+logo was designed by [Ian Brennan](https://www.iangbrennan.org/).
 
 If you have any comments, questions or suggestions, please [contact
 us](mailto:support@ala.org.au).
@@ -46,11 +40,11 @@ us](mailto:support@ala.org.au).
 ## Getting started
 
 - The [quick start
-  guide](http://galah.ala.org.au/articles/quick_start_guide.html)
+  guide](https://galah.ala.org.au/R/articles/quick_start_guide.html)
   provides an introduction to the package functions.
 - For an outline of the package structure, and a list of all the
   available functions, run `?galah` or view the [reference
-  page](http://galah.ala.org.au/index.html).
+  page](https://galah.ala.org.au/R/index.html).
 
 ------------------------------------------------------------------------
 

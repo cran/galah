@@ -13,7 +13,7 @@
 #' `galah_filter` uses non-standard evaluation (NSE),
 #' and is designed to be as compatible as possible with `dplyr::filter()`
 #' syntax.
-#'
+#' @rdname galah_filter
 #' @param ... filters, in the form `field logical value`
 #' @param profile 
 #'    `r lifecycle::badge("soft-deprecated")` Use `galah_apply_profile` instead. 
@@ -59,11 +59,13 @@
 #' `galah_filter(cl22 >= "Tasmania")`
 #' 
 #' @examples
+#' \dontrun{
 #' # Filter query results to return records of interest
 #' galah_call() |>
 #'   galah_filter(year >= 2019,
 #'                basisOfRecord == "HumanObservation") |>
 #'   atlas_counts()
+#' }
 #' 
 #' @importFrom rlang caller_env         
 #' @importFrom rlang enquos

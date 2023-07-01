@@ -6,7 +6,10 @@
 #' (i.e. have too many characters or too many vertices) or they will not be
 #' accepted in a query to the ALA.
 #'
-#' @param ... a single `sf` object, WKT string or shapefile. 
+#' @rdname galah_polygon
+#' @param ... When supplied to `galah_polygon()`, a single `sf` object, WKT 
+#' string or shapefile. Currently ignored when supplied to 
+#' `st_crop.data_request()`
 #' @details WKT strings longer than 10000 characters and 
 #' `sf` objects with more than 500 vertices will not be
 #' accepted by the ALA. Some polygons  may need to be simplified.
@@ -18,15 +21,15 @@
 #' returned by [atlas_occurrences()] and related functions.
 #' 
 #' @examples
+#' \dontrun{
 #' # Search for records within a polygon using an `sf` object
-#' location <- 
-#' "POLYGON((143.32 -18.78,145.30 -20.52,141.52 -21.50,143.32 -18.78))" |>
-#'  sf::st_as_sfc()
+#' location <- "POLYGON((142.3 -29.0,142.7 -29.1,142.7 -29.4,142.3 -29.0))" |>
+#'   sf::st_as_sfc()
 #' galah_call() |>
 #'   galah_identify("reptilia") |>
 #'   galah_polygon(location) |>
 #'   atlas_counts()
-#' \dontrun{
+#'
 #' # Search for records using a shapefile
 #' galah_config(email = "your_email_here")
 #' location <- galah_geolocate(sf::st_read(path/to/shapefile.shp))
@@ -34,18 +37,14 @@
 #'   galah_identify("vulpes") |>
 #'   galah_polygon(location) |>
 #'   atlas_occurrences()
-#' }
+#' 
 #' # Search for records using a Well-known Text string (WKT)
-#' wkt <- "POLYGON((142.36228 -29.00703,
-#'                  142.74131 -29.00703,
-#'                  142.74131 -29.39064,
-#'                  142.36228 -29.39064,
-#'                  142.36228 -29.00703))"
+#' wkt <- "POLYGON((142.3 -29.0,142.7 -29.1,142.7 -29.4,142.3 -29.0))"
 #' galah_call() |>
 #'   galah_identify("vulpes") |>
 #'   galah_polygon(wkt) |>
 #'   atlas_counts()
-#' 
+#' }
 #' @importFrom sf st_cast st_as_text st_as_sfc st_is_empty st_is_simple
 #' @importFrom sf st_crs st_geometry st_geometry_type st_is_valid st_simplify st_read
 #' @importFrom rlang try_fetch
