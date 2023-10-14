@@ -1,7 +1,7 @@
 Package: galah
 Type: Package
 Title: Download Biodiversity Data from the GBIF Node Network
-Version: 1.5.3
+Version: 1.5.4
 Authors@R: 
     c(person(given = "Martin",
              family = "Westgate",
@@ -40,10 +40,10 @@ VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2023-06-30 05:41:33 UTC; wes186
+Packaged: 2023-10-13 23:29:24 UTC; wes186
 Author: Martin Westgate [aut, cre],
   Dax Kellie [aut],
   Matilda Stevenson [aut],
   Peggy Newman [aut]
 Repository: CRAN
-Date/Publication: 2023-07-01 07:20:12 UTC
+Date/Publication: 2023-10-14 05:40:03 UTC

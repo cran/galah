@@ -1,6 +1,6 @@
-dd9777f38b992265b4159a3c3f7af005 *DESCRIPTION
+01b6d5f0366a7fed4cfb6533eef07b1c *DESCRIPTION
 9eea6affc31104ed4be20eb04d5947ed *NAMESPACE
-2f7e3e5c6d289c38ea1f826e877f12c7 *NEWS.md
+568fcfb8b6d88841f4792206d8fadf87 *NEWS.md
 6ea1d264149cee9c71a3f8de9f525e83 *R/atlas_citation.R
 cb294019918d5c4e2923658e1ac81a52 *R/atlas_counts.R
 054c8bb96ea4b88f7b9b95e154f32409 *R/atlas_media.R
@@ -52,10 +52,10 @@ b3cc756b9f02eb486388447b0cf9da2d *R/url_download.R
 6c9c5cb5f891bbbfb1330389a06ee1fc *R/url_lookup.R
 2289a878eb15548855d3a990d61958e7 *R/url_paginate.R
 3272320b39717c909c56200135963ef4 *R/url_queue.R
-304378dbecc434959c6d86ebe2fa6ea9 *R/utilities_internal.R
+5883d71b135f21791a62d352d2503fbb *R/utilities_internal.R
 03ef2ff7b056b34d4adf05bda7bf4615 *R/utilities_occurrences.R
 c2c71125d0cecb40d88129686ba21fd1 *R/validate_fields.R
-db07c3c2650d61129747c652ddde4d4e *README.md
+3f83f2120df802d58144a32e38e5b085 *README.md
 30ac329d881dcf840dc06f5f2131da55 *build/vignette.rds
 659e8714613ff940d4a48f12d6954f37 *inst/CITATION
 d69ef3671d76f95cf84f4219bcc06df5 *inst/doc/choosing_an_atlas.Rmd
@@ -81,6 +81,7 @@ cb16385b7a1622cf47c6204e1f2e7ca0 *man/atlas_occurrences.Rd
 e72dc90c4702f0f39f9e70b95c1d41d0 *man/collect_occurrences.Rd
 515ba2edb31e1db817755770d12b71b0 *man/deprecated.Rd
 06772c96183a3be8144a896dbbf2b81c *man/figures/atlases_plot.png
+f654c9394879de7a202b2ea8e4e4d396 *man/figures/galah_cheatsheet_thumbnail.png
 cb1e46f469cfbbbde29c8b5113e1d789 *man/figures/lifecycle-archived.svg
 c0d2e5a54f1fa4ff02bf9533079dd1f7 *man/figures/lifecycle-defunct.svg
 a1b8c987c676c16af790f563f96cbb1f *man/figures/lifecycle-deprecated.svg
@@ -307,7 +308,7 @@ c36f85f5aa7e2aea6a829be95ba9c5c8 *tests/testthat/test-masked-functions.R
 9b20fd3f99752529a754d8693a6c32eb *tests/testthat/test-search_taxa.R
 25098c36fed940d038bf411218ee2797 *tests/testthat/test-show_all.R
 3845bcf5392da6a982a4300969f6227f *tests/testthat/test-show_all_cached_files.R
-c615105306e19f85760baa53194f61a3 *tests/testthat/test-show_values.R
+c402d002ac36c450f996aedd242552af *tests/testthat/test-show_values.R
 496ed1737af2e3d697a1dcfc2ccf95b0 *tests/testthat/test-utilities_internal.R
 ae3b3df9970b49b6523e608759bc957d *tests/testthat/testdata/act_state_polygon_shp/ACT_STATE_POLYGON_shp.cpg
 b79309ecc087a980624fec983549b8e1 *tests/testthat/testdata/act_state_polygon_shp/ACT_STATE_POLYGON_shp.dbf
