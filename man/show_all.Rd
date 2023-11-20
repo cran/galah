@@ -2,51 +2,49 @@
 % Please edit documentation in R/show_all.R
 \name{show_all}
 \alias{show_all}
+\alias{show_all_apis}
 \alias{show_all_assertions}
 \alias{show_all_atlases}
-\alias{show_all_cached_files}
 \alias{show_all_collections}
 \alias{show_all_datasets}
-\alias{show_all_providers}
 \alias{show_all_fields}
-\alias{show_all_reasons}
-\alias{show_all_ranks}
-\alias{show_all_profiles}
 \alias{show_all_licences}
-\alias{show_all_apis}
 \alias{show_all_lists}
+\alias{show_all_profiles}
+\alias{show_all_providers}
+\alias{show_all_ranks}
+\alias{show_all_reasons}
 \title{Show valid record information}
 \usage{
-show_all(type, limit = NULL)
+show_all(..., limit = NULL)
+
+show_all_apis(limit = NULL)
 
 show_all_assertions(limit = NULL)
 
 show_all_atlases(limit = NULL)
 
-show_all_cached_files(limit = NULL)
-
-show_all_apis(limit = NULL)
-
 show_all_collections(limit = NULL)
 
 show_all_datasets(limit = NULL)
-
-show_all_providers(limit = NULL)
 
 show_all_fields(limit = NULL)
 
 show_all_licences(limit = NULL)
 
-show_all_reasons(limit = NULL)
-
-show_all_ranks(limit = NULL)
+show_all_lists(limit = NULL)
 
 show_all_profiles(limit = NULL)
 
-show_all_lists(limit = NULL)
+show_all_providers(limit = NULL)
+
+show_all_ranks(limit = NULL)
+
+show_all_reasons(limit = NULL)
 }
 \arguments{
-\item{type}{A string to specify what type of parameters should be shown.}
+\item{...}{String showing what type of information is to be requested. See
+\code{Details} (below) for accepted values.}
 
 \item{limit}{Optional number of values to return. Defaults to NULL, i.e. all records}
 }
@@ -62,10 +60,9 @@ options or categories for the type of information they are interested in.
 Functions prefixed with \code{show_all_} do this, displaying all valid options
 for the information specified by the suffix.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 \code{show_all()} is a helper function that can display multiple types of
 information from \code{show_all_} sub-functions.
-See \code{Details} (below) for accepted values.
 }
 \details{
 There are five categories of information, each with their own
@@ -99,8 +96,11 @@ show_all(reasons)
 
 # Show a listing of all taxonomic ranks
 show_all(ranks)
-}
 
+# `show_all()` is synonymous with `request_metadata() |> collect()`
+request_metadata(type = "fields") |>
+  collect()
+}
 }
 \references{
 \itemize{

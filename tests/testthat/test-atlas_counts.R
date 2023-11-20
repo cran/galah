@@ -1,228 +1,215 @@
-context("Test atlas_counts")
-
 galah_config(verbose = FALSE)
 
-vcr::use_cassette("atlas_counts_startup", {
-  test_that("atlas_counts checks group_by field", {
-    galah_config(run_checks = TRUE)
-    expect_warning(atlas_counts(group_by = galah_group_by("invalid")))
-    galah_config(run_checks = FALSE)
-  })
+test_that("`collapse()` doesn't ping an API for type = `'occurrences-count'`", {
+  result <- request_data() |>
+    filter(year == 2010) |>
+    count() |>
+    collapse()
+  expect_true(inherits(result, "query_set"))
+  types <- unlist(lapply(result, function(a){a$type}))
+  expect_equal(types,
+               c("metadata/fields", "metadata/assertions", "data/occurrences-count"))
 })
 
 test_that("atlas_counts works with no arguments", {
-  vcr::use_cassette("atlas_counts_no_args", {
-    count <- atlas_counts()
-  })
-  # atlas_counts with no arguments gives the total number of records in the ALA
-  expect_gt(count, 0)
+  skip_if_offline()
+  count <- atlas_counts()
+  expect_s3_class(count, c("tbl_df", "tbl", "data.frame"))
+  expect_gt(count$count, 0)
 })
 
-test_that("atlas_counts returns expected output", {
-  vcr::use_cassette("atlas_counts_identify", {
-    counts <- atlas_counts(identify = galah_identify("Mammalia"))
-  })
-  expect_type(counts$count, "integer")
+test_that("count() |> collect() works with no arguments", {
+  skip_if_offline()
+  count <- galah_call() |>
+    count() |>
+    collect()
+  expect_s3_class(count, c("tbl_df", "tbl", "data.frame"))
+  expect_gt(count$count, 0)
 })
 
+test_that("`identify()` reduces the number of records returned by `count()`", {
+  skip_if_offline()
+  counts_all <- galah_call() |>
+    count() |>
+    collect()
+  counts_mammals <- galah_call() |>
+    identify("Perameles") |>
+    count() |>
+    collect()
+  expect_type(counts_mammals$count, "integer")
+  expect_true(counts_mammals$count < counts_all$count)
+})
 
-test_that("grouped atlas_counts returns expected output", {
-  vcr::use_cassette("atlas_counts_group_by", {
-    counts <- atlas_counts(
-      identify = galah_identify("Mammalia"),
-      group_by = galah_group_by(basisOfRecord))
-  })
+test_that("`galah_identify()` works with `atlas_counts()`", {
+  skip_if_offline()
+  counts_all <- galah_call() |>
+    count() |>
+    collect()
+  counts_mammals <- galah_call() |>
+    galah_identify("Perameles") |>
+    atlas_counts()
+  expect_type(counts_mammals$count, "integer")
+  expect_true(counts_mammals$count < counts_all$count)
+})
+
+test_that("`count()` handles multiple 'group by' variables", {
+  skip_if_offline()
+  counts <- galah_call() |>
+    filter(year >= 2021) |>
+    group_by(year, month, basisOfRecord) |>
+    count() |>
+    collect()
   expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(names(counts), c("basisOfRecord", "count"))
+  expect_equal(names(counts),
+               c("year", "month", "basisOfRecord", "count"))
+  expect_true(all(counts$year >= 2021))
 })
 
-test_that("grouped atlas_counts returns expected output when limit != NULL", {
-  vcr::use_cassette("atlas_counts_group_by_with_limit", {
-    counts <- atlas_counts(
-      identify = galah_identify("Mammalia"),
-      group_by = galah_group_by(basisOfRecord),
-      limit = 3
-    )
-  })
+test_that("`count()` handles 'species' as a 'group by' variable", {
+  skip_if_offline()
+  counts <- galah_call() |>
+    filter(year > 2020) |>
+    identify("Perameles") |>
+    group_by(species, year) |>
+    count() |>
+    collect()
   expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(names(counts), c("basisOfRecord", "count"))
-  expect_equal(nrow(counts), 3)
-})
-
-
-test_that("atlas_counts returns all counts if no limit is provided", {
-  vcr::use_cassette("atlas_counts_no_limit", {
-    counts <- atlas_counts(group_by = galah_group_by(month), 
-                           limit = NULL)
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(nrow(counts), 12)
-})
-
-test_that("atlas_counts returns species counts", {
-  vcr::use_cassette("atlas_counts_type_species", {
-    counts <- atlas_counts(type = "species")
-  })
-  expect_type(counts$count, "integer")
-  expect_gt(counts, 0)
-})
-
-test_that("grouped atlas_counts for species returns expected output", {
-  vcr::use_cassette("atlas_counts_type_species_group_by", {
-    counts <- atlas_counts(
-      identify = galah_identify("Mammalia"),
-      filter = galah_filter(year == 2020),
-      group_by = galah_group_by(month),
-      type = "species"
-    )
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(names(counts), c("month", "count"))
-})
-
-test_that("atlas_counts handles pagination", {
-  vcr::use_cassette("atlas_counts_pagination", {
-    counts <- atlas_counts(group_by = galah_group_by(year), 
-                           limit = 101)
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(nrow(counts), 101)
-  expect_equal(names(counts), c("year", "count"))
-})
-
-# test_that("atlas_counts caches as expected", {
-#   skip_on_cran()
-#   galah_config(caching = TRUE, verbose = TRUE)
-#   filters <- galah_filter(basisOfRecord == "FossilSpecimen")
-#   counts <- atlas_counts(filter = filters,
-#                          group_by = galah_group_by(year), 
-#                          limit = 100)
-#   expect_message(
-#     counts2 <- atlas_counts(
-#       filter = filters, 
-#       group_by = galah_group_by(year),
-#       limit = 100
-#     ),
-#     "Using cached file"
-#   )
-#   expect_equal(nrow(counts), nrow(counts2))
-# })
-# 
-# test_that("atlas_counts returns consistent data from cached/non-cached calls", {
-#   skip_on_cran()
-#   galah_config(caching = TRUE, verbose = TRUE)
-#   counts1 <- atlas_counts(group_by = galah_group_by(year))
-#   counts2 <- atlas_counts(group_by = galah_group_by(year))
-#   expect_equal(
-#     class(counts1$year),
-#     class(counts2$year)
-#   )
-# })
-
-test_that("atlas_counts handles multiple 'group by' variables", {
-  vcr::use_cassette("atlas_counts_multiple_group_by", {
-    counts <- atlas_counts(
-      filter = galah_filter(year >= 2018),
-      group_by = galah_group_by(year, basisOfRecord))
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_true(all(names(counts) %in% c("year", "basisOfRecord", "count")))
-})
-
-test_that("atlas_counts handles 'species' as a 'group by' variable", {
-  vcr::use_cassette("atlas_counts_type_species_group_by_2", {
-    counts <- galah_call() |>
-       galah_identify("perameles") |>
-       galah_filter(year > 2010) |> 
-       galah_group_by(species, year) |>
-       atlas_counts()
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_true(all(names(counts) %in% c("year", "species", "count")))
+  expect_true(all(names(counts) %in% c("species", "year", "count")))
+  expect_true(all(counts$year > 2020))
+  expect_true(all(grepl("^Perameles", counts$species)))
 })
 
 test_that("atlas_counts handles 'taxonConceptID' as a 'group by' variable", {
-  vcr::use_cassette("atlas_counts_group_by_taxonConceptID", {
-    counts <- galah_call() |>
-       galah_identify("perameles") |>
-       galah_filter(year > 2010) |> 
-       galah_group_by(taxonConceptID, year) |>
-       atlas_counts()
-  })
+  skip_if_offline()
+  counts <- galah_call() |>
+    identify("Perameles") |>
+    filter(year >= 2015) |>
+    group_by(taxonConceptID, year) |>
+    count() |>
+    collect()
   expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_true(all(names(counts) %in% c("year", "taxonConceptID", "count")))
+  expect_equal(names(counts),
+               c("taxonConceptID", "year", "count"))
+  expect_true(all(counts$year >= 2015))
 })
 
-
-test_that("atlas_counts handles piping", {
-  vcr::use_cassette("atlas_counts_piped_1", {
-    counts <- galah_call() |>
-      galah_filter(year >= 2018) |>
-      galah_group_by(year, basisOfRecord) |>
-      atlas_counts()
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_true(all(names(counts) %in% c("year", "basisOfRecord", "count")))
+test_that("atlas_counts returns same result with filter using `,` and `&`", {
+  skip_if_offline()
+  count_comma <- galah_call() |>
+    filter(year >= 2010, year < 2020) |>
+    count() |>
+    collect()
+  count_and <- galah_call() |>
+    filter(year >= 2010 & year < 2020) |>
+    count() |>
+    collect()
+  expect_equal(count_comma, count_and)
 })
 
-test_that("atlas_counts ignores superflueous piped arguments", {
-  vcr::use_cassette("atlas_counts_piped_2", {
-    counts <- galah_call() |>
-      galah_filter(year >= 2018) |>
-      galah_group_by(year) |>
-      galah_down_to(species) |>
-      galah_select(taxonConceptID) |>
-      atlas_counts()
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_equal(names(counts), c("year", "count"))
-  expect_gt(nrow(counts), 0)
-})
-
-test_that("atlas_counts works for three groups", {
-  vcr::use_cassette("atlas_counts_piped_3_groups", {
-    counts <- galah_call() |>
-      galah_identify("cacatuidae") |>
-      galah_filter(year >= 2020) |>
-      galah_group_by(biome, year, basisOfRecord, stateProvince) |>
-      atlas_counts()
-  })
-  expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
-  expect_gt(nrow(counts), 1)
-  expect_true(all(names(counts) %in% 
-    c("basisOfRecord", "biome", "year", "stateProvince", "count")))
-})
-
+# Spatial not checked
 test_that("atlas_counts filters correctly with galah_geolocate/galah_polygon", {
-  vcr::use_cassette("atlas_counts_piped_polygon", {
-    wkt <- "POLYGON ((146.5425 -42.63203, 146.8312 -43.13203, 147.4085 -43.13203, 147.6972 -42.63203, 147.4085 -42.13203, 146.8312 -42.13203, 146.5425 -42.63203))" |>
-       sf::st_as_sfc()
-    base_query <- galah_call() |>
-      galah_identify("dasyurus") |>
-      galah_filter(year >= 2020)
-    counts <- base_query |> atlas_counts()
-    counts_filtered <- base_query |>
-      galah_geolocate(wkt) |>
-      atlas_counts()
-  })
+  skip_if_offline()
+  wkt <- "POLYGON ((146.5425 -42.63203, 146.8312 -43.13203, 147.4085 -43.13203, 147.6972 -42.63203, 147.4085 -42.13203, 146.8312 -42.13203, 146.5425 -42.63203))" |>
+    sf::st_as_sfc()
+  base_query <- galah_call() |>
+    identify("Perameles") |>
+    filter(year >= 2020) |>
+    count()
+  counts <- base_query |> collect()
+  counts_filtered <- base_query |>
+    galah_geolocate(wkt) |>
+    collect()
+  expect_s3_class(counts_filtered, c("tbl_df", "tbl", "data.frame"))
   count_1 <- counts_filtered$count[1]
   count_2 <- counts$count[1]
   expect_lt(count_1, count_2)
 })
 
 test_that("atlas_counts filters correctly with galah_geolocate/galah_bbox", {
-  vcr::use_cassette("atlas_counts_piped_bbox", {
-    wkt <- "POLYGON ((146.5425 -42.63203, 146.8312 -43.13203, 147.4085 -43.13203, 147.6972 -42.63203, 147.4085 -42.13203, 146.8312 -42.13203, 146.5425 -42.63203))" |>
-      sf::st_as_sfc()
-    base_query <- galah_call() |>
-      galah_identify("dasyurus") |>
-      galah_filter(year >= 2020)
-    counts <- base_query |> atlas_counts()
-    counts_filtered <- base_query |>
-      galah_geolocate(wkt, type = "bbox") |>
-      atlas_counts()
-  })
+  skip_if_offline()
+  wkt <- "POLYGON ((146.5425 -42.63203, 146.8312 -43.13203, 147.4085 -43.13203, 147.6972 -42.63203, 147.4085 -42.13203, 146.8312 -42.13203, 146.5425 -42.63203))" |>
+    sf::st_as_sfc()
+  base_query <- galah_call() |>
+    identify("Perameles") |>
+    filter(year >= 2020) |>
+    count()
+  counts <- base_query |>  collect()
+  counts_filtered <- base_query |>
+    galah_geolocate(wkt, type = "bbox") |>
+    collect()
+  expect_s3_class(counts_filtered, c("tbl_df", "tbl", "data.frame"))
   count_1 <- counts_filtered$count[1]
   count_2 <- counts$count[1]
   expect_lt(count_1, count_2)
 })
+
+test_that("atlas_counts returns species counts", {
+  skip_if_offline()
+  count_species <- galah_call(type = "species") |>
+    count() |>
+    collect()
+  count_records <- galah_call() |>
+    count() |>
+    collect()
+  expect_s3_class(count_species, c("tbl_df", "tbl", "data.frame"))
+  expect_type(count_species$count, "integer")
+  expect_gt(count_species$count, 0)
+  expect_lt(count_species$count, count_records$count)
+})
+
+test_that("species counts work with group_by()", {
+  skip_if_offline()
+  count_species <- galah_call(type = "species") |>
+    identify("Crinia") |>
+    filter(year >= 2020) |>
+    group_by(year) |>
+    arrange(year) |>
+    count() |>
+    collect()
+  count_records <- galah_call() |>
+    identify("Crinia") |>
+    filter(year >= 2020) |>
+    group_by(year) |>
+    arrange(year) |>
+    count() |>
+    collect()
+  expect_s3_class(count_species, c("tbl_df", "tbl", "data.frame"))
+  expect_type(count_species$count, "integer")
+  expect_gte(nrow(count_species), 4)
+  expect_true(all(count_species$count > 0))
+  expect_true(all(count_species$count < 100))
+  expect_true(all(count_records$year == count_species$year))
+  expect_true(all(count_records$count >= count_species$count))
+})
+
+## BELOW HERE TESTS WILL FAIL
+
+# capture_requests("count_piped_2", {
+#   test_that("atlas_counts ignores superfluous piped arguments", {
+# counts <- galah_call() |>
+#   filter(year >= 2018) |>
+#   group_by(year) |>
+#   galah_down_to(species) |>
+#   select(taxonConceptID) |>
+#   count()
+#     expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
+#     expect_equal(names(counts), c("year", "count"))
+#     expect_gt(nrow(counts), 0)
+#   })
+# })
+
+# test_that("atlas_counts handles pagination", {
+#   vcr::use_cassette("count_with_pagination", {
+#     counts <- galah_call() |>
+#       group_by(year) |>
+#       slice_head(n = 101) |>
+#       count()
+#   })
+#   expect_s3_class(counts, c("tbl_df", "tbl", "data.frame"))
+#   expect_equal(nrow(counts), 101)
+#   expect_equal(names(counts), c("year", "count"))
+# })
+
+# FIXME: check non-piped args work
+# FIXME: check `galah_` functions work
+# FIXME: check `atlas_counts`

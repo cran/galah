@@ -4,31 +4,24 @@
 \alias{collect_media}
 \title{Collect media files}
 \usage{
-collect_media(
-  df,
-  type = c("full", "thumbnail"),
-  path,
-  download_dir,
-  refresh_cache
-)
+collect_media(df, thumbnail = FALSE, path)
 }
 \arguments{
-\item{df}{tibble returned by \code{atlas_media()} or \code{show_all(media)}}
+\item{df}{\code{tibble}: returned by \code{atlas_media()} or a pipe starting with
+\code{request_data(type = "media")}.}
 
-\item{type}{\code{string}: either \code{"full"} to download original images, or
-\code{"thumbnail"} to download thumbnails}
+\item{thumbnail}{\code{logical}: If \code{TRUE} will download small thumbnail-sized
+images, rather than full size images (default).}
 
-\item{path}{\code{string}: path to directory where downloaded media will
-be stored}
-
-\item{download_dir}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{path} instead.}
-
-\item{refresh_cache}{\code{logical}: if set to \code{TRUE} and
-\code{galah_config(caching = TRUE)} then files cached from a previous query will
-be replaced by the current query. NOTE: Unclear that this works right now.}
+\item{path}{\code{string}:
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+Use \verb{galah_config(directory = "path-to-directory)"} instead. Supply a path
+to a local folder/directory where downloaded media will be saved to.}
 }
 \value{
-Available image & media files downloaded to a user local directory.
+Invisibly returns a \code{tibble} listing the number of files downloaded,
+grouped by their HTML status codes. Primarily called for the side effect of
+downloading available image & media files to a user local directory.
 }
 \description{
 This function downloads full-sized or thumbnail images and media files using
@@ -37,17 +30,13 @@ information from \code{atlas_media} to a local directory.
 \examples{
 \dontrun{
 # Use `atlas_media()` to return a `tibble` of records that contain media
-galah_call() |> 
+x <- galah_call() |> 
   galah_identify("perameles") |>
   galah_filter(year == 2015) |>
   atlas_media()
 
 # To download media files, add `collect_media()` to the end of a query 
-galah_call() |> 
-  galah_identify("perameles") |>
-  galah_filter(year == 2015) |>
-  atlas_media() |>
-  collect_media(path = here::here("folder", "subfolder"))
+galah_config(directory = "media_files")
+collect_media(x)
 }
-
 }

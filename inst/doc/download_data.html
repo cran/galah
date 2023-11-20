@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2023-01-18" />
+<meta name="date" content="2023-11-07" />
 
 <title>Download data</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Download data</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2023-01-18</h4>
+<h4 class="date">2023-11-07</h4>
 
 
 
@@ -368,26 +368,27 @@ specified atlas, without needing to download all the records.</p>
 <pre><code>## # A tibble: 1 × 1
 ##       count
 ##       &lt;int&gt;
-## 1 113038010</code></pre>
+## 1 131963195</code></pre>
 <p>In addition to the filter arguments, it has an optional
 <code>group_by</code> argument, which provides counts binned by the
 requested field.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(kingdom) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 10 × 2
-##    kingdom      count
-##    &lt;chr&gt;        &lt;int&gt;
-##  1 Animalia  85615774
-##  2 Plantae   23758697
-##  3 Fungi      2086631
-##  4 Chromista   854754
-##  5 Protista    145019
-##  6 Bacteria     71523
-##  7 Protozoa      3250
-##  8 Eukaryota     1344
-##  9 Archaea       1106
-## 10 Virus          495</code></pre>
+<pre><code>## # A tibble: 11 × 2
+##    kingdom       count
+##    &lt;chr&gt;         &lt;int&gt;
+##  1 Animalia  101176164
+##  2 Plantae    26026027
+##  3 Fungi       2285235
+##  4 Chromista   1020325
+##  5 Protista     352282
+##  6 Bacteria     113165
+##  7 Eukaryota      8821
+##  8 Protozoa       4716
+##  9 Archaea        4120
+## 10 Virus          2306
+## 11 Viroid          103</code></pre>
 </div>
 <div id="species-lists" class="section level1">
 <h1>Species lists</h1>
@@ -405,15 +406,14 @@ flexible by supporting filtering:</p>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  </span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>species <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 10
-##   kingdom  phylum   class    order    family  genus        species                     author            species_guid               verna…¹
-##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;                       &lt;chr&gt;             &lt;chr&gt;                      &lt;chr&gt;  
-## 1 Animalia Chordata Mammalia Rodentia Muridae Mesembriomys Mesembriomys gouldii        (J.E. Gray, 1843) https://biodiversity.org.… Black-…
-## 2 Animalia Chordata Mammalia Rodentia Muridae Zyzomys      Zyzomys argurus             (Thomas, 1889)    https://biodiversity.org.… Common…
-## 3 Animalia Chordata Mammalia Rodentia Muridae Pseudomys    Pseudomys hermannsburgensis (Waite, 1896)     https://biodiversity.org.… Sandy …
-## 4 Animalia Chordata Mammalia Rodentia Muridae Notomys      Notomys alexis              Thomas, 1922      https://biodiversity.org.… Spinif…
-## 5 Animalia Chordata Mammalia Rodentia Muridae Melomys      Melomys burtoni             (Ramsay, 1887)    https://biodiversity.org.… Grassl…
-## 6 Animalia Chordata Mammalia Rodentia Muridae Mus          Mus musculus                Linnaeus, 1758    https://biodiversity.org.… House …
-## # … with abbreviated variable name ¹​vernacular_name</code></pre>
+##   kingdom  phylum   class    order  family genus species author species_guid vernacular_name
+##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;          
+## 1 Animalia Chordata Mammalia Roden… Murid… Pseu… Pseudo… (Goul… https://bio… Delicate Mouse 
+## 2 Animalia Chordata Mammalia Roden… Murid… Mese… Mesemb… (J.E.… https://bio… Black-footed T…
+## 3 Animalia Chordata Mammalia Roden… Murid… Zyzo… Zyzomy… (Thom… https://bio… Common Rock-rat
+## 4 Animalia Chordata Mammalia Roden… Murid… Pseu… Pseudo… (Wait… https://bio… Sandy Inland M…
+## 5 Animalia Chordata Mammalia Roden… Murid… Melo… Melomy… (Rams… https://bio… Grassland Melo…
+## 6 Animalia Chordata Mammalia Roden… Murid… Noto… Notomy… Thoma… https://bio… Spinifex Hoppi…</code></pre>
 </div>
 <div id="occurrence-data" class="section level1">
 <h1>Occurrence data</h1>
@@ -431,19 +431,22 @@ section</a></p>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">profile =</span> <span class="st">&quot;ALA&quot;</span></span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">galah_select</span>(institutionID, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  </span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>occ <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span></code></pre></div>
+<pre><code>## Retrying in 1 seconds.
+## Retrying in 2 seconds.
+## Retrying in 4 seconds.</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>occ <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##   decimalLatitude decimalLongitude eventDate           scientificName        taxonConceptID                 recor…¹ dataR…² occur…³ insti…⁴
-##             &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;                 &lt;chr&gt;                          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;lgl&gt;  
-## 1           -35.9             149. 2020-09-12 14:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… 17f46d… eBird … PRESENT NA     
-## 2           -35.9             149. 2021-09-27 14:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… dbb711… eBird … PRESENT NA     
-## 3           -35.9             149. 2012-01-18 13:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… 4f7cd7… BirdLi… PRESENT NA     
-## 4           -35.9             149. 2017-03-17 13:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… 3236c4… eBird … PRESENT NA     
-## 5           -35.9             149. 2020-11-14 13:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… ef2b90… eBird … PRESENT NA     
-## 6           -35.8             149. 2021-04-02 13:00:00 Eolophus roseicapilla https://biodiversity.org.au/a… 45a589… eBird … PRESENT NA     
-## # … with abbreviated variable names ¹​recordID, ²​dataResourceName, ³​occurrenceStatus, ⁴​institutionID</code></pre>
+##   recordID                    scientificName taxonConceptID decimalLatitude decimalLongitude
+##   &lt;chr&gt;                       &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt;
+## 1 0000a928-d756-42eb-8058-6f… Eolophus rose… https://biodi…           -35.6             149.
+## 2 0001bc78-d2e9-48aa-8b9d-d6… Eolophus rose… https://biodi…           -35.2             149.
+## 3 0002064f-08ea-425b-97c5-26… Eolophus rose… https://biodi…           -35.3             149.
+## 4 00022dd2-9f85-4802-b837-7f… Eolophus rose… https://biodi…           -35.3             149.
+## 5 0002cc35-8d5a-4d20-8012-12… Eolophus rose… https://biodi…           -35.3             149.
+## 6 00030a8c-082f-44f0-898a-ad… Eolophus rose… https://biodi…           -35.3             149.
+## # ℹ 4 more variables: eventDate &lt;dttm&gt;, occurrenceStatus &lt;chr&gt;, dataResourceName &lt;chr&gt;,
+## #   institutionID &lt;lgl&gt;</code></pre>
 </div>
 <div id="media-metadata" class="section level1">
 <h1>Media metadata</h1>
@@ -452,102 +455,81 @@ attributes, ALA stores images, sounds and videos associated with a given
 record. Metadata on these records can be downloaded to <code>R</code>
 using <code>atlas_media()</code> and the same set of filters as the
 other data download functions.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>media_data <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>    year <span class="sc">==</span> <span class="dv">2020</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    cl22 <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="fu">atlas_media</span>()</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  </span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>media_data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 20
-##   decima…¹ decim…² eventDate           scien…³ taxon…⁴ recor…⁵ dataR…⁶ occur…⁷ multi…⁸ media…⁹ mime_…˟ size_…˟ date_…˟ date_…˟ height width
-##      &lt;dbl&gt;   &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;int&gt;
-## 1    -35.6    149. 2020-08-04 01:50:00 Eoloph… https:… 063bb0… iNatur… PRESENT Image   2f4d32… image/… 2654217 2020-0… 2020-0…   1200  1800
-## 2    -35.6    149. 2020-08-04 01:50:00 Eoloph… https:… 063bb0… iNatur… PRESENT Image   734074… image/… 2422643 2020-0… 2020-0…   1200  1800
-## 3    -35.6    149. 2020-08-04 01:50:00 Eoloph… https:… 063bb0… iNatur… PRESENT Image   89171c… image/… 2212660 2020-0… 2020-0…   1200  1800
-## 4    -35.6    149. 2020-08-04 01:50:00 Eoloph… https:… 063bb0… iNatur… PRESENT Image   e681d3… image/… 3414736 2020-0… 2020-0…   1200  1800
-## 5    -35.5    149. 2020-08-26 01:53:00 Eoloph… https:… 286841… iNatur… PRESENT Image   1295c2… image/…  863158 2021-0… 2021-0…   1200  1800
-## 6    -35.5    149. 2020-10-14 02:34:00 Eoloph… https:… 064a39… iNatur… PRESENT Image   f97686… image/…  955916 2020-1… 2020-1…   1200  1800
-## # … with 4 more variables: creator &lt;chr&gt;, license &lt;chr&gt;, data_resource_uid &lt;chr&gt;, occurrence_id &lt;chr&gt;, and abbreviated variable names
-## #   ¹​decimalLatitude, ²​decimalLongitude, ³​scientificName, ⁴​taxonConceptID, ⁵​recordID, ⁶​dataResourceName, ⁷​occurrenceStatus, ⁸​multimedia,
-## #   ⁹​media_id, ˟​mime_type, ˟​size_in_bytes, ˟​date_uploaded, ˟​date_taken</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>media_data <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;Eolophus roseicapilla&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    year <span class="sc">==</span> <span class="dv">2020</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    cl22 <span class="sc">==</span> <span class="st">&quot;Australian Capital Territory&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">atlas_media</span>()</span></code></pre></div>
+<pre><code>## Retrying in 1 seconds.</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>media_data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 19
+##   media_id           recordID scientificName taxonConceptID decimalLatitude decimalLongitude
+##   &lt;chr&gt;              &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt;
+## 1 ff8322d0-f44c-47a… 003a192… Eolophus rose… https://biodi…           -35.3             149.
+## 2 c66fc819-7022-44f… 015ee7c… Eolophus rose… https://biodi…           -35.4             149.
+## 3 fe6d7b94-9e61-4ac… 05e86b7… Eolophus rose… https://biodi…           -35.4             149.
+## 4 2f4d32c0-a084-4bb… 063bb0f… Eolophus rose… https://biodi…           -35.6             149.
+## 5 73407414-0707-429… 063bb0f… Eolophus rose… https://biodi…           -35.6             149.
+## 6 89171c49-5a64-423… 063bb0f… Eolophus rose… https://biodi…           -35.6             149.
+## # ℹ 13 more variables: eventDate &lt;dttm&gt;, occurrenceStatus &lt;chr&gt;, dataResourceName &lt;chr&gt;,
+## #   multimedia &lt;chr&gt;, images &lt;chr&gt;, videos &lt;lgl&gt;, sounds &lt;lgl&gt;, creator &lt;chr&gt;,
+## #   license &lt;chr&gt;, mimetype &lt;chr&gt;, width &lt;int&gt;, height &lt;int&gt;, image_url &lt;chr&gt;</code></pre>
 <p>To actually download the media files to your computer, use
 [collect_media()].</p>
 </div>
 <div id="taxonomic-trees" class="section level1">
 <h1>Taxonomic trees</h1>
 <p><code>atlas_taxonomy</code> provides a way to build taxonomic trees
-from one clade down to another using ALA’s internal taxonomy. Specify
-which taxonomic level your tree will go down to with
-<code>galah_down_to</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>classes <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;chordata&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">galah_down_to</span>(class) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">atlas_taxonomy</span>()</span></code></pre></div>
-<p>This function is unique within <code>galah</code> as it is the only
-function that returns a <code>data.tree</code>, rather than a
-<code>tibble</code>.</p>
-<pre><code>##                             levelName
-## 1  Chordata                          
-## 2   ¦--Cephalochordata               
-## 3   ¦   °--Amphioxi                  
-## 4   ¦--Craniata                      
-## 5   ¦   °--Agnatha                   
-## 6   ¦       ¦--Cephalasipidomorphi   
-## 7   ¦       °--Myxini                
-## 8   ¦--Tunicata                      
-## 9   ¦   ¦--Appendicularia            
-## 10  ¦   ¦--Ascidiacea                
-## 11  ¦   °--Thaliacea                 
-## 12  °--Vertebrata                    
-## 13      °--Gnathostomata             
-## 14          ¦--Amphibia              
-## 15          ¦--Aves                  
-## 16          ¦--Mammalia              
-## 17          ¦--Pisces                
-## 18          ¦   ¦--Actinopterygii    
-## 19          ¦   ¦--Chondrichthyes    
-## 20          ¦   ¦--Cephalaspidomorphi
-## 21          ¦   °--Sarcopterygii     
-## 22          °--Reptilia</code></pre>
-<p>Although the tree format is useful, converting to a
-<code>data.frame</code> is straightforward.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>data.tree<span class="sc">::</span><span class="fu">ToDataFrameTypeCol</span>(classes, <span class="at">type =</span> <span class="st">&quot;rank&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
-<pre><code>##   rank_phylum  rank_subphylum rank_superclass rank_informal          rank_class
-## 1    Chordata Cephalochordata            &lt;NA&gt;          &lt;NA&gt;            Amphioxi
-## 2    Chordata        Craniata         Agnatha          &lt;NA&gt; Cephalasipidomorphi
-## 3    Chordata        Craniata         Agnatha          &lt;NA&gt;              Myxini
-## 4    Chordata        Tunicata            &lt;NA&gt;          &lt;NA&gt;      Appendicularia
-## 5    Chordata        Tunicata            &lt;NA&gt;          &lt;NA&gt;          Ascidiacea
-## 6    Chordata        Tunicata            &lt;NA&gt;          &lt;NA&gt;           Thaliacea</code></pre>
+from one clade down to another using each service’s internal taxonomy.
+Specify which taxonomic level your tree will go down to with
+<code>galah_filter()</code> using the <code>rank</code> argument.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">&quot;chordata&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(rank <span class="sc">==</span> class) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="fu">atlas_taxonomy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 19 × 4
+##    name            rank      parent_taxon_concept_id                        taxon_concept_id
+##    &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;                                          &lt;chr&gt;           
+##  1 Chordata        phylum    &lt;NA&gt;                                           https://biodive…
+##  2 Cephalochordata subphylum https://biodiversity.org.au/afd/taxa/065f1da4… https://biodive…
+##  3 Tunicata        subphylum https://biodiversity.org.au/afd/taxa/065f1da4… https://biodive…
+##  4 Appendicularia  class     https://biodiversity.org.au/afd/taxa/1c20ed62… https://biodive…
+##  5 Ascidiacea      class     https://biodiversity.org.au/afd/taxa/1c20ed62… https://biodive…
+##  6 Thaliacea       class     https://biodiversity.org.au/afd/taxa/1c20ed62… https://biodive…
+##  7 Vertebrata      subphylum https://biodiversity.org.au/afd/taxa/065f1da4… https://biodive…
+##  8 Agnatha         informal  https://biodiversity.org.au/afd/taxa/5d6076b1… https://biodive…
+##  9 Myxini          informal  https://biodiversity.org.au/afd/taxa/66db22c8… https://biodive…
+## 10 Petromyzontida  informal  https://biodiversity.org.au/afd/taxa/66db22c8… https://biodive…
+## 11 Gnathostomata   informal  https://biodiversity.org.au/afd/taxa/5d6076b1… https://biodive…
+## 12 Amphibia        class     https://biodiversity.org.au/afd/taxa/ef5515fd… https://biodive…
+## 13 Aves            class     https://biodiversity.org.au/afd/taxa/ef5515fd… https://biodive…
+## 14 Mammalia        class     https://biodiversity.org.au/afd/taxa/ef5515fd… https://biodive…
+## 15 Pisces          informal  https://biodiversity.org.au/afd/taxa/ef5515fd… https://biodive…
+## 16 Actinopterygii  class     https://biodiversity.org.au/afd/taxa/e22efeb4… https://biodive…
+## 17 Chondrichthyes  class     https://biodiversity.org.au/afd/taxa/e22efeb4… https://biodive…
+## 18 Sarcopterygii   class     https://biodiversity.org.au/afd/taxa/e22efeb4… https://biodive…
+## 19 Reptilia        class     https://biodiversity.org.au/afd/taxa/ef5515fd… https://biodive…</code></pre>
 </div>
 <div id="configuring-galah" class="section level1">
 <h1>Configuring <code>galah</code></h1>
-<p>Various aspects of the galah package can be customized. To preserve
-configuration for future sessions, set <code>profile_path</code> to a
-location of a <code>.Rprofile</code> file.</p>
+<p>Various aspects of the galah package can be customized.</p>
 <div id="email" class="section level2">
 <h2>Email</h2>
 <p>To download occurrence records, you will need to provide an email
-address registered with the ALA. You can create an account <a href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>.
-Once an email is registered with the ALA, it should be stored in the
-config:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;myemail@gmail.com&quot;</span>)</span></code></pre></div>
+address registered with the service that you want to use (e.g. for the
+ALA you can create an account <a href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>).
+Once an email is registered, it should be stored in the config:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;myemail@gmail.com&quot;</span>)</span></code></pre></div>
 </div>
-<div id="caching" class="section level2">
-<h2>Caching</h2>
-<p><code>galah</code> can cache most results to local files. This means
-that if the same code is run multiple times, the second and subsequent
-iterations will be faster.</p>
-<p>By default, this caching is session-based, meaning that the local
-files are stored in a temporary directory that is automatically deleted
-when the R session is ended. This behaviour can be altered so that
-caching is permanent, by setting the caching directory to a
-non-temporary location.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">cache_directory =</span> <span class="st">&quot;example/dir&quot;</span>)</span></code></pre></div>
-<p>By default, caching is turned off. To turn caching on, run</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">caching =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="setting-your-directory" class="section level2">
+<h2>Setting your directory</h2>
+<p>By default, <code>galah</code> stores downloads in a temporary
+folder, meaning that the local files are automatically deleted when the
+R session is ended. This behaviour can be altered so that downloaded
+files are preserved by setting the directory to a non-temporary
+location.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">directory =</span> <span class="st">&quot;example/dir&quot;</span>)</span></code></pre></div>
 </div>
 <div id="setting-the-download-reason" class="section level2">
 <h2>Setting the download reason</h2>
@@ -556,14 +538,14 @@ data (via the galah <code>atlas_occurrences()</code> function). The
 reason is set as “scientific research” by default, but you can change
 this using <code>galah_config()</code>. See
 <code>show_all_reasons()</code> for valid download reasons.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">download_reason_id =</span> your_reason_id)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">download_reason_id =</span> your_reason_id)</span></code></pre></div>
 </div>
 <div id="debugging" class="section level2">
 <h2>Debugging</h2>
 <p>If things aren’t working as expected, more detail (particularly about
 web requests and caching behaviour) can be obtained by setting the
 <code>verbose</code> configuration option:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 

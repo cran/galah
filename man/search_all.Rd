@@ -13,14 +13,16 @@
 \alias{search_datasets}
 \alias{search_licences}
 \alias{search_apis}
+\alias{search_identifiers}
 \alias{search_lists}
+\alias{search_taxa}
 \title{Search for record information}
 \usage{
 search_all(type, query)
 
-search_apis(query)
-
 search_assertions(query)
+
+search_apis(query)
 
 search_atlases(query)
 
@@ -28,25 +30,31 @@ search_collections(query)
 
 search_datasets(query)
 
-search_providers(query)
-
 search_fields(query)
+
+search_identifiers(...)
 
 search_licences(query)
 
-search_reasons(query)
-
-search_ranks(query)
+search_lists(query)
 
 search_profiles(query)
 
-search_lists(query)
+search_providers(query)
+
+search_ranks(query)
+
+search_reasons(query)
+
+search_taxa(...)
 }
 \arguments{
 \item{type}{A string to specify what type of parameters should be searched.}
 
 \item{query}{A string specifying a search term. Searches are not
 case-sensitive.}
+
+\item{...}{A set of strings or a tibble to be queried}
 }
 \value{
 An object of class \code{tbl_df} and \code{data.frame} (aka a tibble)
@@ -61,7 +69,7 @@ Functions prefixed with \code{search_} do this, displaying any matches to a
 search term within the valid options for the information specified by the
 suffix.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 \code{search_all()} is a helper function that can do searches within multiple
 types of information from \code{search_} sub-functions.
 See \code{Details} (below) for accepted values.
@@ -109,8 +117,13 @@ search_all(lists, "endangered") # equivalent
 
 # Search for a valid taxonomic rank, "subphylum"
 search_all(ranks, "subphylum")
-}
 
+# An alternative is to download the data and then `filter` it. This is 
+# largely synonymous, and allows greater control over which fields are searched.
+request_metadata(type = "fields") |>
+ collect() |>
+ dplyr::filter(grepl("date", id))
+}
 }
 \references{
 \itemize{

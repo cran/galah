@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Martin Westgate, Dax Kellie" />
+
+<meta name="date" content="2023-10-26" />
+
+<title>Object-Oriented Programming in galah</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Object-Oriented Programming in galah</h1>
+<h4 class="author">Martin Westgate, Dax Kellie</h4>
+<h4 class="date">2023-10-26</h4>
+
+
+
+<p>From version 2.0 onwards, galah is built around object-oriented
+programming principles. In practice, this won’t change the experience
+for most users. However, it does enable new ways of programming that
+were not previously available.</p>
+<div id="masked-functions" class="section level2">
+<h2>Masked functions</h2>
+<p>The default method for building queries in galah is to first use
+<code>galah_call()</code> to create a query object called a
+<code>data_request</code>. This object class is specific to galah.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">class</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;data_request&quot;</code></pre>
+<p>When an object is of class <code>data_request</code>, galah can
+trigger functions to use specific methods for this object class, even if
+a function name is used by another package. For example, users can use
+<code>filter()</code> and <code>group_by()</code> functions from <a href="https://dplyr.tidyverse.org/index.html">dplyr</a> instead of
+<code>galah_filter()</code> and <code>galah_group_by()</code> to
+construct a query. Consequently, the following queries are
+synonymous:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>, year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>, year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 16 × 2
+##    species                 count
+##    &lt;chr&gt;                   &lt;int&gt;
+##  1 Crinia signifera        57878
+##  2 Crinia parinsignifera   12478
+##  3 Crinia glauerti          3090
+##  4 Crinia georgiana         1490
+##  5 Crinia remota             784
+##  6 Crinia sloanei            644
+##  7 Crinia insignifera        536
+##  8 Crinia tinnula            417
+##  9 Crinia deserticola        278
+## 10 Crinia pseudinsignifera   235
+## 11 Crinia tasmaniensis       189
+## 12 Crinia bilingua            75
+## 13 Crinia subinsignifera      45
+## 14 Crinia riparia             10
+## 15 Crinia flindersensis        3
+## 16 Crinia nimba                1</code></pre>
+<p>Thanks to object-oriented programming, galah “masks”
+<code>filter()</code> and <code>group_by()</code> functions to use
+methods defined for <code>data_request</code> objects instead. The full
+list of masked functions is:</p>
+<ul>
+<li><code>arrange()</code> (<code>{dplyr}</code>)</li>
+<li><code>count()</code> (<code>{dplyr}</code>)</li>
+<li><code>identify()</code> (<code>{graphics}</code>) as a synonym for
+<code>galah_identify()</code></li>
+<li><code>select()</code> (<code>{dplyr}</code>) as a synonym for
+<code>galah_select()</code></li>
+<li><code>group_by()</code> (<code>{dplyr}</code>) as a synonym for
+<code>galah_group_by()</code></li>
+<li><code>slice_head()</code> (<code>{dplyr}</code>) as a synonym for
+the <code>limit</code> argument in <code>atlas_counts()</code></li>
+<li><code>st_crop()</code> (<code>{sf}</code>) as a synonym for
+<code>galah_polygon()</code></li>
+</ul>
+<p>Note that these functions are all evaluated lazily; they amend the
+underlying object, but do not amend the nature of the data until the
+call is evaluated. To actually build and run the query, we’ll need to
+use one or more of a different set of dplyr verbs:
+<code>collapse()</code>, <code>compute()</code> and
+<code>collect()</code>.</p>
+</div>
+<div id="advanced-query-building" class="section level2">
+<h2>Advanced query building</h2>
+<p>The usual way to begin a query to request data in galah is using
+<code>galah_call()</code>. From version 2.0, to make galah more flexible
+and modular, the underlying architecture of <code>galah_call()</code>
+has been divided into several types of <code>request_</code> functions.
+You can begin your pipe with one of these dedicated
+<code>request_</code> functions (rather than <code>galah_call()</code>)
+depending on the type of data you want to collect.</p>
+<p>For example, if you want to download occurrences, use
+<code>request_data()</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">request_data</span>(<span class="st">&quot;occurrences&quot;</span>) <span class="sc">|&gt;</span> <span class="co"># note that &quot;occurrences&quot; is the default `type`</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Crinia tinnula&quot;</span>, </span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>         year <span class="sc">==</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
+<p>You’ll notice that this query differs slightly from the typical query
+structure users of galah are familiar with. The desired data type,
+<code>&quot;occurrences&quot;</code>, is specified at the beginning of the query
+within <code>request_data()</code> rather than at the end using
+<code>atlas_occurrences()</code>. Specifying the data type at the start
+allows users to make use of advanced query building using three newly
+implemented stages of query building: <code>collapse()</code>,
+<code>compute()</code> and <code>collect()</code>. These stages mirror
+existing <a href="https://dplyr.tidyverse.org/reference/compute.html">functions in
+dplyr for querying databases</a>, and act in the following way</p>
+<ul>
+<li><code>collapse()</code> converts the object to a query. This allows
+users to inspect their<br />
+API calls before they are sent</li>
+<li><code>compute()</code> sends queries to any required APIs. This
+includes sending a query for data, determining whether field names are
+valid, or finding how much data has been requested (which is necessary
+for pagination)</li>
+<li><code>collect()</code> retrieves the requested data into your
+workspace</li>
+</ul>
+<p>We can use these in sequence, or just leap ahead to the stage we
+want:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">request_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>, year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">arrange</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">count</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">collapse</span>(x)</span></code></pre></div>
+<pre><code>## Object of class `query_set` containing 3 queries:</code></pre>
+<pre><code>## • metadata/fields data: galah:::check_internal_cache()$fields
+## • metadata/assertions data: galah:::check_internal_cache()$assertions
+## • data/occurrences-count-groupby url: https://biocache-ws.ala.org.au/ws/occurre...</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">compute</span>(x)</span></code></pre></div>
+<pre><code>## Object of class query with type data/occurrences-count-groupby 
+## url: https://biocache-ws.ala.org.au/ws/occurrences/facets?fq=%28genus%3A%22... 
+## arrange: species (ascending)</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">collect</span>(x) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   species              count
+##   &lt;chr&gt;                &lt;int&gt;
+## 1 Crinia bilingua         75
+## 2 Crinia deserticola     278
+## 3 Crinia flindersensis     3
+## 4 Crinia georgiana      1490
+## 5 Crinia glauerti       3090
+## 6 Crinia insignifera     536</code></pre>
+<p>The benefit of using <code>collapse()</code>, <code>compute()</code>
+and <code>collect()</code> is that queries are more modular. This is
+particularly useful for large data requests in galah. Users can send
+their query using <code>compute()</code>, and download data once the
+query has finished — downloading with <code>collect()</code> later —
+rather than waiting for the request to finish within R.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Create and send query to be calculated server-side</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">request_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">identify</span>(<span class="st">&quot;perameles&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1900</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">compute</span>()</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  </span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co"># Download data</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>request <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
+<p>Additionally, functions that are more modular are generally easier to
+interrogate and debug. Previously some functions did several different
+things, making it difficult to know which APIs were being called, when,
+and for what purpose. Partitioning queries into three distinct stages is
+much more transparent, and allows users to check their query
+construction prior to sending a request. For example, the query above is
+constructed with the following information, returned by
+<code>collapse()</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">request_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">identify</span>(<span class="st">&quot;perameles&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1900</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  <span class="fu">collapse</span>()</span></code></pre></div>
+<pre><code>## Object of class `query_set` containing 5 queries:</code></pre>
+<pre><code>## • metadata/fields data: galah:::check_internal_cache()$fields
+## • metadata/assertions data: galah:::check_internal_cache()$assertions
+## • metadata/reasons url: https://api.ala.org.au/logger/service/logger/reasons
+## • metadata/taxa-single url: https://api.ala.org.au/namematching/api/search?q=pe...
+## • data/occurrences url: https://biocache-ws.ala.org.au/ws/occurrences/offline/d...</code></pre>
+<p>The <code>collapse()</code> stage displays useful information about
+which APIs will be pinged by a query in galah when it is sent using
+<code>compute()</code>.</p>
+</div>
+<div id="new-object-classes" class="section level2">
+<h2>New object classes</h2>
+<p>Under the hood, the different query-building verbs amend our object
+to a new class:</p>
+<ul>
+<li><code>collapse()</code> returns class <code>query_set</code>, which
+is a list of one or more <code>query</code> objects</li>
+<li><code>compute()</code> returns a single object of class
+<code>query</code></li>
+<li><code>collect()</code> doesn’t add a new data class (returns class
+<code>tibble</code>)</li>
+</ul>
+<p>These can be called directly, or via the <code>method</code> and
+<code>type</code> arguments of <code>galah_call()</code>, which specify
+which dedicated <code>request_</code> function and data type to return.
+To demonstrate what we mean, take the following calls, which despite
+using different syntax, all return the number of records available for
+the year 2020:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># new syntax</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">request_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co"># similar, but using `galah_call()`</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="fu">galah_call</span>(<span class="at">method =</span> <span class="st">&quot;data&quot;</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>           <span class="at">type =</span> <span class="st">&quot;occurrences-count&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co"># original syntax</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>  <span class="fu">galah_filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<p>Another example is to list available <code>fields</code> in the
+selected atlas:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">request_metadata</span>(<span class="at">type =</span> <span class="st">&quot;fields&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="fu">galah_call</span>(<span class="at">method =</span> <span class="st">&quot;metadata&quot;</span>, </span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>           <span class="at">type =</span> <span class="st">&quot;fields&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
+<p>Or to show values for states and territories:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">request_metadata</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">filter</span>(field <span class="sc">==</span> <span class="st">&quot;cl22&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">unnest</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="fu">galah_call</span>(<span class="at">method =</span> <span class="st">&quot;metadata&quot;</span>, </span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>           <span class="at">type =</span> <span class="st">&quot;fields-unnest&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>  <span class="fu">galah_filter</span>(id <span class="sc">==</span> <span class="st">&quot;cl22&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;cl22&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>  <span class="fu">show_values</span>()</span></code></pre></div>
+<p>Although there is little reason to use
+<code>request_metadata()</code> rather than <code>show_all()</code> most
+of the time, in some cases larger databases like GBIF return huge
+<code>data.frame</code>s of metadata. galah allows users to use
+<code>collapse()</code>, <code>compute()</code> and
+<code>collect()</code> on all types of requests, meaning users are able
+to download large metadata queries using the process detailed above in
+“Advanced query building” to get around this issue.</p>
+</div>
+<div id="do-i-need-to-use-advanced-query-building" class="section level2">
+<h2>Do I need to use advanced query building?</h2>
+<p>Despite these benefits, we have no plans to <em>require</em> this new
+syntax; functions prefixed with <code>galah_</code> or
+<code>atlas_</code> are not going away.</p>
+<p>Indeed, while there is perfect redundancy between old and new syntax
+in some cases, in others they serve different purposes. In
+<code>atlas_media()</code> for example, several calls are made and
+joined in a way that reduces the number of steps required by the
+user.</p>
+<p>Under the hood, however, all <code>atlas_</code> functions are now
+entirely built using the above syntax.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

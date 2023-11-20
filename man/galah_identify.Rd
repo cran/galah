@@ -2,17 +2,24 @@
 % Please edit documentation in R/galah_identify.R
 \name{galah_identify}
 \alias{galah_identify}
+\alias{identify.data_request}
+\alias{identify.metadata_request}
 \title{Narrow a query by passing taxonomic identifiers}
 \usage{
-galah_identify(..., search = TRUE)
+galah_identify(..., search = NULL)
+
+\method{identify}{data_request}(x, ...)
+
+\method{identify}{metadata_request}(x, ...)
 }
 \arguments{
-\item{...}{one or more scientific names (if \code{search = TRUE}) or taxonomic
-identifiers (if \code{search = FALSE}); or an object of class \code{ala_id} (from
-\code{search_taxa}).}
+\item{...}{One or more scientific names.}
 
-\item{search}{(logical); should the results in question be passed to
-\code{search_taxa}?}
+\item{search}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\code{galah_identify()} now always does a search to verify search terms; ergo
+this argument is ignored.}
+
+\item{x}{An object of class \code{metadata_request}, created using \code{\link[=request_metadata]{request_metadata()}}}
 }
 \value{
 A tibble containing identified taxa.
@@ -43,13 +50,20 @@ galah_call() |>
   galah_identify("Eolophus") |>
   atlas_counts()
 
-# If you know a valid taxon identifier, add it and set `search = FALSE`.
+# Within a pipe, `identify()` and `galah_identify()` are synonymous.
+# hence the following is identical to the previous example:
+request_data() |>
+  identify("Eolophus") |>
+  count() |>
+  collect()
+
+# If you know a valid taxon identifier, use `galah_filter()` instead.
+# (This was formerly supported by `galah_identify()` with `search = FALSE`)
+id <- "https://biodiversity.org.au/afd/taxa/009169a9-a916-40ee-866c-669ae0a21c5c"
 galah_call() |> 
-  galah_identify("https://biodiversity.org.au/afd/taxa/009169a9-a916-40ee-866c-669ae0a21c5c", 
-                 search = FALSE) |>
+  galah_filter(lsid == id) |>
   atlas_counts()
 }
-
 }
 \seealso{
 \code{\link[=search_taxa]{search_taxa()}} to find identifiers from scientific names;

@@ -11,18 +11,18 @@
 #' first to check that the taxa you provide to `galah_identify()` return the 
 #' correct results.
 #'
-#' @param ... one or more scientific names (if `search = TRUE`) or taxonomic 
-#'   identifiers (if `search = FALSE`); or an object of class `ala_id` (from
-#'   `search_taxa`).
-#' @param search (logical); should the results in question be passed to
-#'   `search_taxa`?
+#' @param ... One or more scientific names.
+#' @param search 
+#'   `r lifecycle::badge("deprecated")`  
+#'   `galah_identify()` now always does a search to verify search terms; ergo
+#'    this argument is ignored.
 #' @return A tibble containing identified taxa.
 #' @seealso [search_taxa()] to find identifiers from scientific names;
 #' [search_identifiers()] for how to get names if taxonomic identifiers 
 #' are already known.
-#' 
-#' @examples
-#' \dontrun{
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @examples \dontrun{
 #' # Specify a taxon. A valid taxon will return an identifier.
 #' galah_identify("reptilia")
 #' 
@@ -34,138 +34,107 @@
 #'   galah_identify("Eolophus") |>
 #'   atlas_counts()
 #' 
-#' # If you know a valid taxon identifier, add it and set `search = FALSE`.
+#' # Within a pipe, `identify()` and `galah_identify()` are synonymous.
+#' # hence the following is identical to the previous example:
+#' request_data() |>
+#'   identify("Eolophus") |>
+#'   count() |>
+#'   collect()
+#' 
+#' # If you know a valid taxon identifier, use `galah_filter()` instead.
+#' # (This was formerly supported by `galah_identify()` with `search = FALSE`)
+#' id <- "https://biodiversity.org.au/afd/taxa/009169a9-a916-40ee-866c-669ae0a21c5c"
 #' galah_call() |> 
-#'   galah_identify("https://biodiversity.org.au/afd/taxa/009169a9-a916-40ee-866c-669ae0a21c5c", 
-#'                  search = FALSE) |>
+#'   galah_filter(lsid == id) |>
 #'   atlas_counts()
 #' }
-#' 
+#' @importFrom lifecycle deprecate_stop
+#' @importFrom lifecycle deprecate_warn
+#' @importFrom rlang warn
 #' @export
-galah_identify <- function(..., search = TRUE) {
-
-  # check to see if any of the inputs are a data request
-  dots <- enquos(..., .ignore_empty = "all")
-  checked_dots <- detect_data_request(dots)
-  if (!inherits(checked_dots, "quosures")) {
-    is_data_request <- TRUE
-    data_request <- checked_dots[[1]]
-    dots <- checked_dots[[2]]
-  } else {
-    is_data_request <- FALSE
-  }
-  
-  if (is_data_request) {
-    update_galah_call(data_request, identify = parse_identify(dots, search))
-  } else {
-    parse_identify(dots, search)
+galah_identify <- function(..., search = NULL) {
+  dots_initial <- list(...)
+  if (length(dots_initial) < 1) {
+    warn("No query passed to `identify()`.")
+    tibble("search_term" = character())
+  }else{
+    dots_initial <- check_search_arg(dots_initial, search)
+    if(inherits(dots_initial[[1]], "data_request")){
+      do.call(identify.data_request, dots_initial)
+    }else{
+      search_terms <- identify(galah_call(), ...)$identify
+      return(search_terms)
+    }
   }
 }
 
-
-parse_identify <- function(dots, search){
-  if (length(dots) > 0) {
-
-    # basic checking
-    check_queries(dots) # capture named inputs
-    input_query <- parse_basic_quosures(dots) # convert dots to query
-
-    # get cached behaviour
-    atlas <- getOption("galah_config")$atlas$region
-    run_checks <- getOption("galah_config")$package$run_checks
-    verbose <- getOption("galah_config")$package$verbose
-
-    # check for types first
-    if (!is.null(attr(input_query, "call"))) {
-      query <- input_query$taxon_concept_id
-    } else { # if the input isn't of known type, try to find IDs
-      if (search) {
-        lookup <- search_taxa(input_query)
-        if (!any(names(lookup) == "taxon_concept_id")){
-          bullets <- c(
-            "`galah_identify` didn't return anything.",
-            i = "Did you use `search_taxa` to check whether your search specifies the correct taxa?"
-          )
-          abort(bullets, call = caller_env())
-        } else {
-          query <- lookup$taxon_concept_id[!is.na(lookup$taxon_concept_id)]
-          if (verbose) {
-            n_provided <- length(input_query)
-            n_returned <- length(query)
-            check_number_returned(n_provided, n_returned)
-          }
-        }
-      } else { # i.e. user has passed search = FALSE
-        if (atlas == "Australia" && run_checks) {
-          lookup <- search_identifiers(input_query)
-          if (is.null(lookup$taxon_concept_id)) {
-            bullets <- c(
-              "`galah_identify` didn't return anything.",
-              i = "Did you use `search_identifiers` to check whether your search species the correct taxa?"
-            )
-            abort(bullets, call = caller_env())
-          } else {
-            query <- lookup$taxon_concept_id[!is.na(lookup$taxon_concept_id)]
-            n_provided <- length(input_query)
-            n_returned <- length(query)
-            check_number_returned(n_provided, n_returned)
-          }
-        } else {
-          query <- input_query # pass unchanged
-        }
-      } # end for search == FALSE
-    } # end for unknown types
-    
-    # check_is_character(query) # Q: do we need this function? Is it called elsewhere?
-    result <- tibble(identifier = as.character(query))
-    
-  } else { # if empty, return correct class, but no values
-    result <- as_tibble(data.frame(identifier = character()))
+#' @rdname galah_identify
+#' @param x An object of class `data_request`, created using [request_data()]
+#' @importFrom tibble tibble
+#' @export
+identify.data_request <- function(x, ...){
+  dots_initial <- list(...)
+  if (length(dots_initial) < 1) {
+    warn("No query passed to `identify()`.")
+    result <- NULL
+  }else{
+    if(inherits(dots_initial[[1]], "data.frame") & length(dots_initial) == 1){
+      result <- dots_initial[[1]]
+      
+    }else{
+      result <- tibble("search_term" = unlist(dots_initial))
+    }
   }
-
-  # if a data request was supplied, return one
-  attr(result, "call") <- "galah_identify"
-  return(result)
+  update_data_request(x, identify = result)
 }
 
-
-# checker function based on `galah_filter.R/check_filters`
-check_queries <- function(dots, error_call = caller_env()) {
-  if(any(have_name(dots))){
-    bullets <- c(
-      "We detected a named input.",
-      i = glue("This usually means that you've used `=` somewhere"),
-      i = glue("`galah_identity` doesn't require equations")
-    )
-    abort(bullets, call = error_call)
+#' @rdname galah_identify
+#' @param x An object of class `metadata_request`, created using [request_metadata()]
+#' @export
+identify.metadata_request <- function(x, ...){
+  x <- identify.data_request(x, ...)
+  class(x) <- "metadata_request"
+  if(grepl("-unnest$", x$type)){
+    x$type <- "taxa-unnest"
+  }else{
+    x$type <- "taxa" 
   }
+  x
 }
 
-
-check_number_returned <- function(n_in, n_out, error_call = caller_env()) {
-  if(n_out < n_in){
-    warn(
-      glue(
-        
-        "Unmatched taxa. Results returned for {n_out} of {n_in} taxon IDs")
-    )
+#' Remove `search` argument from `galah_identify()`, give deprecated warning
+#' @importFrom lifecycle deprecate_warn
+#' @noRd
+#' @keywords Internal
+check_search_arg <- function(dots_initial, search = NULL) {
+  if("search" %in% names(dots_initial)) {
+    search <- dots_initial$name
+    dots_initial <- dots_initial[names(dots_initial) != "search"]
+  } 
+  if(!is.null(search)){
+    if(!is.logical(search)){
+      deprecate_stop(
+        when = "2.0.0",
+        what = "galah_identify(search = )",
+        details = glue("`galah_identify()` now always does a search to verify search terms. \\
+                   Passing anything other than TRUE or FALSE to `search` has never worked"))      
+    }else{
+      if(search){
+        # if search = TRUE, this function still behaves correctly
+        deprecate_warn(
+          when = "2.0.0",
+          what = "galah_identify(search = )",
+          details = glue("`galah_identify()` now always does a search to verify search terms. \\
+                   Please remove `search` argument from `galah_identify()`."))      
+        # if search = FALSE, abort warning to use filter(lsid == x) instead
+      }else{
+        deprecate_stop(
+          when = "2.0.0",
+          what = "galah_identify(search = )",
+          details = glue("`galah_identify()` now always does a search to verify search terms. \\
+                   To pass identifiers, please use `filter(lsid == 'identifier_here') instead."))
+      }     
+    }
   }
-}
-
-
-# it is possible that the above will lead to non-character 
-# arguments being passed (if search = FALSE and run_checks = FALSE)
-# check this
-check_is_character <- function(query, error_call = caller_env()){
-  if(!inherits(query, "character")){
-    lookup <- search_taxa(query)
-    query <- lookup$taxon_concept_id[!is.na(lookup$taxon_concept_id)]
-    
-    bullets <- c(
-      "The object passed to `galah_identify` isn't from a recognised class.",
-      i = "Recognised classes are `ala_id`, `gbifid`, `nbnid` or `character`",
-      i = "Use `search_taxa` to lookup taxon information."
-    )
-    abort(bullets, call = error_call)
-  }
+  dots_initial
 }

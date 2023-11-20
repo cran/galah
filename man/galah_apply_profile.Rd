@@ -2,14 +2,19 @@
 % Please edit documentation in R/galah_apply_profile.R
 \name{galah_apply_profile}
 \alias{galah_apply_profile}
+\alias{apply_profile}
 \title{Apply a data quality profile}
 \usage{
 galah_apply_profile(...)
+
+apply_profile(.data, ...)
 }
 \arguments{
 \item{...}{a profile name. Should be a \code{string} - the name or abbreviation
 of a data quality profile to apply to the query. Valid values can be seen
 using \code{show_all(profiles)}}
+
+\item{.data}{An object of class \code{data_request}}
 }
 \value{
 A tibble containing a valid data profile value.
@@ -36,7 +41,6 @@ galah_call() |>
   galah_apply_profile(ALA) |>
   atlas_counts()
 }
-
 }
 \seealso{
 \code{\link[=show_all]{show_all()}} and \code{\link[=search_all]{search_all()}} to look up available data profiles.

@@ -1,9 +1,12 @@
-#' @importFrom jsonlite toJSON unbox
-NULL
-
-# predicates are JSON scripts for passing to GBIF offline downloads API.
-# https://www.gbif.org/developer/occurrence
-
+#' Build predicates
+#' 
+#' predicates are JSON scripts for passing to GBIF offline downloads API.
+#' https://www.gbif.org/developer/occurrence
+#' @noRd
+#' @keywords Internal
+#' @importFrom potions pour
+#' @importFrom jsonlite toJSON 
+#' @importFrom jsonlite unbox
 build_predicates <- function(
   df, # where df is returned by galah_filter()
   format = "SIMPLE_CSV"
@@ -24,9 +27,9 @@ build_predicates <- function(
   }
 
   data_list <- list(
-    creator = unbox(getOption("galah_config")$user$username),
-    notificationAddresses = getOption("galah_config")$user$email,
-    sendNotification = unbox(getOption("galah_config")$package$send_email),
+    creator = unbox(pour("user", "username", .pkg = "galah")),
+    notificationAddresses = pour("user", "email", .pkg = "galah"),
+    sendNotification = unbox(pour("package", "send_email", .pkg = "galah")),
     format = unbox(format),
     predicate = predicates_list
   )

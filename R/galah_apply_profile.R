@@ -18,9 +18,8 @@
 #' @seealso [show_all()] and [search_all()] to look up available data profiles. 
 #' [galah_filter()] can be used for more bespoke editing of individual data 
 #' profile filters.
-#' 
-#' @examples
-#' \dontrun{
+#' @name galah_apply_profile
+#' @examples \dontrun{
 #' # Apply a data quality profile to a query
 #' galah_call() |> 
 #'   galah_identify("reptilia") |>
@@ -28,63 +27,53 @@
 #'   galah_apply_profile(ALA) |>
 #'   atlas_counts()
 #' }
-#' 
+#' @importFrom tibble tibble
 #' @export
-
 galah_apply_profile <- function(...){
-  
-  dots <- enquos(..., .ignore_empty = "all")
-  check_filter(dots)
-  
-  # check to see if any of the inputs are a data request
-  checked_dots <- detect_data_request(dots)
-  if(!inherits(checked_dots, "quosures")){
-    is_data_request <- TRUE
-    data_request <- checked_dots[[1]]
-    dots <- checked_dots[[2]]
-  }else{
-    is_data_request <- FALSE
-  }
-
-  # this code is basically taken from galah_identify()
-  if (length(dots) > 0) {
-
-    # basic checking
-    check_queries(dots) # capture named inputs
-    input_profile <- parse_basic_quosures(dots) # convert dots to query
-    
-    # check which inputs are valid
-    # note that in galah_filter, this is dependent on getOption("galah_config")$package$run_checks
-    # not required here as show_all_profiles is pretty fast
-    valid_profile <- check_profile(input_profile)
-    
-    result <- tibble(data_profile = valid_profile)
-    
-  
-  }else{
-    result <- tibble()
-  }
-  
-  # if a data request was supplied, return one
-  attr(result, "call") <- "galah_data_profile"
-  if (is_data_request) {
-    update_galah_call(data_request, data_profile = result)
-  } else {
-    result
-  }
+  dots <- enquos(..., .ignore_empty = "all") |>
+    detect_request_object()
+  switch(class(dots[[1]])[1],
+         "data_request" = {
+           df <- parse_quosures_basic(dots[-1]) |>
+             parse_profile()
+           update_data_request(dots[[1]], data_profile = df)
+         },
+         {
+           parse_quosures_basic(dots) |>
+             parse_profile()
+         })
 }
 
+#' @rdname galah_apply_profile
+#' @param .data An object of class `data_request`
+#' @export
+apply_profile <- function(.data, ...){
+  dots <- enquos(..., .ignore_empty = "all")
+  df <- parse_quosures_basic(dots) |>
+    pluck(!!!list(1)) |>
+    parse_profile()
+  update_data_request(.data, data_profile = df)
+}
 
-
-check_profile <- function(query, error_call = caller_env()){
-  valid_check <- query %in% show_all_profiles()$shortName
-  if(!any(valid_check)){    
-    bullets <- c(
-      "Invalid profile name.",
-      i = "Use `show_all(profiles)` to lookup valid profiles."
-    )
-    abort(bullets, call = error_call)
+#' Internal parsing of `profile` args
+#' @importFrom glue glue
+#' @importFrom rlang abort
+#' @noRd
+#' @keywords Internal
+parse_profile <- function(dot_names, error_call = caller_env()) {
+  n_args <- length(dot_names)
+  if (n_args > 0) {
+    if (n_args > 1) {
+      bullets <- c(
+        "Too many data profiles supplied.",
+        x = glue("`galah_apply_profile()` accepts one profile argument, not {n_args}.")
+      )
+      abort(bullets, call = error_call)
+    }else{
+      df <- tibble(data_profile = as.character(dot_names))
+    }
   }else{
-    return(query[which(valid_check)[1]])
+    df <- NULL
   }
+  return(df)
 }
