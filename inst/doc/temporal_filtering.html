@@ -461,8 +461,8 @@ even though officially my timezone is <code>&quot;+0930&quot;</code>.</p>
 recommended that greater or less than queries are used rather than exact
 matches. When used with <code>galah_filter()</code>, we can easily
 identify how many records of the humpback whale (<em>Megaptera
-novaeangliae</em>) have occurred since the species was <a href="http://www.environment.gov.au/biodiversity/threatened/species/pubs/38-listing-advice-26022022.pdf">removed
-from the Australian threatened species list</a> on 26/02/2022.</p>
+novaeangliae</em>) have occurred since the species was removed from the
+Australian threatened species list on 26/02/2022.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(species <span class="sc">==</span> <span class="st">&quot;Megaptera novaeangliae&quot;</span>, </span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>               eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2022-02-26T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
