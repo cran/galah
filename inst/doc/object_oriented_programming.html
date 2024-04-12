@@ -10,11 +10,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Martin Westgate, Dax Kellie" />
+<meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2024-02-02" />
+<meta name="date" content="2024-04-09" />
 
-<title>Object-Oriented Programming in galah</title>
+<title>Object-Oriented Programming</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -338,26 +338,21 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Object-Oriented Programming in galah</h1>
-<h4 class="author">Martin Westgate, Dax Kellie</h4>
-<h4 class="date">2024-02-02</h4>
+<h1 class="title toc-ignore">Object-Oriented Programming</h1>
+<h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
+<h4 class="date">2024-04-09</h4>
 
 
 
-<p>From version 2.0 onwards, galah is built around object-oriented
-programming principles. In practice, this won’t change the experience
-for most users. However, it does enable new ways of programming that
-were not previously available.</p>
-<div id="masked-functions" class="section level2">
-<h2>Masked functions</h2>
-<p>The default method for building queries in galah is to first use
-<code>galah_call()</code> to create a query object called a
-<code>data_request</code>. This object class is specific to galah.</p>
+<p>The default method for building queries in <code>galah</code> is to
+first use <code>galah_call()</code> to create a query object called a
+“<code>data_request</code>”. This object class is specific to
+<code>galah</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">filter</span>(genus <span class="sc">==</span> <span class="st">&quot;Crinia&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">class</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;data_request&quot;</code></pre>
-<p>When an object is of class <code>data_request</code>, galah can
+<p>When a piped object is of class <code>data_request</code>, galah can
 trigger functions to use specific methods for this object class, even if
 a function name is used by another package. For example, users can use
 <code>filter()</code> and <code>group_by()</code> functions from <a href="https://dplyr.tidyverse.org/index.html">dplyr</a> instead of
@@ -375,14 +370,14 @@ synonymous:</p>
 <pre><code>## # A tibble: 16 × 2
 ##    species                 count
 ##    &lt;chr&gt;                   &lt;int&gt;
-##  1 Crinia signifera        58579
-##  2 Crinia parinsignifera   12782
+##  1 Crinia signifera        58619
+##  2 Crinia parinsignifera   12912
 ##  3 Crinia glauerti          3090
 ##  4 Crinia georgiana         1490
 ##  5 Crinia remota             784
-##  6 Crinia sloanei            644
+##  6 Crinia sloanei            693
 ##  7 Crinia insignifera        536
-##  8 Crinia tinnula            417
+##  8 Crinia tinnula            418
 ##  9 Crinia deserticola        278
 ## 10 Crinia pseudinsignifera   236
 ## 11 Crinia tasmaniensis       189
@@ -415,29 +410,27 @@ call is evaluated. To actually build and run the query, we’ll need to
 use one or more of a different set of dplyr verbs:
 <code>collapse()</code>, <code>compute()</code> and
 <code>collect()</code>.</p>
-</div>
 <div id="advanced-query-building" class="section level2">
 <h2>Advanced query building</h2>
 <p>The usual way to begin a query to request data in galah is using
-<code>galah_call()</code>. From version 2.0, to make galah more flexible
-and modular, the underlying architecture of <code>galah_call()</code>
-has been divided into several types of <code>request_</code> functions.
-You can begin your pipe with one of these dedicated
-<code>request_</code> functions (rather than <code>galah_call()</code>)
-depending on the type of data you want to collect.</p>
+<code>galah_call()</code>. However, this function now calls one of three
+types of <code>request_</code> functions. If you prefer, you can begin
+your pipe with one of these dedicated <code>request_</code> functions
+(rather than <code>galah_call()</code>) depending on the type of data
+you want to collect.</p>
 <p>For example, if you want to download occurrences, use
 <code>request_data()</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">request_data</span>(<span class="st">&quot;occurrences&quot;</span>) <span class="sc">|&gt;</span> <span class="co"># note that &quot;occurrences&quot; is the default `type`</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Crinia tinnula&quot;</span>, </span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>         year <span class="sc">==</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
-<p>You’ll notice that this query differs slightly from the typical query
-structure users of galah are familiar with. The desired data type,
-<code>&quot;occurrences&quot;</code>, is specified at the beginning of the query
-within <code>request_data()</code> rather than at the end using
-<code>atlas_occurrences()</code>. Specifying the data type at the start
-allows users to make use of advanced query building using three newly
-implemented stages of query building: <code>collapse()</code>,
+<p>You’ll notice that this query differs slightly from the query
+structure used in earlier versions of <code>galah</code>. The desired
+data type, <code>&quot;occurrences&quot;</code>, is specified at the beginning of
+the query within <code>request_data()</code> rather than at the end
+using <code>atlas_occurrences()</code>. Specifying the data type at the
+start allows users to make use of advanced query building using three
+newly implemented stages of query building: <code>collapse()</code>,
 <code>compute()</code> and <code>collect()</code>. These stages mirror
 existing <a href="https://dplyr.tidyverse.org/reference/compute.html">functions in
 dplyr for querying databases</a>, and act in the following way:</p>
@@ -510,7 +503,7 @@ constructed with the following information, returned by
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1900</span>) <span class="sc">|&gt;</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">collapse</span>()</span></code></pre></div>
 <pre><code>## Object of class query with type data/occurrences 
-## url: https://biocache-ws.ala.org.au/ws/occurrences/offline/download?fq=%28l...</code></pre>
+## url: https://biocache-ws.ala.org.au/ws/occurrences/offline/download?fq=%28y...</code></pre>
 <p>The <code>collapse()</code> stage includes an additional argument
 (<code>.expand</code>) that, when set to <code>TRUE</code>, shows all
 the APIs called to construct the user-requested query. This is
@@ -583,18 +576,17 @@ of the time, in some cases larger databases like GBIF return huge
 to download large metadata queries using the process detailed above in
 “Advanced query building” to get around this issue.</p>
 </div>
-<div id="do-i-need-to-use-advanced-query-building" class="section level2">
-<h2>Do I need to use advanced query building?</h2>
-<p>Despite these benefits, we have no plans to <em>require</em> this new
-syntax; functions prefixed with <code>galah_</code> or
-<code>atlas_</code> are not going away.</p>
-<p>Indeed, while there is perfect redundancy between old and new syntax
-in some cases, in others they serve different purposes. In
-<code>atlas_media()</code> for example, several calls are made and
-joined in a way that reduces the number of steps required by the
-user.</p>
-<p>Under the hood, however, all <code>atlas_</code> functions are now
-entirely built using the above syntax.</p>
+<div id="which-syntax-should-i-prefer" class="section level2">
+<h2>Which syntax should I prefer?</h2>
+<p>Despite these benefits, we have no plans to <em>require</em> users to
+call masked functions. Functions prefixed with <code>galah_</code> or
+<code>atlas_</code> are not going away. Indeed, while there is perfect
+redundancy between old and new syntax in some cases, in others they
+serve different purposes. In <code>atlas_media()</code> for example,
+several calls are made and joined in a way that reduces the number of
+steps required by the user. Under the hood, however, all
+<code>atlas_</code> functions are now entirely built using the above
+syntax.</p>
 </div>
 
 

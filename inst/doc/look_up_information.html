@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2023-11-07" />
+<meta name="date" content="2024-04-09" />
 
 <title>Look up information</title>
 
@@ -340,41 +340,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Look up information</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2023-11-07</h4>
+<h4 class="date">2024-04-09</h4>
 
 
 
-<div id="show_all-search_all" class="section level1">
-<h1><code>show_all()</code> &amp; <code>search_all()</code></h1>
-<p>As of galah 1.5.0, there are two simplified functions to look up
-information: <code>show_all()</code> and <code>search_all()</code>.</p>
-<p>These are individual functions that are able to return all types of
-information in one place, rather than using specific sub-functions to
-look up information.</p>
-<p>For example, to show all available Living Atlases supported:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">show_all</span>(atlases)</span></code></pre></div>
-<pre><code>## # A tibble: 11 × 4
-##    region         institution                                                  acronym url  
-##    &lt;chr&gt;          &lt;chr&gt;                                                        &lt;chr&gt;   &lt;chr&gt;
-##  1 Australia      Atlas of Living Australia                                    ALA     http…
-##  2 Austria        Biodiversitäts-Atlas Österreich                              BAO     http…
-##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr   http…
-##  4 Estonia        eElurikkus                                                   &lt;NA&gt;    http…
-##  5 France         Portail français d&#39;accès aux données d&#39;observation sur les … OpenObs http…
-##  6 Global         Global Biodiversity Information Facility                     GBIF    http…
-##  7 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica … SNIBgt  http…
-##  8 Portugal       GBIF Portugal                                                GBIF.pt http…
-##  9 Spain          GBIF Spain                                                   GBIF.es http…
-## 10 Sweden         Swedish Biodiversity Data Infrastructure                     SBDI    http…
-## 11 United Kingdom National Biodiversity Network                                NBN     http…</code></pre>
-<p>To search for a specific available Living Atlas:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">search_all</span>(atlases, <span class="st">&quot;Spain&quot;</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 4
-##   region institution acronym url                
-##   &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;              
-## 1 Spain  GBIF Spain  GBIF.es https://www.gbif.es</code></pre>
-<p>To show all fields:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
+<p>galah supports two functions to look up information:
+<code>show_all()</code> and <code>search_all()</code>. The first
+argument to both functions is a type of information that you wish to
+look up; for example to see what fields are available to filter a query
+by, use:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
 <pre><code>## # A tibble: 646 × 3
 ##    id                  description               type  
 ##    &lt;chr&gt;               &lt;chr&gt;                     &lt;chr&gt; 
@@ -390,7 +365,7 @@ look up information.</p>
 ## 10 assertionUserId     Assertions by user        fields
 ## # ℹ 636 more rows</code></pre>
 <p>And to search for a specific field:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;australian states&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;australian states&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 3
 ##   id     description                            type  
 ##   &lt;chr&gt;  &lt;chr&gt;                                  &lt;chr&gt; 
@@ -584,39 +559,28 @@ show_all_datasets(), search_datasets()
 </tr>
 </tbody>
 </table>
-</div>
 <div id="show_all_-subfunctions" class="section level1">
 <h1><code>show_all_</code> subfunctions</h1>
 <p>While <code>show_all</code> is useful for a variety of cases, you can
-still call the underlying subfunctions if you prefer. These functions -
-with the prefix <code>show_all_</code> - return a <code>tibble</code>
-doing exactly that; showing all the possible values of the category
-specified. These functions include:</p>
-<ul>
-<li><code>show_all_fields</code></li>
-<li><code>show_all_atlases</code></li>
-<li><code>show_all_ranks</code></li>
-<li><code>show_all_profiles</code></li>
-<li><code>show_all_reasons</code></li>
-</ul>
-<p><code>show_all_</code> functions require no arguments. Simply call
-the function and it will return all accepted values as a tibble:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">show_all_atlases</span>()</span></code></pre></div>
+still call the underlying subfunctions if you prefer. Functions with the
+prefix <code>show_all_</code> do exactly that; they show all the
+possible values of the category specified.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">show_all_atlases</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 11 × 4
-##    region         institution                                                  acronym url  
-##    &lt;chr&gt;          &lt;chr&gt;                                                        &lt;chr&gt;   &lt;chr&gt;
-##  1 Australia      Atlas of Living Australia                                    ALA     http…
-##  2 Austria        Biodiversitäts-Atlas Österreich                              BAO     http…
-##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr   http…
-##  4 Estonia        eElurikkus                                                   &lt;NA&gt;    http…
-##  5 France         Portail français d&#39;accès aux données d&#39;observation sur les … OpenObs http…
-##  6 Global         Global Biodiversity Information Facility                     GBIF    http…
-##  7 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica … SNIBgt  http…
-##  8 Portugal       GBIF Portugal                                                GBIF.pt http…
-##  9 Spain          GBIF Spain                                                   GBIF.es http…
-## 10 Sweden         Swedish Biodiversity Data Infrastructure                     SBDI    http…
-## 11 United Kingdom National Biodiversity Network                                NBN     http…</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">show_all_reasons</span>()</span></code></pre></div>
+##    region         institution                                                             acronym url                         
+##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                       
+##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au      
+##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityatlas.at
+##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br        
+##  4 Estonia        eElurikkus                                                              &lt;NA&gt;    https://elurikkus.ee        
+##  5 France         Portail français d&#39;accès aux données d&#39;observation sur les espèces      OpenObs https://openobs.mnhn.fr     
+##  6 Global         Global Biodiversity Information Facility                                GBIF    https://gbif.org            
+##  7 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob.gt   
+##  8 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt         
+##  9 Spain          GBIF Spain                                                              GBIF.es https://www.gbif.es         
+## 10 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversitydata.se 
+## 11 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">show_all_reasons</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 13 × 2
 ##       id name                            
 ##    &lt;int&gt; &lt;chr&gt;                           
@@ -636,97 +600,76 @@ the function and it will return all accepted values as a tibble:</p>
 </div>
 <div id="search_-subfunctions" class="section level1">
 <h1><code>search_</code> subfunctions</h1>
-<p>The second subset of lookup subfunctions use the <code>search_</code>
-prefix, and differ from <code>show_all_</code> in that they require a
-query to work. They are used to search for detailed information that
-can’t be summarised across the whole atlas, and include:</p>
-<ul>
-<li><code>search_taxa</code></li>
-<li><code>search_identifiers</code></li>
-<li><code>search_fields</code></li>
-<li><code>show_values</code></li>
-</ul>
-<p>Search for a single taxon or multiple taxa by name with
-<code>search_taxa</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>)</span></code></pre></div>
+<p>You can also call subfunctions that use the <code>search_</code>
+prefix to lookup information. <code>search_</code> subfunctions differ
+from <code>show_all_</code> in that they require a query to work, and
+they useful to search for detailed information that can’t be summarised
+across the whole atlas.</p>
+<p><code>search_taxa()</code> is an especially useful function in galah.
+It let’s you search for a single taxon or multiple taxa by name.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id  rank  match_type kingdom phylum class issues
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
-## 1 reptilia    REPTILIA        https://biodiver… class exactMatch Animal… Chord… Rept… noIss…</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>, <span class="st">&quot;aves&quot;</span>, <span class="st">&quot;mammalia&quot;</span>, <span class="st">&quot;pisces&quot;</span>)</span></code></pre></div>
+##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>, <span class="st">&quot;aves&quot;</span>, <span class="st">&quot;mammalia&quot;</span>, <span class="st">&quot;pisces&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id  rank  match_type kingdom phylum class issues
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
-## 1 reptilia    REPTILIA        https://biodiver… class exactMatch Animal… Chord… Rept… noIss…</code></pre>
-<p>Alternatively, <code>search_identifiers</code> is the partner
-function to <code>search_taxa</code>. If we already know a taxonomic
-identifier, we can search for which taxa the identifier belongs to with
-<code>search_identifiers</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">search_identifiers</span>(<span class="st">&quot;urn:lsid:biodiversity.org.au:afd.taxon:682e1228-5b3c-45ff-833b-550efd40c399&quot;</span>)</span></code></pre></div>
+##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+<p>Alternatively, <code>search_identifiers()</code> is the partner
+function to <code>search_taxa()</code>. If we already know a taxonomic
+identifier, we can search for which taxa the identifier belongs to.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">search_identifiers</span>(<span class="st">&quot;urn:lsid:biodiversity.org.au:afd.taxon:682e1228-5b3c-45ff-833b-550efd40c399&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 15
-##   search_term  success scientific_name taxon_concept_id rank  rank_id   lft   rgt match_type
-##   &lt;chr&gt;        &lt;lgl&gt;   &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;     
-## 1 urn:lsid:bi… TRUE    REPTILIA        https://biodive… class    3000 46718 49924 taxonIdMa…
-## # ℹ 6 more variables: kingdom &lt;chr&gt;, kingdom_id &lt;chr&gt;, phylum &lt;chr&gt;, phylum_id &lt;chr&gt;,
-## #   class &lt;chr&gt;, class_id &lt;chr&gt;</code></pre>
-<p>Sifting through the output of <code>show_all_fields</code> to find a
-specific field can be inefficient. Instead, we might wish to use
-<code>search_fields</code> to look for specific fields that match a
-search. As with <code>search_taxa</code>, <code>search_fields</code>
-requires a query to work.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">search_fields</span>(<span class="st">&quot;date&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 3
-##   id             description     type  
-##   &lt;chr&gt;          &lt;chr&gt;           &lt;chr&gt; 
-## 1 eventDate      Event Date      fields
-## 2 lastLoadDate   lastLoadDate    fields
-## 3 datePrecision  Date precision  fields
-## 4 eventDateEnd   &lt;NA&gt;            fields
-## 5 dateIdentified Date Identified fields
-## 6 raw_eventDate  &lt;NA&gt;            fields</code></pre>
+##   search_term                               success scientific_name taxon_concept_id rank  rank_id   lft   rgt match_type kingdom kingdom_id phylum phylum_id class class_id
+##   &lt;chr&gt;                                     &lt;lgl&gt;   &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;   
+## 1 urn:lsid:biodiversity.org.au:afd.taxon:6… TRUE    REPTILIA        https://biodive… class    3000 33626 36658 taxonIdMa… Animal… https://b… Chord… https://… Rept… https:/…</code></pre>
 </div>
 <div id="show_values-search_values" class="section level1">
 <h1><code>show_values()</code> &amp; <code>search_values()</code></h1>
-<p>Once a desired field is found, you can use <code>show_values</code>
-to understand the information contained within that field, e.g.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;basis&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">show_values</span>()</span></code></pre></div>
+<p>Once a desired field is found, you can use <code>show_values()</code>
+to understand the information contained within that field. For example,
+we can show the values contained in the field
+<code>basisOfRecord</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;basisOfRecord&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">show_values</span>()</span></code></pre></div>
 <pre><code>## ! Search returned 2 matched fields.
 ## • Showing values for &#39;basisOfRecord&#39;.</code></pre>
 <pre><code>## # A tibble: 9 × 1
 ##   basisOfRecord      
 ##   &lt;chr&gt;              
-## 1 Human observation  
-## 2 Preserved specimen 
-## 3 Observation        
-## 4 Occurrence         
-## 5 Machine observation
-## 6 Material Sample    
-## 7 Living specimen    
-## 8 Material Citation  
-## 9 Fossil specimen</code></pre>
-<p>This provides the information you need to pass meaningful queries to
-<code>galah_filter</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(basisOfRecord <span class="sc">==</span> <span class="st">&quot;LIVING_SPECIMEN&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+## 1 HUMAN_OBSERVATION  
+## 2 PRESERVED_SPECIMEN 
+## 3 OBSERVATION        
+## 4 OCCURRENCE         
+## 5 MACHINE_OBSERVATION
+## 6 MATERIAL_SAMPLE    
+## 7 LIVING_SPECIMEN    
+## 8 MATERIAL_CITATION  
+## 9 FOSSIL_SPECIMEN</code></pre>
+<p>Use this information to pass meaningful queries to
+<code>galah_filter()</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(basisOfRecord <span class="sc">==</span> <span class="st">&quot;LIVING_SPECIMEN&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##    count
 ##    &lt;int&gt;
 ## 1 126135</code></pre>
 <p>This works for other types of query, such as data profiles:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">search_all</span>(profiles, <span class="st">&quot;ALA&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>  <span class="fu">show_values</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">search_all</span>(profiles, <span class="st">&quot;ALA&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">show_values</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## • Showing values for &#39;ALA&#39;.</code></pre>
 <pre><code>## # A tibble: 6 × 5
-##      id enabled description                                              filter displayOrder
-##   &lt;int&gt; &lt;lgl&gt;   &lt;chr&gt;                                                    &lt;chr&gt;         &lt;int&gt;
-## 1    94 TRUE    &quot;Exclude all records where spatial validity is \&quot;false\… &quot;-spa…            1
-## 2    96 TRUE    &quot;Exclude all records with an assertion that the scienti… &quot;-ass…            1
-## 3    97 TRUE    &quot;Exclude all records with an assertion that the scienti… &quot;-ass…            2
-## 4    98 TRUE    &quot;Exclude all records with an assertion that the name an… &quot;-ass…            3
-## 5    99 TRUE    &quot;Exclude all records with an assertion that kingdom pro… &quot;-ass…            4
-## 6   100 TRUE    &quot;Exclude all records with an assertion that the scienti… &quot;-ass…            5</code></pre>
+##      id enabled description                                                                                                                              filter displayOrder
+##   &lt;int&gt; &lt;lgl&gt;   &lt;chr&gt;                                                                                                                                    &lt;chr&gt;         &lt;int&gt;
+## 1    94 TRUE    &quot;Exclude all records where spatial validity is \&quot;false\&quot;&quot;                                                                                &quot;-spa…            1
+## 2    96 TRUE    &quot;Exclude all records with an assertion that the scientific name provided does not match any of the names lists used by the ALA.  For a … &quot;-ass…            1
+## 3    97 TRUE    &quot;Exclude all records with an assertion that the scientific name provided is not structured as a valid scientific name. Also catches ran… &quot;-ass…            2
+## 4    98 TRUE    &quot;Exclude all records with an assertion that the name and classification supplied can&#39;t be used to choose between 2 homonyms&quot;             &quot;-ass…            3
+## 5    99 TRUE    &quot;Exclude all records with an assertion that kingdom provided doesn&#39;t match a known kingdom e.g. Animalia, Plantae&quot;                       &quot;-ass…            4
+## 6   100 TRUE    &quot;Exclude all records with an assertion that the scientific name provided in the record does not match the expected taxonomic scope of t… &quot;-ass…            5</code></pre>
 </div>
 
 

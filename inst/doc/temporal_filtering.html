@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Callum Waite, Shandiya Balasubramaniam" />
+<meta name="author" content="Callum Waite &amp; Shandiya Balasubramaniam" />
 
 <meta name="date" content="2023-10-13" />
 
@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Temporal filtering</h1>
-<h4 class="author">Callum Waite, Shandiya Balasubramaniam</h4>
+<h4 class="author">Callum Waite &amp; Shandiya Balasubramaniam</h4>
 <h4 class="date">2023-10-13</h4>
 
 
@@ -361,55 +361,53 @@ years or months</p></li>
 queried for exact matches (<code>==</code>), greater/less than
 (<code>&gt;</code>, <code>&lt;</code>) or greater/less than or equal to
 (<code>&lt;=</code>, <code>&gt;=</code>). Queries for multiple fields or
-multiple queries of the same field can be combined in the one
-<code>galah_filter()</code> call in order to obtain filters on time
-windows.</p>
+multiple queries of the same field can be combined in a single
+<code>galah_filter()</code> call to filter a time window.</p>
 <div id="year-month-and-day" class="section level3">
 <h3>Year, Month and Day</h3>
-<p>The ALA contains in-built <code>year</code>, <code>month</code> and
+<p>The ALA contains in-built <code>year</code>, <code>month</code>, and
 <code>day</code> fields for every record. These are queried as numeric
 fields (i.e. July = <code>7</code>) and can be used for quick data
-exploration and filtering. When the date limits of a desired query can
-be easily defined by year, month and/or day deliminations, these fields
-are most useful.</p>
-<p>We can, for instance, use the <code>year</code> and
-<code>month</code> fields to group the 2022 amphibian records in the ALA
-by month (noting that months are labelled by a number).</p>
+exploration and filtering. These fields are most useful when the date
+limits of a query can be easily defined by year, month and/or day.</p>
+<p>For instance, we can get monthly counts of amphibians from 2021 using
+the <code>year</code> and <code>month</code> fields.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(galah)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">&quot;your_email_here&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(class <span class="sc">==</span> <span class="st">&quot;Amphibia&quot;</span>, year <span class="sc">==</span> <span class="dv">2021</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(month) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">filter</span>(class <span class="sc">==</span> <span class="st">&quot;Amphibia&quot;</span>, year <span class="sc">==</span> <span class="dv">2021</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">group_by</span>(month) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 2
-##    month     count
-##    &lt;chr&gt;     &lt;int&gt;
-##  1 October   52075
-##  2 September 41920
-##  3 January   32805
-##  4 August    26175
-##  5 March     25396
-##  6 February  23456
-##  7 November  22758
-##  8 July      12302
-##  9 April      9841
-## 10 June       9217
-## 11 May        8081
-## 12 December   3813</code></pre>
+##    month count
+##    &lt;chr&gt; &lt;int&gt;
+##  1 10    54478
+##  2 9     42345
+##  3 1     33092
+##  4 8     26525
+##  5 3     25641
+##  6 2     23796
+##  7 11    23535
+##  8 7     12407
+##  9 4     10034
+## 10 6      9258
+## 11 5      8100
+## 12 12     4069</code></pre>
 <p>It is also important to observe that the outputted <code>month</code>
 column is of type <code>character</code> even though the values are
 numeric. This is the case for each of the <code>year</code>,
 <code>month</code> and <code>day</code> fields. However, they can be
 queried as either numeric or character values within
-<code>galah_filter()</code>.</p>
-<p>The other important fact about these fields when queried in
-<code>galah_filter()</code> is their independence; they cannot be used
-to query complex windows between two dates because the day and month
-filters are applied universally.</p>
-<p>For instance, consider the native perennial Australian wildflower <a href="https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2920316"><em>Chamaescilla
+<code>filter()</code>.</p>
+<p>One limitation of using these fields for queries with
+<code>filter()</code> is their independence; they cannot be used to
+query within windows bounded by two dates because the day and month
+filters are applied universally. For instance, consider the native
+perennial Australian wildflower <a href="https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2920316"><em>Chamaescilla
 corymbosa</em></a>, whose known growth and flowering times are from
 August–October. We might be interested in the number of records for this
 species in the first week of spring (i.e. September) in each of the last
@@ -417,24 +415,30 @@ species in the first week of spring (i.e. September) in each of the last
 1/9/2013 and 7/9/2023. Rather, it will only return results that fall
 within all 3 windows at once.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(species <span class="sc">==</span> <span class="st">&quot;Chamaescilla corymbosa&quot;</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>               year <span class="sc">&gt;=</span> <span class="dv">2013</span>, year <span class="sc">&lt;=</span> <span class="dv">2023</span>, month <span class="sc">==</span> <span class="dv">9</span>, day <span class="sc">&gt;=</span> <span class="dv">1</span>, day <span class="sc">&lt;=</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">galah_group_by</span>(year) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">atlas_counts</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span></code></pre></div>
-<pre><code>## # A tibble: 10 × 2
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Chamaescilla corymbosa&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>         year <span class="sc">&gt;=</span> <span class="dv">2013</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>         year <span class="sc">&lt;=</span> <span class="dv">2023</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>         month <span class="sc">==</span> <span class="dv">9</span>, </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>         day <span class="sc">&gt;=</span> <span class="dv">1</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>         day <span class="sc">&lt;=</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 2
 ##    year  count
 ##    &lt;chr&gt; &lt;int&gt;
 ##  1 2013      8
 ##  2 2014     13
 ##  3 2015      8
 ##  4 2016      7
-##  5 2018      9
-##  6 2019      5
-##  7 2020     20
-##  8 2021     36
-##  9 2022     25
-## 10 2023     48</code></pre>
+##  5 2017      1
+##  6 2018      9
+##  7 2019      6
+##  8 2020     20
+##  9 2021     36
+## 10 2022     25
+## 11 2023     52</code></pre>
 </div>
 <div id="occurrence-dates" class="section level3">
 <h3>Occurrence dates</h3>
@@ -442,35 +446,35 @@ within all 3 windows at once.</p>
 the <code>eventDate</code> field. This field contains the exact date and
 time information of records and enables specific time windows to be
 queried easily. The only caveat is that the time/date must be provided
-in a specific format to <code>galah_filter()</code> for the ALA query to
-work.</p>
+in a specific format to <code>filter()</code> for the query to work.</p>
 <p>The required format of dates in <code>eventDate</code> is the <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 International
 Date Standard</a> format. This requires dates and times to be of the
-form “YYYY-MM-DDTHH:MM:SSZ”. Note that the T in the middle should be the
-actual letter “T” to delimit the date and time components, while the “Z”
-officially denotes that the time should be queried as UTC (Greenwich
-Meridian) time. Timezones can be confusing at the best of times, however
-it is easiest to remember that all ALA records are recorded at the local
-time of their location, and all times are then treated as effectively
-being UTC times.</p>
+form “YYYY-MM-DDTHH:MM:SSZ”. Note that the <code>T</code> in the middle
+should be the actual letter “T” to delimit the date and time components,
+while the “Z” officially denotes that the time should be queried as UTC
+(Greenwich Meridian) time. Timezones can be confusing at the best of
+times, however it is easiest to remember that all ALA records are
+recorded at the local time of their location, and all times are then
+treated as effectively being UTC times.</p>
 <p>The upshot of this specific formatting is that, for instance, the
 time I am writing this paragraph, 4:26pm on the 2nd of August 2023,
 would be represented as <code>&quot;2023-08-02T16:26:44Z&quot;</code> in the ALA,
 even though officially my timezone is <code>&quot;+0930&quot;</code>.</p>
 <p>Because <code>eventDate</code> specifies the time to seconds, it is
 recommended that greater or less than queries are used rather than exact
-matches. When used with <code>galah_filter()</code>, we can easily
-identify how many records of the humpback whale (<em>Megaptera
-novaeangliae</em>) have occurred since the species was removed from the
-Australian threatened species list on 26/02/2022.</p>
+matches. When used with <code>filter()</code>, we can easily identify
+how many records of the humpback whale (<em>Megaptera novaeangliae</em>)
+have occurred since the species was removed from the Australian
+threatened species list on 26/02/2022.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">galah_filter</span>(species <span class="sc">==</span> <span class="st">&quot;Megaptera novaeangliae&quot;</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Megaptera novaeangliae&quot;</span>, </span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>               eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2022-02-26T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   count
 ##   &lt;int&gt;
-## 1   515</code></pre>
+## 1   690</code></pre>
 <p>It can be unintuitive to provide dates in this format. Luckily, it is
 very simple to convert standard R dates or {lubridate} dates into this
 format because they are already in the required “YYYY-MM-DD” form. If we
@@ -484,7 +488,7 @@ using base R or lubridate as follows:</p>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">paste0</span>(<span class="fu">dmy</span>(humpback_date), <span class="st">&quot;T00:00:00Z&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;2022-02-26T00:00:00Z&quot;</code></pre>
 <p>After sending a query, any outputted <code>eventDate</code> values
-returned by a galah query will be of date class
+returned by a <code>galah</code> query will be of date class
 <code>&quot;POSIXct&quot;</code>.</p>
 </div>
 <div id="upload-dates" class="section level3">
@@ -503,21 +507,23 @@ week of 2023 were actually loaded into the ALA by the following
 week:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Total records of Cactua galerita in Jan 1-7</span></span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(species <span class="sc">==</span> <span class="st">&quot;Cacatua galerita&quot;</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>               eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2023-01-07T00:00:00Z&quot;</span>, </span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>               eventDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-08T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Cacatua galerita&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>         eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2023-01-07T00:00:00Z&quot;</span>, </span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>         eventDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-08T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   count
 ##   &lt;int&gt;
 ## 1   388</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Records of Cactua galerita uploaded in Jan 1-14</span></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(species <span class="sc">==</span> <span class="st">&quot;Cacatua galerita&quot;</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>               eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2023-01-07T00:00:00Z&quot;</span>, </span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>               eventDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-08T00:00:00Z&quot;</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>               firstLoadedDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-15T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>  <span class="fu">atlas_counts</span>()</span></code></pre></div>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Cacatua galerita&quot;</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>         eventDate <span class="sc">&gt;=</span> <span class="st">&quot;2023-01-07T00:00:00Z&quot;</span>, </span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>         eventDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-08T00:00:00Z&quot;</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>         firstLoadedDate <span class="sc">&lt;</span> <span class="st">&quot;2023-01-15T00:00:00Z&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   count
 ##   &lt;int&gt;
