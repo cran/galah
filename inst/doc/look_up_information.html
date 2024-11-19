@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2024-04-09" />
+<meta name="date" content="2024-11-19" />
 
 <title>Look up information</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Look up information</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2024-04-09</h4>
+<h4 class="date">2024-11-19</h4>
 
 
 
@@ -350,7 +350,7 @@ argument to both functions is a type of information that you wish to
 look up; for example to see what fields are available to filter a query
 by, use:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">show_all</span>(fields)</span></code></pre></div>
-<pre><code>## # A tibble: 646 × 3
+<pre><code>## # A tibble: 695 × 3
 ##    id                  description               type  
 ##    &lt;chr&gt;               &lt;chr&gt;                     &lt;chr&gt; 
 ##  1 _nest_parent_       &lt;NA&gt;                      fields
@@ -363,7 +363,7 @@ by, use:</p>
 ##  8 annotationsDoi      &lt;NA&gt;                      fields
 ##  9 annotationsUid      Referenced by publication fields
 ## 10 assertionUserId     Assertions by user        fields
-## # ℹ 636 more rows</code></pre>
+## # ℹ 685 more rows</code></pre>
 <p>And to search for a specific field:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;australian states&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 3
@@ -566,20 +566,19 @@ still call the underlying subfunctions if you prefer. Functions with the
 prefix <code>show_all_</code> do exactly that; they show all the
 possible values of the category specified.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">show_all_atlases</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 11 × 4
-##    region         institution                                                             acronym url                         
-##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                       
-##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au      
-##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityatlas.at
-##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br        
-##  4 Estonia        eElurikkus                                                              &lt;NA&gt;    https://elurikkus.ee        
-##  5 France         Portail français d&#39;accès aux données d&#39;observation sur les espèces      OpenObs https://openobs.mnhn.fr     
-##  6 Global         Global Biodiversity Information Facility                                GBIF    https://gbif.org            
-##  7 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob.gt   
-##  8 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt         
-##  9 Spain          GBIF Spain                                                              GBIF.es https://www.gbif.es         
-## 10 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversitydata.se 
-## 11 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
+<pre><code>## # A tibble: 10 × 4
+##    region         institution                                                             acronym url                    
+##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                  
+##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au 
+##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityat…
+##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br   
+##  4 France         Portail français d&#39;accès aux données d&#39;observation sur les espèces      OpenObs https://openobs.mnhn.fr
+##  5 Global         Global Biodiversity Information Facility                                GBIF    https://gbif.org       
+##  6 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob…
+##  7 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt    
+##  8 Spain          GBIF Spain                                                              GBIF.es https://gbif.es        
+##  9 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversityda…
+## 10 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">show_all_reasons</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 13 × 2
 ##       id name                            
@@ -609,22 +608,23 @@ across the whole atlas.</p>
 It let’s you search for a single taxon or multiple taxa by name.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
-## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+##   search_term scientific_name taxon_concept_id                               rank  match_type kingdom phylum class issues
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                          &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228… class exactMatch Animal… Chord… Rept… noIss…</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>, <span class="st">&quot;aves&quot;</span>, <span class="st">&quot;mammalia&quot;</span>, <span class="st">&quot;pisces&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
-## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+##   search_term scientific_name taxon_concept_id                               rank  match_type kingdom phylum class issues
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                          &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228… class exactMatch Animal… Chord… Rept… noIss…</code></pre>
 <p>Alternatively, <code>search_identifiers()</code> is the partner
 function to <code>search_taxa()</code>. If we already know a taxonomic
 identifier, we can search for which taxa the identifier belongs to.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">search_identifiers</span>(<span class="st">&quot;urn:lsid:biodiversity.org.au:afd.taxon:682e1228-5b3c-45ff-833b-550efd40c399&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 15
-##   search_term                               success scientific_name taxon_concept_id rank  rank_id   lft   rgt match_type kingdom kingdom_id phylum phylum_id class class_id
-##   &lt;chr&gt;                                     &lt;lgl&gt;   &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;   
-## 1 urn:lsid:biodiversity.org.au:afd.taxon:6… TRUE    REPTILIA        https://biodive… class    3000 33626 36658 taxonIdMa… Animal… https://b… Chord… https://… Rept… https:/…</code></pre>
+##   search_term     success scientific_name taxon_concept_id rank  rank_id   lft   rgt match_type kingdom kingdom_id phylum
+##   &lt;chr&gt;           &lt;lgl&gt;   &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt; 
+## 1 urn:lsid:biodi… TRUE    REPTILIA        https://biodive… class    3000 33626 36658 taxonIdMa… Animal… https://b… Chord…
+## # ℹ 3 more variables: phylum_id &lt;chr&gt;, class &lt;chr&gt;, class_id &lt;chr&gt;</code></pre>
 </div>
 <div id="show_values-search_values" class="section level1">
 <h1><code>show_values()</code> &amp; <code>search_values()</code></h1>
@@ -640,9 +640,9 @@ we can show the values contained in the field
 ##   &lt;chr&gt;              
 ## 1 HUMAN_OBSERVATION  
 ## 2 PRESERVED_SPECIMEN 
-## 3 OBSERVATION        
+## 3 MACHINE_OBSERVATION
 ## 4 OCCURRENCE         
-## 5 MACHINE_OBSERVATION
+## 5 OBSERVATION        
 ## 6 MATERIAL_SAMPLE    
 ## 7 LIVING_SPECIMEN    
 ## 8 MATERIAL_CITATION  
@@ -662,14 +662,14 @@ we can show the values contained in the field
 <span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## • Showing values for &#39;ALA&#39;.</code></pre>
 <pre><code>## # A tibble: 6 × 5
-##      id enabled description                                                                                                                              filter displayOrder
-##   &lt;int&gt; &lt;lgl&gt;   &lt;chr&gt;                                                                                                                                    &lt;chr&gt;         &lt;int&gt;
-## 1    94 TRUE    &quot;Exclude all records where spatial validity is \&quot;false\&quot;&quot;                                                                                &quot;-spa…            1
-## 2    96 TRUE    &quot;Exclude all records with an assertion that the scientific name provided does not match any of the names lists used by the ALA.  For a … &quot;-ass…            1
-## 3    97 TRUE    &quot;Exclude all records with an assertion that the scientific name provided is not structured as a valid scientific name. Also catches ran… &quot;-ass…            2
-## 4    98 TRUE    &quot;Exclude all records with an assertion that the name and classification supplied can&#39;t be used to choose between 2 homonyms&quot;             &quot;-ass…            3
-## 5    99 TRUE    &quot;Exclude all records with an assertion that kingdom provided doesn&#39;t match a known kingdom e.g. Animalia, Plantae&quot;                       &quot;-ass…            4
-## 6   100 TRUE    &quot;Exclude all records with an assertion that the scientific name provided in the record does not match the expected taxonomic scope of t… &quot;-ass…            5</code></pre>
+##      id enabled description                                                                           filter displayOrder
+##   &lt;int&gt; &lt;lgl&gt;   &lt;chr&gt;                                                                                 &lt;chr&gt;         &lt;int&gt;
+## 1    94 TRUE    &quot;Exclude all records where spatial validity is \&quot;false\&quot;&quot;                             &quot;-spa…            1
+## 2    96 TRUE    &quot;Exclude all records with an assertion that the scientific name provided does not ma… &quot;-ass…            1
+## 3    97 TRUE    &quot;Exclude all records with an assertion that the scientific name provided is not stru… &quot;-ass…            2
+## 4    98 TRUE    &quot;Exclude all records with an assertion that the name and classification supplied can… &quot;-ass…            3
+## 5    99 TRUE    &quot;Exclude all records with an assertion that kingdom provided doesn&#39;t match a known k… &quot;-ass…            4
+## 6   100 TRUE    &quot;Exclude all records with an assertion that the scientific name provided in the reco… &quot;-ass…            5</code></pre>
 </div>
 
 

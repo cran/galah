@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2024-04-09" />
+<meta name="date" content="2024-11-19" />
 
 <title>Object-Oriented Programming</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Object-Oriented Programming</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2024-04-09</h4>
+<h4 class="date">2024-11-19</h4>
 
 
 
@@ -370,19 +370,19 @@ synonymous:</p>
 <pre><code>## # A tibble: 16 × 2
 ##    species                 count
 ##    &lt;chr&gt;                   &lt;int&gt;
-##  1 Crinia signifera        58619
-##  2 Crinia parinsignifera   12912
-##  3 Crinia glauerti          3090
-##  4 Crinia georgiana         1490
-##  5 Crinia remota             784
-##  6 Crinia sloanei            693
-##  7 Crinia insignifera        536
-##  8 Crinia tinnula            418
-##  9 Crinia deserticola        278
-## 10 Crinia pseudinsignifera   236
-## 11 Crinia tasmaniensis       189
-## 12 Crinia bilingua            75
-## 13 Crinia subinsignifera      45
+##  1 Crinia signifera        42621
+##  2 Crinia parinsignifera    8664
+##  3 Crinia glauerti          3111
+##  4 Crinia georgiana         1509
+##  5 Crinia remota             718
+##  6 Crinia sloanei            682
+##  7 Crinia insignifera        530
+##  8 Crinia tinnula            291
+##  9 Crinia deserticola        253
+## 10 Crinia pseudinsignifera   223
+## 11 Crinia tasmaniensis       181
+## 12 Crinia bilingua            74
+## 13 Crinia subinsignifera      46
 ## 14 Crinia riparia             10
 ## 15 Crinia flindersensis        3
 ## 16 Crinia nimba                1</code></pre>
@@ -459,22 +459,22 @@ want:</p>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">collapse</span>(x)</span></code></pre></div>
 <pre><code>## Object of class query with type data/occurrences-count-groupby 
-## url: https://biocache-ws.ala.org.au/ws/occurrences/facets?fq=%28genus%3A%22... 
+## url: https://api.ala.org.au/occurrences/occurrences/facets?fq=%28genus%3A%2... 
 ## arrange: species (ascending)</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">compute</span>(x)</span></code></pre></div>
 <pre><code>## Object of class computed_query with type data/occurrences-count-groupby 
-## url: https://biocache-ws.ala.org.au/ws/occurrences/facets?fq=%28genus%3A%22... 
+## url: https://api.ala.org.au/occurrences/occurrences/facets?fq=%28genus%3A%2... 
 ## arrange: species (ascending)</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">collect</span>(x) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 2
 ##   species              count
 ##   &lt;chr&gt;                &lt;int&gt;
-## 1 Crinia bilingua         75
-## 2 Crinia deserticola     278
+## 1 Crinia bilingua         74
+## 2 Crinia deserticola     253
 ## 3 Crinia flindersensis     3
-## 4 Crinia georgiana      1490
-## 5 Crinia glauerti       3090
-## 6 Crinia insignifera     536</code></pre>
+## 4 Crinia georgiana      1509
+## 5 Crinia glauerti       3111
+## 6 Crinia insignifera     530</code></pre>
 <p>The benefit of using <code>collapse()</code>, <code>compute()</code>
 and <code>collect()</code> is that queries are more modular. This is
 particularly useful for large data requests in galah. Users can send
@@ -503,24 +503,23 @@ constructed with the following information, returned by
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1900</span>) <span class="sc">|&gt;</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">collapse</span>()</span></code></pre></div>
 <pre><code>## Object of class query with type data/occurrences 
-## url: https://biocache-ws.ala.org.au/ws/occurrences/offline/download?fq=%28y...</code></pre>
+## url: https://api.ala.org.au/occurrences/occurrences/offline/download?fq=%28...</code></pre>
 <p>The <code>collapse()</code> stage includes an additional argument
 (<code>.expand</code>) that, when set to <code>TRUE</code>, shows all
 the APIs called to construct the user-requested query. This is
 especially useful for debugging.</p>
 </div>
-<div id="new-object-classes" class="section level2">
-<h2>New object classes</h2>
-<p>Under the hood, the different query-building verbs amend our object
-to a new class:</p>
+<div id="object-classes" class="section level2">
+<h2>Object classes</h2>
+<p>Under the hood, the different query-building verbs each amend the
+supplied object to a new class:</p>
 <ul>
 <li><code>collapse()</code> returns class <code>query</code>, which is a
 list containing a <code>type</code> slot and one or more
 <code>url</code>s</li>
 <li><code>compute()</code> returns a single object of class
 <code>computed_query</code></li>
-<li><code>collect()</code> doesn’t add a new data class (returns class
-<code>tibble</code>)</li>
+<li><code>collect()</code> returns a <code>tibble</code></li>
 </ul>
 <p>These can be called directly, or via the <code>method</code> and
 <code>type</code> arguments of <code>galah_call()</code>, which specify
@@ -567,14 +566,13 @@ selected atlas:</p>
 <span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="fu">search_all</span>(fields, <span class="st">&quot;cl22&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>  <span class="fu">show_values</span>()</span></code></pre></div>
-<p>Although there is little reason to use
-<code>request_metadata()</code> rather than <code>show_all()</code> most
-of the time, in some cases larger databases like GBIF return huge
-<code>data.frame</code>s of metadata. galah allows users to use
-<code>collapse()</code>, <code>compute()</code> and
-<code>collect()</code> on all types of requests, meaning users are able
-to download large metadata queries using the process detailed above in
-“Advanced query building” to get around this issue.</p>
+<p>While <code>request_metadata()</code> is more modular than
+<code>show_all()</code>, there is little benefit to using it for most
+applications. However, in some cases, larger databases like GBIF return
+huge <code>data.frame</code>s of metadata when called via
+<code>show_all()</code>. Using <code>request_metdata()</code> allows
+users to specify a <code>slice_head()</code> line within their pipe to
+get around this issue.</p>
 </div>
 <div id="which-syntax-should-i-prefer" class="section level2">
 <h2>Which syntax should I prefer?</h2>

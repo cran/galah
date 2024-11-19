@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2024-04-09" />
+<meta name="date" content="2024-11-19" />
 
 <title>Download data</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Download data</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2024-04-09</h4>
+<h4 class="date">2024-11-19</h4>
 
 
 
@@ -374,7 +374,7 @@ specified atlas without needing to download all the records first.</p>
 <pre><code>## # A tibble: 1 × 1
 ##       count
 ##       &lt;int&gt;
-## 1 133616691</code></pre>
+## 1 146185520</code></pre>
 <p>Group and summarise record counts by specific fields using
 <code>galah_group_by()</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
@@ -383,18 +383,18 @@ specified atlas without needing to download all the records first.</p>
 <pre><code>## # A tibble: 12 × 2
 ##    kingdom           count
 ##    &lt;chr&gt;             &lt;int&gt;
-##  1 Animalia      102148892
-##  2 Plantae        26453743
-##  3 Fungi           2343737
-##  4 Chromista       1049586
-##  5 Protista         311456
-##  6 Bacteria         113089
-##  7 Archaea            4119
-##  8 Virus              2307
-##  9 Bamfordvirae        204
-## 10 Orthornavirae       153
+##  1 Animalia      113408280
+##  2 Plantae        27572183
+##  3 Fungi           2448600
+##  4 Chromista       1057157
+##  5 Protista         316541
+##  6 Bacteria         113480
+##  7 Archaea            4120
+##  8 Virus              2382
+##  9 Bamfordvirae        210
+## 10 Orthornavirae       138
 ## 11 Viroid              104
-## 12 Shotokuvirae         39</code></pre>
+## 12 Shotokuvirae         41</code></pre>
 </div>
 <div id="species-lists" class="section level1">
 <h1>Species lists</h1>
@@ -411,14 +411,14 @@ flexible by supporting filtering.</p>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  </span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>species <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 11
-##   taxon_concept_id                                                    species_name scientific_name_auth…¹ taxon_rank kingdom phylum class order family genus vernacular_name
-##   &lt;chr&gt;                                                               &lt;chr&gt;        &lt;chr&gt;                  &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;          
-## 1 https://biodiversity.org.au/afd/taxa/a6a91fbd-77f4-4440-ba66-7d043… Pseudomys d… (Gould, 1842)          species    Animal… Chord… Mamm… Rode… Murid… Pseu… Delicate Mouse 
-## 2 https://biodiversity.org.au/afd/taxa/d3d03db1-3305-4f09-9f3f-64d8c… Mesembriomy… (J.E. Gray, 1843)      species    Animal… Chord… Mamm… Rode… Murid… Mese… Black-footed T…
-## 3 https://biodiversity.org.au/afd/taxa/936ee591-1e1a-4f9e-934e-4bc17… Zyzomys arg… (Thomas, 1889)         species    Animal… Chord… Mamm… Rode… Murid… Zyzo… Common Rock-rat
-## 4 https://biodiversity.org.au/afd/taxa/635a8ab7-774e-4676-9e75-8dc31… Pseudomys h… (Waite, 1896)          species    Animal… Chord… Mamm… Rode… Murid… Pseu… Sandy Inland M…
-## 5 https://biodiversity.org.au/afd/taxa/20ca6a48-09d2-4f05-ba8e-bbae4… Melomys bur… (Ramsay, 1887)         species    Animal… Chord… Mamm… Rode… Murid… Melo… Grassland Melo…
-## 6 https://biodiversity.org.au/afd/taxa/53115180-4024-4d50-baf7-edc45… Notomys ale… Thomas, 1922           species    Animal… Chord… Mamm… Rode… Murid… Noto… Spinifex Hoppi…
+##   taxon_concept_id species_name scientific_name_auth…¹ taxon_rank kingdom phylum class order family genus vernacular_name
+##   &lt;chr&gt;            &lt;chr&gt;        &lt;chr&gt;                  &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;          
+## 1 https://biodive… Pseudomys d… (Gould, 1842)          species    Animal… Chord… Mamm… Rode… Murid… Pseu… Delicate Mouse 
+## 2 https://biodive… Mesembriomy… (J.E. Gray, 1843)      species    Animal… Chord… Mamm… Rode… Murid… Mese… Black-footed T…
+## 3 https://biodive… Zyzomys arg… (Thomas, 1889)         species    Animal… Chord… Mamm… Rode… Murid… Zyzo… Common Rock-rat
+## 4 https://biodive… Pseudomys h… (Waite, 1896)          species    Animal… Chord… Mamm… Rode… Murid… Pseu… Sandy Inland M…
+## 5 https://biodive… Melomys bur… (Ramsay, 1887)         species    Animal… Chord… Mamm… Rode… Murid… Melo… Grassland Melo…
+## 6 https://biodive… Notomys ale… Thomas, 1922           species    Animal… Chord… Mamm… Rode… Murid… Noto… Spinifex Hoppi…
 ## # ℹ abbreviated name: ¹​scientific_name_authorship</code></pre>
 </div>
 <div id="occurrence-data" class="section level1">
@@ -442,14 +442,15 @@ your selected GBIF node. See more information in the <a href="#config">config se
 ## Retrying in 4 seconds.</code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>occ <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##   recordID                             scientificName    taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus dataResourceName institutionID
-##   &lt;chr&gt;                                &lt;chr&gt;             &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;lgl&gt;        
-## 1 0000a928-d756-42eb-8058-6faa3901926d Eolophus roseica… https://biodi…           -35.6             149. 2017-04-19 09:11:00 PRESENT          eBird Australia  NA           
-## 2 0001bc78-d2e9-48aa-8b9d-d69b55c81fd2 Eolophus roseica… https://biodi…           -35.2             149. 2019-08-13 15:13:00 PRESENT          eBird Australia  NA           
-## 3 0002064f-08ea-425b-97c5-2677e1e1aa5a Eolophus roseica… https://biodi…           -35.3             149. 2014-03-16 06:48:00 PRESENT          eBird Australia  NA           
-## 4 00022dd2-9f85-4802-b837-7ff7515acf21 Eolophus roseica… https://biodi…           -35.3             149. 2022-05-08 08:20:00 PRESENT          eBird Australia  NA           
-## 5 0002cc35-8d5a-4d20-8012-12649dc16df1 Eolophus roseica… https://biodi…           -35.3             149. 2015-11-01 08:00:00 PRESENT          eBird Australia  NA           
-## 6 00030a8c-082f-44f0-898a-adf6b78985b9 Eolophus roseica… https://biodi…           -35.3             149. 2022-01-06 11:47:00 PRESENT          eBird Australia  NA</code></pre>
+##   recordID            scientificName taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus
+##   &lt;chr&gt;               &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;           
+## 1 0000a928-d756-42eb… Eolophus rose… https://biodi…           -35.6             149. 2017-04-19 09:11:00 PRESENT         
+## 2 0001bc78-d2e9-48aa… Eolophus rose… https://biodi…           -35.2             149. 2019-08-13 15:13:00 PRESENT         
+## 3 0002064f-08ea-425b… Eolophus rose… https://biodi…           -35.3             149. 2014-03-16 06:48:00 PRESENT         
+## 4 00022dd2-9f85-4802… Eolophus rose… https://biodi…           -35.3             149. 2022-05-08 08:20:00 PRESENT         
+## 5 0002cc35-8d5a-4d20… Eolophus rose… https://biodi…           -35.3             149. 2015-11-01 08:00:00 PRESENT         
+## 6 00030a8c-082f-44f0… Eolophus rose… https://biodi…           -35.3             149. 2022-01-06 11:47:00 PRESENT         
+## # ℹ 2 more variables: dataResourceName &lt;chr&gt;, institutionID &lt;lgl&gt;</code></pre>
 </div>
 <div id="media-metadata" class="section level1">
 <h1>Media metadata</h1>
@@ -466,15 +467,16 @@ record. Metadata on these records can be downloaded using
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  </span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>media_data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 19
-##   media_id     recordID scientificName taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus dataResourceName multimedia images videos sounds
-##   &lt;chr&gt;        &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;  &lt;lgl&gt;  &lt;lgl&gt; 
-## 1 ff8322d0-f4… 003a192… Eolophus rose… https://biodi…           -35.3             149. 2020-09-12 06:11:00 PRESENT          iNaturalist Aus… Image      ff832… NA     NA    
-## 2 c66fc819-70… 015ee7c… Eolophus rose… https://biodi…           -35.4             149. 2020-08-09 05:11:00 PRESENT          iNaturalist Aus… Image      c66fc… NA     NA    
-## 3 fe6d7b94-9e… 05e86b7… Eolophus rose… https://biodi…           -35.4             149. 2020-11-13 22:29:00 PRESENT          NatureMapr       Image      fe6d7… NA     NA    
-## 4 2f4d32c0-a0… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 01:50:00 PRESENT          iNaturalist Aus… Image      2f4d3… NA     NA    
-## 5 73407414-07… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 01:50:00 PRESENT          iNaturalist Aus… Image      73407… NA     NA    
-## 6 89171c49-5a… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 01:50:00 PRESENT          iNaturalist Aus… Image      89171… NA     NA    
-## # ℹ 6 more variables: creator &lt;chr&gt;, license &lt;chr&gt;, mimetype &lt;chr&gt;, width &lt;int&gt;, height &lt;int&gt;, image_url &lt;chr&gt;</code></pre>
+##   media_id   recordID scientificName taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus
+##   &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;           
+## 1 ff8322d0-… 003a192… Eolophus rose… https://biodi…           -35.3             149. 2020-09-12 16:11:00 PRESENT         
+## 2 c66fc819-… 015ee7c… Eolophus rose… https://biodi…           -35.4             149. 2020-08-09 15:11:00 PRESENT         
+## 3 fe6d7b94-… 05e86b7… Eolophus rose… https://biodi…           -35.4             149. 2020-11-13 22:29:00 PRESENT         
+## 4 2f4d32c0-… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 11:50:00 PRESENT         
+## 5 73407414-… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 11:50:00 PRESENT         
+## 6 89171c49-… 063bb0f… Eolophus rose… https://biodi…           -35.6             149. 2020-08-04 11:50:00 PRESENT         
+## # ℹ 11 more variables: dataResourceName &lt;chr&gt;, multimedia &lt;chr&gt;, images &lt;chr&gt;, sounds &lt;lgl&gt;, videos &lt;lgl&gt;,
+## #   creator &lt;chr&gt;, license &lt;chr&gt;, mimetype &lt;chr&gt;, width &lt;int&gt;, height &lt;int&gt;, image_url &lt;chr&gt;</code></pre>
 <p>To actually download the media files to your computer, use
 [collect_media()].</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>media_data <span class="sc">|&gt;</span></span>
@@ -491,27 +493,27 @@ Specify which taxonomic level your tree will go down to with
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">galah_filter</span>(rank <span class="sc">==</span> class) <span class="sc">|&gt;</span></span>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  <span class="fu">atlas_taxonomy</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 19 × 4
-##    name            rank      parent_taxon_concept_id                                                   taxon_concept_id                                                     
-##    &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;                                                                     &lt;chr&gt;                                                                
-##  1 Chordata        phylum    &lt;NA&gt;                                                                      https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c7…
-##  2 Cephalochordata subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodiversity.org.au/afd/taxa/298d7998-81d6-49e9-858c-56f8837…
-##  3 Tunicata        subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d53…
-##  4 Appendicularia  class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodiversity.org.au/afd/taxa/adf459be-49b5-42e8-88dd-82de53b…
-##  5 Ascidiacea      class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodiversity.org.au/afd/taxa/98b20d78-39fe-4d9e-9895-f4d4e68…
-##  6 Thaliacea       class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodiversity.org.au/afd/taxa/fc1224c8-a856-430b-a3f7-8c936eb…
-##  7 Vertebrata      subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodiversity.org.au/afd/taxa/5d6076b1-b7c7-487f-9d61-0fea011…
-##  8 Agnatha         informal  https://biodiversity.org.au/afd/taxa/5d6076b1-b7c7-487f-9d61-0fea0111cc7e https://biodiversity.org.au/afd/taxa/66db22c8-891d-4b16-a1a2-b66feae…
-##  9 Myxini          informal  https://biodiversity.org.au/afd/taxa/66db22c8-891d-4b16-a1a2-b66feaeaa3e0 https://biodiversity.org.au/afd/taxa/6bf4d623-abde-4df0-8e6e-54da896…
-## 10 Petromyzontida  informal  https://biodiversity.org.au/afd/taxa/66db22c8-891d-4b16-a1a2-b66feaeaa3e0 https://biodiversity.org.au/afd/taxa/8982a097-19d8-4225-9ad3-8fff9e9…
-## 11 Gnathostomata   informal  https://biodiversity.org.au/afd/taxa/5d6076b1-b7c7-487f-9d61-0fea0111cc7e https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f89…
-## 12 Amphibia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodiversity.org.au/afd/taxa/257dcc26-6efb-4e13-9a7b-5fc4de6…
-## 13 Aves            class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodiversity.org.au/afd/taxa/65625205-db74-4a87-b566-ca387b1…
-## 14 Mammalia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodiversity.org.au/afd/taxa/e9e7db31-04df-41fb-bd8d-e0b0f3c…
-## 15 Reptilia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd4…
-## 16 Pisces          informal  https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bd…
-## 17 Actinopterygii  class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodiversity.org.au/afd/taxa/83e82cc3-be4e-40e8-9e7a-985737c…
-## 18 Chondrichthyes  class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodiversity.org.au/afd/taxa/6f1093ab-9b44-4a55-9066-7daa2f9…
-## 19 Sarcopterygii   class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodiversity.org.au/afd/taxa/d8d85e26-e55f-4e44-ac44-6108e25…</code></pre>
+##    name            rank      parent_taxon_concept_id                                                   taxon_concept_id  
+##    &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;                                                                     &lt;chr&gt;             
+##  1 Chordata        phylum    &lt;NA&gt;                                                                      https://biodivers…
+##  2 Cephalochordata subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodivers…
+##  3 Tunicata        subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodivers…
+##  4 Appendicularia  class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodivers…
+##  5 Ascidiacea      class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodivers…
+##  6 Thaliacea       class     https://biodiversity.org.au/afd/taxa/1c20ed62-d918-4e42-b625-8b86d533cc51 https://biodivers…
+##  7 Vertebrata      subphylum https://biodiversity.org.au/afd/taxa/065f1da4-53cd-40b8-a396-80fa5c74dedd https://biodivers…
+##  8 Agnatha         informal  https://biodiversity.org.au/afd/taxa/5d6076b1-b7c7-487f-9d61-0fea0111cc7e https://biodivers…
+##  9 Myxini          informal  https://biodiversity.org.au/afd/taxa/66db22c8-891d-4b16-a1a2-b66feaeaa3e0 https://biodivers…
+## 10 Petromyzontida  informal  https://biodiversity.org.au/afd/taxa/66db22c8-891d-4b16-a1a2-b66feaeaa3e0 https://biodivers…
+## 11 Gnathostomata   informal  https://biodiversity.org.au/afd/taxa/5d6076b1-b7c7-487f-9d61-0fea0111cc7e https://biodivers…
+## 12 Amphibia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodivers…
+## 13 Aves            class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodivers…
+## 14 Mammalia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodivers…
+## 15 Reptilia        class     https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodivers…
+## 16 Pisces          informal  https://biodiversity.org.au/afd/taxa/ef5515fd-a0a2-4e16-b61a-0f19f8900f76 https://biodivers…
+## 17 Actinopterygii  class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodivers…
+## 18 Chondrichthyes  class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodivers…
+## 19 Sarcopterygii   class     https://biodiversity.org.au/afd/taxa/e22efeb4-2cb5-4250-8d71-61c48bdaa051 https://biodivers…</code></pre>
 </div>
 <div id="configuring-galah" class="section level1">
 <h1>Configuring galah</h1>

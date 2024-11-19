@@ -12,7 +12,7 @@
 
 <meta name="author" content="Martin Westgate &amp; Dax Kellie" />
 
-<meta name="date" content="2024-04-09" />
+<meta name="date" content="2024-11-19" />
 
 <title>Quick start guide</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Quick start guide</h1>
 <h4 class="author">Martin Westgate &amp; Dax Kellie</h4>
-<h4 class="date">2024-04-09</h4>
+<h4 class="date">2024-11-19</h4>
 
 
 
@@ -364,20 +364,19 @@ of individual life forms using the <a href="https://dwc.tdwg.org">‘Darwin Core
 Australia (ALA). To show the full list of organisations currently
 supported by galah, use <code>show_all(atlases)</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">show_all</span>(atlases)</span></code></pre></div>
-<pre><code>## # A tibble: 11 × 4
-##    region         institution                                                             acronym url                         
-##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                       
-##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au      
-##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityatlas.at
-##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br        
-##  4 Estonia        eElurikkus                                                              &lt;NA&gt;    https://elurikkus.ee        
-##  5 France         Portail français d&#39;accès aux données d&#39;observation sur les espèces      OpenObs https://openobs.mnhn.fr     
-##  6 Global         Global Biodiversity Information Facility                                GBIF    https://gbif.org            
-##  7 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob.gt   
-##  8 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt         
-##  9 Spain          GBIF Spain                                                              GBIF.es https://www.gbif.es         
-## 10 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversitydata.se 
-## 11 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
+<pre><code>## # A tibble: 10 × 4
+##    region         institution                                                             acronym url                    
+##    &lt;chr&gt;          &lt;chr&gt;                                                                   &lt;chr&gt;   &lt;chr&gt;                  
+##  1 Australia      Atlas of Living Australia                                               ALA     https://www.ala.org.au 
+##  2 Austria        Biodiversitäts-Atlas Österreich                                         BAO     https://biodiversityat…
+##  3 Brazil         Sistemas de Informações sobre a Biodiversidade Brasileira               SiBBr   https://sibbr.gov.br   
+##  4 France         Portail français d&#39;accès aux données d&#39;observation sur les espèces      OpenObs https://openobs.mnhn.fr
+##  5 Global         Global Biodiversity Information Facility                                GBIF    https://gbif.org       
+##  6 Guatemala      Sistema Nacional de Información sobre Diversidad Biológica de Guatemala SNIBgt  https://snib.conap.gob…
+##  7 Portugal       GBIF Portugal                                                           GBIF.pt https://www.gbif.pt    
+##  8 Spain          GBIF Spain                                                              GBIF.es https://gbif.es        
+##  9 Sweden         Swedish Biodiversity Data Infrastructure                                SBDI    https://biodiversityda…
+## 10 United Kingdom National Biodiversity Network                                           NBN     https://nbn.org.uk</code></pre>
 <p>Use <code>galah_config()</code> to set the node organisation using
 its region, name, or acronym. Once set, <code>galah</code> will
 automatically populate the server configuration for your selected GBIF
@@ -409,7 +408,7 @@ base pipe by default (<code>|&gt;</code>), but the
 <pre><code>## # A tibble: 1 × 1
 ##       count
 ##       &lt;int&gt;
-## 1 133616691</code></pre>
+## 1 146185520</code></pre>
 <p>To pass more complex queries, you can use additional
 <code>{dplyr}</code> functions such as <code>filter()</code>,
 <code>select()</code>, and <code>group_by()</code>.</p>
@@ -420,7 +419,7 @@ base pipe by default (<code>|&gt;</code>), but the
 <pre><code>## # A tibble: 1 × 1
 ##      count
 ##      &lt;int&gt;
-## 1 28235670</code></pre>
+## 1 40200358</code></pre>
 <p>Each GBIF node allows you to query using their own set of in-built
 fields. You can investigate which fields are available using
 <code>show_all()</code> and <code>search_all()</code>:</p>
@@ -440,9 +439,9 @@ names and is not case sensitive. It’s good practice to first use
 the correct taxonomic results.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">search_taxa</span>(<span class="st">&quot;reptilia&quot;</span>) <span class="co"># Check whether taxonomic info is correct</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
-##   search_term scientific_name taxon_concept_id                                                          rank  match_type kingdom  phylum   class    issues 
-##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                                                     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
-## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399 class exactMatch Animalia Chordata Reptilia noIssue</code></pre>
+##   search_term scientific_name taxon_concept_id                               rank  match_type kingdom phylum class issues
+##   &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;                                          &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
+## 1 reptilia    REPTILIA        https://biodiversity.org.au/afd/taxa/682e1228… class exactMatch Animal… Chord… Rept… noIss…</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">identify</span>(<span class="st">&quot;reptilia&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>) <span class="sc">|&gt;</span> </span>
@@ -451,7 +450,7 @@ the correct taxonomic results.</p>
 <pre><code>## # A tibble: 1 × 1
 ##    count
 ##    &lt;int&gt;
-## 1 252833</code></pre>
+## 1 338434</code></pre>
 <p>If you want to query something other than the number of records,
 modify the <code>type</code> argument in <code>galah_call()</code>. Here
 we’ll query the number of species:</p>
@@ -463,7 +462,7 @@ we’ll query the number of species:</p>
 <pre><code>## # A tibble: 1 × 1
 ##   count
 ##   &lt;int&gt;
-## 1   866</code></pre>
+## 1   883</code></pre>
 </div>
 <div id="download" class="section level1">
 <h1>Download</h1>
@@ -474,18 +473,19 @@ pipe.</p>
 <span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="fu">identify</span>(<span class="st">&quot;Litoria&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2020</span>, cl22 <span class="sc">==</span> <span class="st">&quot;Tasmania&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="fu">select</span>(basisOfRecord, <span class="at">group =</span> <span class="st">&quot;basic&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
+<pre><code>## Retrying in 1 seconds.</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##   recordID                             scientificName    taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus dataResourceName basisOfRecord
-##   &lt;chr&gt;                                &lt;chr&gt;             &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;        
-## 1 00168ca6-84d0-4af1-8fa8-875fd69d25da Litoria raniform… https://biodi…           -41.2             146. 2023-12-20 23:20:19 PRESENT          iNaturalist Aus… HUMAN_OBSERV…
-## 2 00250163-ec50-4eda-a5d5-58ae98bc5834 Litoria raniform… https://biodi…           -41.2             147. 2023-08-23 01:49:28 PRESENT          iNaturalist Aus… HUMAN_OBSERV…
-## 3 003e0f63-9f95-4af9-b272-10db6d7b6371 Litoria ewingii   https://biodi…           -42.9             148. 2022-12-23 19:27:00 PRESENT          iNaturalist Aus… HUMAN_OBSERV…
-## 4 00410554-5289-416f-9848-74df4a814b93 Litoria ewingii   https://biodi…           -41.7             147. 2021-05-06 00:00:00 PRESENT          FrogID           OCCURRENCE   
-## 5 0070521f-bb45-46fb-8385-1a542c3a81a5 Litoria ewingii   https://biodi…           -43.1             147. 2023-12-20 03:29:23 PRESENT          iNaturalist Aus… HUMAN_OBSERV…
-## 6 0081e7ef-459b-42a9-8f0b-b3664ec94d0e Litoria ewingii   https://biodi…           -43.2             147. 2020-08-02 00:00:00 PRESENT          FrogID           OCCURRENCE</code></pre>
+##   recordID            scientificName taxonConceptID decimalLatitude decimalLongitude eventDate           occurrenceStatus
+##   &lt;chr&gt;               &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;           
+## 1 00052544-d943-42e9… Litoria ewing… https://biodi…           -42.9             147. 2022-09-19 00:00:00 PRESENT         
+## 2 00168ca6-84d0-4af1… Litoria ranif… https://biodi…           -41.2             146. 2023-12-21 10:20:19 PRESENT         
+## 3 001a43fe-8586-4064… Litoria ewing… https://biodi…           -43.0             147. 2021-08-07 00:00:00 PRESENT         
+## 4 00250163-ec50-4eda… Litoria ranif… https://biodi…           -41.2             147. 2023-08-23 11:49:28 PRESENT         
+## 5 003e0f63-9f95-4af9… Litoria ewing… https://biodi…           -42.9             148. 2022-12-24 06:27:00 PRESENT         
+## 6 0070521f-bb45-46fb… Litoria ewing… https://biodi…           -43.1             147. 2023-12-20 14:29:23 PRESENT         
+## # ℹ 2 more variables: dataResourceName &lt;chr&gt;, basisOfRecord &lt;chr&gt;</code></pre>
 <p>Check out our other vignettes for more detail on how to use these
 functions.</p>
 </div>
