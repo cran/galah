@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Martin Westgate" />
+
+<meta name="date" content="2026-02-11" />
+
+<title>Accessing sensitive data</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Accessing sensitive data</h1>
+<h4 class="author">Martin Westgate</h4>
+<h4 class="date">2026-02-11</h4>
+
+
+
+<p><code>galah</code> provides access to biodiversity information stored
+by GBIF and its’ partner nodes. While much of this information is shared
+freely and without restriction, there are a number of cases where this
+is not appropriate, such as the locations of:</p>
+<ul>
+<li>threatened species, whose locations are protected by law in many
+jurisdictions</li>
+<li>species at risk from poachers, particularly for wildlife trade</li>
+</ul>
+<p>This leads to a problem: data that is more open helps scientists and
+policy-makers understand and conserve biodiversity, but also generates
+threats to those species. To balance these concerns against one another,
+it is common to ‘obfuscate’ sensitive data, which consists of providing
+location information at a lower spatial resolution, making it harder to
+locate threatened species on the ground.</p>
+<div id="how-ala-handles-sensitive-data" class="section level1">
+<h1>How ALA handles sensitive data</h1>
+<p>While many data providers solve this problem themselves in a range of
+ways - such as by not sharing data at all, randomising some locations,
+or reducing the number of decimal places of their locations - others
+provide high-precision data on the understanding that it will only be
+made available to specific users, and then only by written agreement. In
+these cases, the ALA displays the obfuscated data publicly, but retains
+the original data for use for specific purposes. Researchers can request
+access to the original data via the National Framework for the Sharing
+of Restricted Access Species Data in Australia, more simply known as the
+‘RASD framework’ (<a href="https://www.rasd.org.au" class="uri">https://www.rasd.org.au</a>).</p>
+<p>If your access to sensitive data is approved by the provider(s) in
+question, you can use ‘galah’ to access that sensitive data.</p>
+</div>
+<div id="using-authentication" class="section level1">
+<h1>Using authentication</h1>
+<p>You have two choices for how to call authentication in your queries.
+The simplest way is to ‘switch on’ authentication using
+<code>galah_config()</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">authenticate =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>This is straightforward, but you’ll have to remember to switch
+<code>authentication</code> to <code>FALSE</code> again once you’re
+done. A safer choice is to use the <code>authenticate()</code> function
+in-pipe:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">identify</span>(<span class="st">&quot;Mammalia&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2025</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">authenticate</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div>
+<p>It doesn’t matter where in the pipe you place
+<code>authenticate()</code>, as it will only trigger your browser to
+open once you run <code>collect()</code>. Whichever method you use,
+you’ll notice a page pop up in your default browser, encouraging you to
+sign in. Once you have done so, you should be redirected back to your
+chosen IDE to continue working.</p>
+</div>
+<div id="deciding-what-sensitive-data-to-access" class="section level1">
+<h1>Deciding what sensitive data to access</h1>
+<p>In the the ALA, sensitive data are stored in bespoke fields, which
+have an existing field name prefixed with <code>sensitive_</code>. They
+cannot be requested directly. Instead, if you request a field that has a
+sensitive counterpart, both the public and sensitive version of that
+field will be returned.</p>
+<div id="suepizzkgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#suepizzkgk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#suepizzkgk thead, #suepizzkgk tbody, #suepizzkgk tfoot, #suepizzkgk tr, #suepizzkgk td, #suepizzkgk th {
+  border-style: none;
+}
+
+#suepizzkgk p {
+  margin: 0;
+  padding: 0;
+}
+
+#suepizzkgk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#suepizzkgk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#suepizzkgk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#suepizzkgk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#suepizzkgk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#suepizzkgk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#suepizzkgk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#suepizzkgk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#suepizzkgk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#suepizzkgk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#suepizzkgk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#suepizzkgk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#suepizzkgk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#suepizzkgk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#suepizzkgk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#suepizzkgk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#suepizzkgk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#suepizzkgk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#suepizzkgk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#suepizzkgk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#suepizzkgk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#suepizzkgk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#suepizzkgk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#suepizzkgk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#suepizzkgk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#suepizzkgk .gt_left {
+  text-align: left;
+}
+
+#suepizzkgk .gt_center {
+  text-align: center;
+}
+
+#suepizzkgk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#suepizzkgk .gt_font_normal {
+  font-weight: normal;
+}
+
+#suepizzkgk .gt_font_bold {
+  font-weight: bold;
+}
+
+#suepizzkgk .gt_font_italic {
+  font-style: italic;
+}
+
+#suepizzkgk .gt_super {
+  font-size: 65%;
+}
+
+#suepizzkgk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#suepizzkgk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#suepizzkgk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#suepizzkgk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#suepizzkgk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#suepizzkgk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#suepizzkgk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#suepizzkgk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#suepizzkgk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="public_field">public_field</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="restricted_field">restricted_field</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="public_field" class="gt_row gt_left">eventID</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_eventID</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">eventDate</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_eventDate</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">eventTime</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_eventTime</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">month</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_month</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">day</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_day</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">locality</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_locality</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">locationRemarks</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_locationRemarks</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">decimalLatitude</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_decimalLatitude</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">decimalLongitude</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_decimalLongitude</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">footprintWKT</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_footprintWKT</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">verbatimEventDate</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_verbatimEventDate</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">verbatimLocality</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_verbatimLocality</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">verbatimCoordinates</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_verbatimCoordinates</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">verbatimLatitude</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_verbatimLatitude</td></tr>
+    <tr><td headers="public_field" class="gt_row gt_left">verbatimLongitude</td>
+<td headers="restricted_field" class="gt_row gt_left">sensitive_verbatimLongitude</td></tr>
+  </tbody>
+  
+</table>
+</div>
+<p>So to download data, we might try something like:</p>
+<pre><code>result &lt;- galah_call() |&gt;
+    filter(species_list_uid == &quot;dr491&quot;) |&gt;
+    collect()
+
+&gt; result
+# A tibble: 487 × 12
+   recordID   scientificName taxonConceptID decimalLatitude sensitive_decimalLat…¹ decimalLongitude
+   &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;                    &lt;dbl&gt;                  &lt;dbl&gt;            &lt;dbl&gt;
+ 1 00825ab0-… Caladenia vul… https://id.bi…           -37.8                     NA             145.
+ 2 0094e7df-… Caladenia vul… https://id.bi…           -37.7                     NA             141.
+ 3 00d3a4e3-… Caladenia vul… https://id.bi…           -39.6                     NA             147.
+ 4 02305849-… Caladenia vul… https://id.bi…           -38.0                     NA             145.
+ 5 02e28dc1-… Caladenia vul… https://id.bi…           -37.7                     NA             145.
+ 6 068b4c68-… Caladenia vul… https://id.bi…           -37.7                     NA             141.
+ 7 07b5356b-… Caladenia vul… https://id.bi…           -37.0                     NA             143.
+ 8 0807fcbe-… Caladenia vul… https://id.bi…           -37.9                     NA             145.
+ 9 093df7f4-… Caladenia vul… https://id.bi…           -37.9                     NA             145.
+10 0942b709-… Caladenia vul… https://id.bi…           -38.4                     NA             145.
+# ℹ 477 more rows
+# ℹ abbreviated name: ¹​sensitive_decimalLatitude
+# ℹ 6 more variables: sensitive_decimalLongitude &lt;dbl&gt;, eventDate &lt;dttm&gt;,
+#   sensitive_eventDate &lt;lgl&gt;, basisOfRecord &lt;chr&gt;, occurrenceStatus &lt;chr&gt;, dataResourceName &lt;chr&gt;
+# ℹ Use `print(n = ...)` to see more rows
+
+&gt; colnames(result)
+ [1] &quot;recordID&quot;                   &quot;scientificName&quot;             &quot;taxonConceptID&quot;            
+ [4] &quot;decimalLatitude&quot;            &quot;sensitive_decimalLatitude&quot;  &quot;decimalLongitude&quot;          
+ [7] &quot;sensitive_decimalLongitude&quot; &quot;eventDate&quot;                  &quot;sensitive_eventDate&quot;       
+[10] &quot;basisOfRecord&quot;              &quot;occurrenceStatus&quot;           &quot;dataResourceName&quot; </code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

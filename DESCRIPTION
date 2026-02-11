@@ -1,7 +1,7 @@
 Package: galah
 Type: Package
 Title: Biodiversity Data from the GBIF Node Network
-Version: 2.1.2
+Version: 2.2.0
 Authors@R: 
     c(person(given = "Martin",
              family = "Westgate",
@@ -11,13 +11,13 @@ Authors@R:
              family = "Kellie",
              email = "dax.kellie@csiro.au",
              role = "aut"),
+      person(given = "Shandiya",
+             family = "Balasubramaniam",
+             email = "shandiya.balasubramaniam@csiro.au",
+             role = "ctb"),
       person(given = "Matilda",
              family = "Stevenson",
-             role = "aut"),
-      person(given = "Peggy",
-             family = "Newman",
-             email = "peggy.newman@csiro.au",
-             role = "aut"))
+             role = "ctb"))
 Description: The Global Biodiversity Information Facility 
     ('GBIF', <https://www.gbif.org>) sources data from an international network
     of data providers, known as 'nodes'. Several of these nodes - the "living 
@@ -37,13 +37,14 @@ BugReports: https://github.com/AtlasOfLivingAustralia/galah-R/issues
 Maintainer: Martin Westgate <martin.westgate@csiro.au>
 LazyLoad: yes
 VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
+Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-06-12 05:15:03 UTC; wes186
+Packaged: 2026-02-11 03:26:52 UTC; wes186
 Author: Martin Westgate [aut, cre],
   Dax Kellie [aut],
-  Matilda Stevenson [aut],
-  Peggy Newman [aut]
+  Shandiya Balasubramaniam [ctb],
+  Matilda Stevenson [ctb]
 Repository: CRAN
-Date/Publication: 2025-06-12 09:30:02 UTC
+Date/Publication: 2026-02-11 08:30:02 UTC
